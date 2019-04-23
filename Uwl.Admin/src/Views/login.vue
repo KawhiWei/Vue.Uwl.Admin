@@ -1,13 +1,16 @@
 <template>
-<div>
-    <div>
+<div class="Bg-img">
+    <div class="login">
+        <div class="loginlogo">
+
+        </div>
         <Form>
-            <FormItem prop="user">
+            <FormItem>
             <Input type="text" v-model="formInline.user" placeholder="Username">
                 <Icon type="ios-person-outline" slot="prepend"></Icon>
             </Input>
         </FormItem>
-        <FormItem prop="password">
+        <FormItem>
             <Input type="password" v-model="formInline.password" placeholder="Password">
                 <Icon type="ios-lock-outline" slot="prepend"></Icon>
             </Input>
@@ -45,3 +48,24 @@
         }
     }
 </script>
+<style>
+.Bg-img{
+    background: url(../assets/login-bg.jpg) no-repeat top left;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    position: absolute;
+}
+.Bg-img .login{
+    width: 600px;
+    height: 450px;
+    border: 1px red solid;
+}
+.Bg-img .login .loginlogo{
+    width: 350px;
+    height: 140px;
+    border: 1px solid yellow;
+    text-align: center;
+}
+</style>
