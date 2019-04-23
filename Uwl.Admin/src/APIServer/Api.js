@@ -99,7 +99,7 @@ axios.interceptors.request.use(response=>{//没有错误数据原封返回
 export const RequestLogin=params=>{
   console.log(params)
   debugger
-    return axios.post(`${baseurl1}/Login/Token`,params);
+    return axios.post(`${baseurl1}`+ApiControllerUrl.LoginUrl.GetTokenByUserAndPass,params);
 }
 
 
