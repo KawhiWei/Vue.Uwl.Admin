@@ -80,12 +80,26 @@ axios.interceptors.request.use(response=>{//没有错误数据原封返回
         return Promise.reject(error) // 返回接口返回的错误信息
     },
 )
-
-
-
-//登录异步访问API接口
+/**
+ * 接口处理函数基方法
+ * method,接口请求类型
+ * url,//接口地址
+ * params,参数
+ * success,//成功返回数据
+ * failure
+ */
+function AxiosGet(url,params,success,failure)
 {
+  axios.get(`${baseurl1}`+url,{params:params}).then(function(res){success(res.data)}).catch(function(err){let res=err.response});
+}
 
+
+
+//登录获取Token异步访问API接口
+{
+  export const RequestLogin=params=>{
+    return AxiosGet('',params).then(res=>res.data)
+  }
 }
 
 
