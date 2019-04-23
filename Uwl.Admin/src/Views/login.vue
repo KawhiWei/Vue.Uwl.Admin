@@ -2,7 +2,7 @@
 <div class="Bg-img">
     <div class="login">
         <div class="loginlogo">
-
+            我是放Logo的
         </div>
         <Form>
             <FormItem>
@@ -44,6 +44,7 @@
         methods: {
             handleSubmit() {
                 console.log(this.formInline.user)
+                console.log(this.formInline.password)
             }
         }
     }
@@ -54,7 +55,7 @@
     background-size: cover;
     height: 100%;
     width: 100%;
-    margin: 0;
+    margin: 0px;
     position: absolute;
 }
 .Bg-img .login{
