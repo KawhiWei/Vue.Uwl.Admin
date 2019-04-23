@@ -1,20 +1,19 @@
 import axios from 'axios' //在APi访问接口引入Vuex
-import { promises } from 'fs';
-var baseurl1="https://localhost:5001/";
+var baseurl1="https://localhost:5001";
 var baseurl2="http://139.199.219.154:9600/";
 
 
 const ApiControllerUrl={
     //登录Url存放位置
-    LoginUrl={
-        GetTokenByUserAndPass:'',//根据用户名和密码获取Token
+    LoginUrl:{
+        GetTokenByUserAndPass:'/Login/Token',//根据用户名和密码获取Token
         GetUserByToken:'',//根据Token获取用户个人信息
     },
     //菜单管理Url存放位置
-    MenumanagerUrl={
+    MenumanagerUrl:{
 
     },
-    UsermanagerUrl={
+    UsermanagerUrl:{
 
     }
 }
@@ -88,27 +87,24 @@ axios.interceptors.request.use(response=>{//没有错误数据原封返回
  * success,//成功返回数据
  * failure
  */
-function AxiosGet(url,params,success,failure)
-{
-  axios.get(`${baseurl1}`+url,{params:params}).then(function(res){success(res.data)}).catch(function(err){let res=err.response});
-}
+// function AxiosGet(url,params,success)
+// {
+//   console.log(url);
+//   axios.get(`${baseurl1}`+url,{params:params}).then(function(res){success(res.data)}).catch(function(err){let res=err.response});
+// }
 
 
 
 //登录获取Token异步访问API接口
-{
-  export const RequestLogin=params=>{
-    return AxiosGet('',params).then(res=>res.data)
-  }
+export const RequestLogin=params=>{
+  console.log(params)
+  debugger
+    return axios.post(`${baseurl1}/Login/Token`,params);
 }
+
 
 
 //菜单管理异步访问API接口
-{
 
-}
 
 //用户管理异步访问API接口
-{
-
-}

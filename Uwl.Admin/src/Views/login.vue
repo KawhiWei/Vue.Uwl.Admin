@@ -23,12 +23,13 @@
 </div>
 </template>
 <script>
+    import {RequestLogin} from '../APIServer/Api.js';
     export default {
         data () {
             return {
                 formInline: {
-                    user: '',
-                    password: ''
+                    user: 'uwl',
+                    password: '123456'
                 },
                 ruleInline: {
                     user: [
@@ -43,6 +44,11 @@
         },
         methods: {
             handleSubmit() {
+                var vm=this;
+                RequestLogin({User:vm.formInline.user,Password:vm.formInline.password}).then(res=>{
+                        console.log(res.data);
+                    }
+                )
                 console.log(this.formInline.user)
                 console.log(this.formInline.password)
             }
