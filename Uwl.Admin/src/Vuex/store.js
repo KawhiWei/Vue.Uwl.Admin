@@ -1,6 +1,9 @@
 import Vue from 'vue'//在Vuex状态管理工具内引入Vue.js
 
 import Vuex from 'vuex' //在Store仓库中，引入Vuex状态管理工具 ，Vuex是数据存储组件
+
+Vue.use(Vuex)// 将Vuex挂在到Vue中
+
 //声明一个Vuex仓库对象，用户存放信息
 const state={
 

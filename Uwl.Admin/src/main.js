@@ -4,7 +4,8 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Store from '@/Vuex/Store'//在全局Main.js中引入Store仓库
-import iview from 'iview' //引入Iview前端UI框架
+import iview from 'iview' //引入Iview前端js框架
+import 'iview/dist/styles/iview.css' //引入Iview的CSS文件
 
 Vue.config.productionTip = false
 
