@@ -44,9 +44,10 @@
         },
         methods: {
             handleSubmit() {
-                var vm=this;
-                RequestLogin({User:vm.formInline.user,Password:vm.formInline.password}).then(res=>{
-                        console.log(res.data);
+                var _this=this;
+                RequestLogin({User:_this.formInline.user,Password:_this.formInline.password}).then(res=>{
+                        _this.$store.commit("SaveToken",res.data.token)
+                        _this.$router.replace(_this.$route.query.ReturnUrl?_this.$route.query.ReturnUrl:'/')
                     }
                 )
                 console.log(this.formInline.user)

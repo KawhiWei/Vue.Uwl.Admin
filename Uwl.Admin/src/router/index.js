@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import login from '@/Views/login.vue'
 import HelloWorld from '../components/HelloWorld.vue'
-
+import store from '../Vuex/store'
 Vue.use(Router)
 const routes=
 [
@@ -35,5 +35,22 @@ var router= new Router({
   routes: routes,
 })
 
-router.beforeEach()
+router.beforeEach((to,from,next)=>{
+    if(to.meta.requireAuth)
+    {
+      if(store.state.token==null)
+      {
+        next({path:'/login',query:{ReturnUrl:to.fullPath}})
+      }
+      else
+      {
+        next();
+      }
+    }
+    else{
+      next();
+    }
+  }
+
+)
 export default router;

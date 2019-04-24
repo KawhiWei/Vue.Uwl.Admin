@@ -1,4 +1,5 @@
 import axios from 'axios' //在APi访问接口引入Vuex
+import router from '../router/index'
 var baseurl1="https://localhost:5001";
 var baseurl2="http://139.199.219.154:9600/";
 
@@ -20,8 +21,9 @@ const ApiControllerUrl={
 //http request 拦截器
 axios.interceptors.request.use(
     config=>{
-        if(window.localStorage.Token){//获取缓存中的Token
-            config.headers.Authorization="Bearer "+window.localStorage.Token;
+        //判断本地缓存是否存在Token,如果存在获取Token
+        if(window.sessionStorage.getItem('Token')){//获取缓存中的Token
+            config.headers.Authorization="Bearer "+window.sessionStorage.getItem('Token');
         }
         return config;
     },
@@ -43,6 +45,14 @@ axios.interceptors.request.use(response=>{//没有错误数据原封返回
                   err.message = '请求错误'
                   break
                 case 401:
+                  if(window.sessionStorage.getItem('Token'))//获取缓存中的Token
+                  {
+                    //config.headers.Authorization="Bearer "+window.sessionStorage.getItem('Token');
+                  }
+                  else
+                  {
+                    ToLogin();
+                  }
                   err.message = '未授权，请登录'
                   break
                 case 403:
@@ -93,12 +103,16 @@ axios.interceptors.request.use(response=>{//没有错误数据原封返回
 //   axios.get(`${baseurl1}`+url,{params:params}).then(function(res){success(res.data)}).catch(function(err){let res=err.response});
 // }
 
+const ToLogin=params=>{
+  router.replace({
+    path:'/login',
+    query:{ReturnUrl:router.currentRoute.fullPath}
+  });
+}
 
 
 //登录获取Token异步访问API接口
 export const RequestLogin=params=>{
-  console.log(params)
-  debugger
     return axios.post(`${baseurl1}`+ApiControllerUrl.LoginUrl.GetTokenByUserAndPass,params);
 }
 
