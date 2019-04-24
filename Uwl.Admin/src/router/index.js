@@ -36,15 +36,30 @@ var router= new Router({
 })
 
 router.beforeEach((to,from,next)=>{
+    // console.log(1)
+    //   if(store.state.token==null)
+    //   {
+    //     if(to.fullPath=='/login')
+    //     {
+    //       next();
+    //     }
+    //     else{
+    //       next({path:'/login',query:{ReturnUrl:to.fullPath}})
+    //     }
+        
+    //   }
+    //   else
+    //   {
+    //     next()
+    //   }
     if(to.meta.requireAuth)
     {
-      if(window.sessionStorage.Token==null)
+      if(store.state.token==null)
       {
         next({path:'/login',query:{ReturnUrl:to.fullPath}})
       }
       else
       {
-        store.commit('SaveToken',window.sessionStorage.Token);
         next();
       }
     }

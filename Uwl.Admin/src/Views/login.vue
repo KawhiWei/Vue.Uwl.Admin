@@ -52,7 +52,18 @@
                 )
                 console.log(this.formInline.user)
                 console.log(this.formInline.password)
+            },
+            //根据Token获取用户信息
+            GetUserInfo(token)
+            {
+
+            },
+            //根据用户ID获取他的菜单
+            GetMenu(userId)
+            {
+                
             }
+            
         }
     }
 </script>
