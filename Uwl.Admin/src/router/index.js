@@ -38,12 +38,13 @@ var router= new Router({
 router.beforeEach((to,from,next)=>{
     if(to.meta.requireAuth)
     {
-      if(store.state.token==null)
+      if(window.sessionStorage.Token==null)
       {
         next({path:'/login',query:{ReturnUrl:to.fullPath}})
       }
       else
       {
+        store.commit('SaveToken',window.sessionStorage.Token);
         next();
       }
     }
