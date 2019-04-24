@@ -36,13 +36,18 @@ var router= new Router({
 })
 
 router.beforeEach((to,from,next)=>{
-    // console.log(1)
+    // console.log(store.state.token)
+    // console.log(to.fullPath)
     //   if(store.state.token==null)
     //   {
     //     if(to.fullPath=='/login')
     //     {
     //       next();
     //     }
+    //     // else if(to.fullPath=='/')
+    //     // {
+    //     //   next({path:'/login',query:{ReturnUrl:to.fullPath}})
+    //     // }
     //     else{
     //       next({path:'/login',query:{ReturnUrl:to.fullPath}})
     //     }
