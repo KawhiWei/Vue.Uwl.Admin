@@ -23,7 +23,7 @@
 </div>
 </template>
 <script>
-    import {RequestLogin} from '../APIServer/Api.js';
+    import {RequestLogin,RequestUserInfo} from '../APIServer/Api.js';
     export default {
         data () {
             return {
@@ -47,16 +47,21 @@
                 var _this=this;
                 RequestLogin({User:_this.formInline.user,Password:_this.formInline.password}).then(res=>{
                         _this.$store.commit("SaveToken",res.data.token)
-                        
+                        _this.GetUserInfo(res.data.token);
                     }
                 )
                 console.log(this.formInline.user)
                 console.log(this.formInline.password)
             },
             //根据Token获取用户信息
-            GetUserInfo(token)
+            GetUserInfo(tokens)
             {
-
+                var _this=this;
+                // debugger
+                RequestUserInfo({token:tokens}).then(res=>{
+                    console.log(res);
+                    _this.$router.replace(_this.$route.query.ReturnUrl?_this.$route.query.ReturnUrl:'/')
+                })
             },
             //根据用户ID获取他的菜单
             GetMenu(userId)

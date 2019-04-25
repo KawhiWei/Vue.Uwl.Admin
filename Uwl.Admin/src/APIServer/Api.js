@@ -15,7 +15,7 @@ const ApiControllerUrl={
 
     },
     UsermanagerUrl:{
-
+      GetUserInfo:'/GetUser/UserInfo'
     }
 }
 //http request 拦截器
@@ -111,11 +111,14 @@ const ToLogin=params=>{
 }
 
 
-//登录获取Token异步访问API接口
+//登录获取Token和用户信息
 export const RequestLogin=params=>{
     return axios.post(`${baseurl1}`+ApiControllerUrl.LoginUrl.GetTokenByUserAndPass,params);
 }
 
+export const RequestUserInfo=params=>{
+  return axios.get(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.GetUserInfo,{params:params});
+}
 
 
 //菜单管理异步访问API接口
