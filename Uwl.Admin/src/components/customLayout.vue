@@ -1,22 +1,45 @@
 <template>
 <div class="layout">
     <div class="Headers">
-      我是头部
-    </div>
-    <div>
-      <div class="NvaiSider">
-        我是左侧
-      </div>
-      <ul>
-          <router-link to="/">我是首页</router-link >
-          <router-link to="/test1">测试1</router-link >
-          <router-link to="/test2">测试2</router-link >
-        </ul>
-      <div class="NvaContent">
+      <template>
         <div>
-          <router-view></router-view>
+          <Row>
+            <Col span="23">
+            col-12
+            </Col>
+            <Col span="1">
+              <Dropdown placement="bottom-start">
+                    <span><img  style="width:80px;height:80px;" src="../assets/headimg.jpg" alt=""></span>
+                    <DropdownMenu slot="list">
+                        <DropdownItem>驴打滚</DropdownItem>
+                        <DropdownItem>炸酱面</DropdownItem>
+                        <DropdownItem>豆汁儿</DropdownItem>
+                    </DropdownMenu>
+              </Dropdown>
+            </Col>
+          </Row>
         </div>
-      </div>
+      </template>
+    </div>
+    <div class="Content">
+      
+      <template>
+        <Row>
+            <Col span="3" style="border:solid 1px red;">我是左侧</Col>
+            <Col span="21">
+              <div>
+                <ul>
+                <router-link to="/">我是首页</router-link >
+                <router-link to="/test1">测试1</router-link >
+                <router-link to="/test2">测试2</router-link >
+                </ul>
+              </div>
+              <div>
+                <router-view></router-view>
+              </div>
+          </Col>
+        </Row>
+      </template>
     </div>
 </div>
 </template>
