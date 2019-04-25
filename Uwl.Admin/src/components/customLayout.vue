@@ -57,8 +57,9 @@ export default {
 
 <style>
 .Headers{
-  border: 1px red solid;
-  height: 80px;
+  /* border: 1px red solid;
+  height: 80px; */
+  background:rgb(8, 234, 250);
 }
 .NvaiSider{
   border: 1px rgb(50, 68, 2) solid;
