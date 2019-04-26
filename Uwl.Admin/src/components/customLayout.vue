@@ -4,7 +4,7 @@
       <template>
         <div>
           <Row>
-            <Col span="23">
+            <Col span="23" style="height:80px;">
             XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX管理后台
             </Col>
             <Col span="1">
@@ -28,6 +28,7 @@
     <div class="Content">
       <template>
         <Row>
+            <!----左侧导航菜单------>
             <Col span="3">
               <Menu active-name="1" :open-names="['1']">
                 <Submenu name="1">
@@ -51,13 +52,12 @@
                 </Submenu>
               </Menu>
             </Col>
+            <!----右侧Tabs标签页------>
             <Col span="21">
-              <div>
-                <ul>
-                <router-link to="/">我是首页</router-link >
-                <router-link to="/test1">测试1</router-link >
-                <router-link to="/test2">测试2</router-link >
-                </ul>
+              <div style="margin:5px 5px;">
+                <Tag type="dot" closable color="primary" :key="item.id" :name="item.lable" v-for=" item in TagsList">
+                  <router-link :to="item.path" style="color:#000">{{item.lable}}</router-link>
+                  </Tag>              
               </div>
               <div>
                 <router-view></router-view>
@@ -74,7 +74,11 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      TagsList:[
+        {id:1,lable:'个人主页',path:'/'},
+        {id:2,lable:'测试1',path:'/test1'},
+        {id:3,lable:'测试2',path:'/test2'},
+      ]
     }
   }
 }
@@ -85,17 +89,5 @@ export default {
   /* border: 1px red solid;
   height: 80px; */
   background:#6089d4;
-}
-.NvaiSider{
-  border: 1px rgb(50, 68, 2) solid;
-  width: 240px;
-  float: left;
-  height: 855px;
-}
-.NvaContent{
-border: 1px rgb(0, 72, 180) solid;
-  width: 1650px;
-  float: left;
-  height: 855px;
 }
 </style>
