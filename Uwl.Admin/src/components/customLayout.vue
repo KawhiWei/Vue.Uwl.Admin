@@ -5,16 +5,20 @@
         <div>
           <Row>
             <Col span="23">
-            col-12
+            XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX管理后台
             </Col>
             <Col span="1">
               <Dropdown placement="bottom-start">
-                    <span><img  style="width:80px;height:80px;" src="../assets/headimg.jpg" alt=""></span>
-                    <DropdownMenu slot="list">
-                        <DropdownItem>驴打滚</DropdownItem>
-                        <DropdownItem>炸酱面</DropdownItem>
-                        <DropdownItem>豆汁儿</DropdownItem>
-                    </DropdownMenu>
+                <span>
+                  <div class="demo-avatar">
+                    <Avatar src="https://i.loli.net/2017/08/21/599a521472424.jpg" shape="circle"  />
+                  </div>
+                </span>
+                <DropdownMenu slot="list">
+                  <DropdownItem>个人资料</DropdownItem>
+                  <DropdownItem>修改密码</DropdownItem>
+                  <DropdownItem>登出</DropdownItem>
+                </DropdownMenu>
               </Dropdown>
             </Col>
           </Row>
@@ -22,10 +26,31 @@
       </template>
     </div>
     <div class="Content">
-      
       <template>
         <Row>
-            <Col span="3" style="border:solid 1px red;">我是左侧</Col>
+            <Col span="3">
+              <Menu active-name="1" :open-names="['1']">
+                <Submenu name="1">
+                  <template slot="title">
+                      <Icon type="ios-filing" />
+                      Navigation Two
+                  </template>
+                </Submenu>
+                <Submenu name="2">
+                  <template slot="title">
+                      <Icon type="ios-filing" />
+                      Navigation Two
+                  </template>
+                  <MenuItem name="2-1">Option 5</MenuItem>
+                  <MenuItem name="2-2">Option 6</MenuItem>
+                  <Submenu name="3">
+                      <template slot="title">Submenu</template>
+                      <MenuItem name="3-1">Option 7</MenuItem>
+                      <MenuItem name="3-2">Option 8</MenuItem>
+                  </Submenu>
+                </Submenu>
+              </Menu>
+            </Col>
             <Col span="21">
               <div>
                 <ul>
@@ -59,7 +84,7 @@ export default {
 .Headers{
   /* border: 1px red solid;
   height: 80px; */
-  background:rgb(8, 234, 250);
+  background:#6089d4;
 }
 .NvaiSider{
   border: 1px rgb(50, 68, 2) solid;
