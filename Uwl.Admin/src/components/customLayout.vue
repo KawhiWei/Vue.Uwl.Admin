@@ -5,7 +5,7 @@
         <div>
           <Row>
             <Col span="23" style="height:80px;">
-            XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX管理后台
+            <img src="../assets/Logos.png" alt="">
             </Col>
             <Col span="1">
               <Dropdown placement="bottom-start">
