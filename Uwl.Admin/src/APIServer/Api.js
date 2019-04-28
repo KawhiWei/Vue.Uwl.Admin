@@ -12,7 +12,7 @@ const ApiControllerUrl={
     },
     //菜单管理Url存放位置
     MenumanagerUrl:{
-
+      GetTreeMenu:'/GetTree/TreeList'
     },
     UsermanagerUrl:{
       GetUserInfo:'/GetUser/UserInfo'
@@ -118,6 +118,9 @@ export const RequestLogin=params=>{
 
 export const RequestUserInfo=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.GetUserInfo,{params:params});
+}
+export const RequestMenuTree=params=>{
+  return axios.get(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.GetTreeMenu,{params:params});
 }
 
 

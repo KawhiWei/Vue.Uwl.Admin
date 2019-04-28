@@ -70,11 +70,29 @@
 </template>
 
 <script>
+import {RequestMenuTree} from '../APIServer/Api.js';
 export default {
   name: 'HelloWorld',
   data () {
     return {
+      info:JSON.parse(window.sessionStorage.userInfo),
+      routerMenu:[],
     }
+  },
+  mounted()
+  {
+     this.GetMenu(this.info.id)
+  },
+  methods:{
+      GetMenu(userId)
+      {
+        var _this=this;
+        RequestMenuTree({userid:userId}).then(
+        res=>{
+          console.log(res.data.response.children);
+          _this.routerMenu=res.data.response.children;
+        })
+      }
   },
   watch:{
 

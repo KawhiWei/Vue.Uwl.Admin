@@ -50,8 +50,6 @@
                         _this.GetUserInfo(res.data.token);
                     }
                 )
-                console.log(this.formInline.user)
-                console.log(this.formInline.password)
             },
             //根据Token获取用户信息
             GetUserInfo(tokens)
@@ -59,15 +57,17 @@
                 var _this=this;
                 // debugger
                 RequestUserInfo({token:tokens}).then(res=>{
-                    console.log(res);
+                    console.log(res.data.response);
+                    console.log()
+                    window.sessionStorage.setItem('userInfo',JSON.stringify(res.data.response));//将用户信息写入到session缓存中
                     _this.$router.replace(_this.$route.query.ReturnUrl?_this.$route.query.ReturnUrl:'/')
                 })
             },
             //根据用户ID获取他的菜单
-            GetMenu(userId)
-            {
-                _this.$router.replace(_this.$route.query.ReturnUrl?_this.$route.query.ReturnUrl:'/')
-            }
+            // GetMenu(userId)
+            // {
+            //     _this.$router.replace(_this.$route.query.ReturnUrl?_this.$route.query.ReturnUrl:'/')
+            // }
             
         }
     }
