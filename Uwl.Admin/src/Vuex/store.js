@@ -8,6 +8,11 @@ Vue.use(Vuex)// 将Vuex挂在到Vue中
 const state={
     token:null,//存放后台获取到的Token，
     User:[],//存放后台返回的用户信息
+    TagList:[
+        {id:'1',lable:'个人主页',path:'/',IsColse:false},
+        {id:2,lable:'测试1',path:'/test1',IsColse:true},
+        // {id:3,lable:'测试2',path:'/test2',IsColse:true},
+    ]
 }
 
 //添加一个写入数据的方法

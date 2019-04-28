@@ -28,15 +28,14 @@
     <div class="Content">
       <template>
         <Row>
+          <div>
             <!----左侧导航菜单------>
             <Col span="3">
               <Menu active-name="1" :open-names="['1']">
-                <Submenu name="1">
-                  <template slot="title">
-                      <Icon type="ios-filing" />
-                      Navigation Two
-                  </template>
-                </Submenu>
+                  <MenuItem name="1-1">
+                  <Icon type="md-home" />
+                  个人主页
+                  </MenuItem>
                 <Submenu name="2">
                   <template slot="title">
                       <Icon type="ios-filing" />
@@ -55,14 +54,15 @@
             <!----右侧Tabs标签页------>
             <Col span="21">
               <div style="margin:5px 5px;">
-                <Tag type="dot" closable color="primary" :key="item.id" :name="item.lable" v-for=" item in TagsList">
-                  <router-link :to="item.path" style="color:#000">{{item.lable}}</router-link>
+                <Tag type="dot" color="primary" :key="item.id" :name="item.lable" :closable="item.IsColse" v-if="TagsList.length" v-for=" item in TagsList">
+                  <router-link :to="item.path" style="color:#000" ><Icon type="md-home" />{{item.lable}}</router-link>
                   </Tag>              
               </div>
               <div>
                 <router-view></router-view>
               </div>
-          </Col>
+            </Col>
+          </div>
         </Row>
       </template>
     </div>
@@ -74,11 +74,15 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      TagsList:[
-        {id:1,lable:'个人主页',path:'/'},
-        {id:2,lable:'测试1',path:'/test1'},
-        {id:3,lable:'测试2',path:'/test2'},
-      ]
+    }
+  },
+  watch:{
+
+  },
+  computed:{
+    TagsList()
+    {
+      return this.$store.state.TagList;
     }
   }
 }

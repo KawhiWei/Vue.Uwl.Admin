@@ -72,7 +72,7 @@ const routes=
         component: test2,
         meta:{
           title:'test2',
-          requireAuth:false,//表示此页面打开是否需要登录
+          requireAuth:true,//表示此页面打开是否需要登录
           NoNeedHome:false,//添加此字段表示不需要Home模板
         },
       }
