@@ -30,8 +30,13 @@
         <Row>
           <div>
             <!----左侧导航菜单------>
-            <Col span="3">
-              <Menu active-name="1" :open-names="['1']">
+            <Col span="3" style="width:227px">
+            <Menu style="width:220px">
+              <!---------active-name     当前激活菜单的 name 值  ,:open-names="['2']"    当前打开的第几个菜单    -------------->
+              <SidebarMenu v-for=" (menus,index) in routerMenu" :key="index" :item="menus"/>
+            </Menu>
+              <!---------active-name     当前激活菜单的 name 值  ,:open-names="['2']"    当前打开的第几个菜单    
+              <Menu active-name="3-1" :open-names="['3']">
                   <MenuItem name="1-1">
                   <Icon type="md-home" />
                   个人主页
@@ -50,6 +55,7 @@
                   </Submenu>
                 </Submenu>
               </Menu>
+              -------------->
             </Col>
             <!----右侧Tabs标签页------>
             <Col span="21">
@@ -71,7 +77,9 @@
 
 <script>
 import {RequestMenuTree} from '../APIServer/Api.js';
+import SidebarMenu from '@/components/SidebarMenu.vue'
 export default {
+  components:{SidebarMenu},
   name: 'HelloWorld',
   data () {
     return {
