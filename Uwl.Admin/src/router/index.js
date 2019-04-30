@@ -5,7 +5,7 @@ import test1 from '@/Views/test1.vue'
 import test2 from '@/Views/test2.vue'
 // import Layout from '@/Views/Layout.vue'
 import PlatformHome from '@/Views/PlatformHome.vue'
- import customLayout from '@/components/customLayout.vue'
+import customLayout from '@/components/customLayout.vue'
 import store from '../Vuex/store'
 Vue.use(Router)
 const routes=

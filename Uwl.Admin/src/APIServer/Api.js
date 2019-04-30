@@ -1,7 +1,7 @@
 import axios from 'axios' //在APi访问接口引入Vuex
 import router from '../router/index'
 var baseurl1="https://localhost:5001";
-var baseurl2="http://139.199.219.154:9600/";
+var baseurl2="http://139.199.219.154:9600";
 
 
 const ApiControllerUrl={
@@ -113,14 +113,14 @@ const ToLogin=params=>{
 
 //登录获取Token和用户信息
 export const RequestLogin=params=>{
-    return axios.post(`${baseurl1}`+ApiControllerUrl.LoginUrl.GetTokenByUserAndPass,params);
+    return axios.post(`${baseurl2}`+ApiControllerUrl.LoginUrl.GetTokenByUserAndPass,params);
 }
 
 export const RequestUserInfo=params=>{
-  return axios.get(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.GetUserInfo,{params:params});
+  return axios.get(`${baseurl2}`+ApiControllerUrl.UsermanagerUrl.GetUserInfo,{params:params});
 }
 export const RequestMenuTree=params=>{
-  return axios.get(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.GetTreeMenu,{params:params});
+  return axios.get(`${baseurl2}`+ApiControllerUrl.MenumanagerUrl.GetTreeMenu,{params:params});
 }
 
 
