@@ -11,7 +11,7 @@ const state={
     TagList:[
         {id:'1',lable:'个人主页',path:'/',IsColse:false},
         {id:2,lable:'测试1',path:'/test1',IsColse:true},
-        // {id:3,lable:'测试2',path:'/test2',IsColse:true},
+        {id:3,lable:'测试2',path:'/test2',IsColse:true},
     ]
 }
 

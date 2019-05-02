@@ -104,6 +104,7 @@ export default {
       },
       AddTags(e)
       {
+        // {id:2,lable:'测试1',path:'/test1',IsColse:true},
         console.log(e)
       }
   },
