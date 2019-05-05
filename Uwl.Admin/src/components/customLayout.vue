@@ -32,7 +32,7 @@
             <!----左侧导航菜单------>
             <Col span="3"
              style="float:left;width:auto;">
-            <Menu @on-select="AddTags">
+            <Menu @on-select="OpenTags">
               <!---------active-name     当前激活菜单的 name 值  ,:open-names="['2']"    当前打开的第几个菜单    -------------->
               <SidebarMenu v-for="menus in routerMenu" :name="menus.id" :key="menus.id" :item="menus"/>
             </Menu>
@@ -61,7 +61,7 @@
             <!----右侧Tabs标签页------>
             <Col span="21" style="width:auto;">
               <div style="margin:5px 5px;">
-                <Tag type="dot" color="primary" :key="item.id" :name="item.lable" :closable="item.IsColse" v-if="TagsList.length" v-for=" item in TagsList">
+                <Tag type="dot" color="primary" :key="item.id"  :name="item.path" :closable="item.IsColse"  v-for=" item in TagsList" @on-close="handleCloseTags">
                   <router-link :to="item.path" style="color:#000" ><Icon type="md-home" />{{item.lable}}</router-link>
                   </Tag>              
               </div>
@@ -102,31 +102,74 @@ export default {
           _this.routerMenu=res.data.response.children;
         })
       },
-      AddTags(e)
+      //点击菜单添加Tags标签页
+      OpenTags(e)
       {
         var _this=this;
+        var IsFlag=false;
         if(e!=null)
         {
-          console.log(e)
-          var arr=_this.$store.state.TagList;
-          var len=arr.length;
-          for (var i = 0; i < len; i++) {
-            if(e===arr[i].path)
+          for (var i = 0; i < this.$store.state.TagList.length; i++) {
+            if(e==this.$store.state.TagList[i].path)
             {
-              break;
+              this.turnToRoute(this.$store.state.TagList[i].path);//路由跳转
+              IsFlag=true;
             }
-            else
+          }
+          if(!IsFlag)
+          {
+            // var model={id:'3',lable:'测试2',path:e,IsColse:true};
+            // _this.$store.commit("SaveTags",model)
+            var arr=_this.routerMenu;
+            tree(arr);//调用递归方法添加tags标签
+            function tree(arr)
             {
-              var model={id:'3',lable:'测试2',path:e,IsColse:true};
-              _this.$store.commit("SaveTags",model)
+              for (let i = 0; i < arr.length; i++) {
+                if(e==arr[i].path)
+                {
+                  var model={id:arr[i].id,lable:arr[i].name,path:e,IsColse:true};
+                  _this.$store.commit("SaveTags",model)
+                  _this.turnToRoute(e);
+                }
+                else
+                {
+                  if(arr[i].children.length>0)
+                  {
+                    tree(arr[i].children);
+                  }
+                  else{
+                    continue;
+                  }
+                }
+                
+              }
             }
           }
         }
+        else{
+          this.$Message.error('路由地址不正确，请配置路由地址!');
+        }
+      },
+      //关闭Tags标签
+      handleCloseTags(event,name)
+      {
+        for (let i = 0; i < this.$store.state.TagList.length; i++) {
+          if(name==this.$store.state.TagList[i].path)
+          {
+            this.$store.state.TagList.splice(i,1);
+            this.turnToRoute(this.$store.state.TagList[i-1].path);//路由跳转
+          }         
+        }
+      },
+      turnToRoute(path)
+      {
+        this.$router.push({path:path});
       }
   },
   watch:{
 
   },
+  //监听Vuex仓库中的tags数组
   computed:{
     TagsList()
     {

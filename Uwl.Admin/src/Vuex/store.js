@@ -35,7 +35,7 @@ const mutations={
     },
     SaveTags(state,data)
     {
-        state.TagList.push(data)
+        state.TagList.push(data);
     }
 }
 
