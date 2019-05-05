@@ -10,8 +10,7 @@ const state={
     User:[],//存放后台返回的用户信息
     TagList:[
         {id:'1',lable:'个人主页',path:'/',IsColse:false},
-        {id:2,lable:'测试1',path:'/test1',IsColse:true},
-        {id:3,lable:'测试2',path:'/test2',IsColse:true},
+        {id:'2',lable:'测试1',path:'/test1',IsColse:true},
     ]
 }
 
@@ -34,6 +33,10 @@ const mutations={
         //清空本地浏览器缓存中的Token
         window.sessionStorage.setItem('Token','')
     },
+    SaveTags(state,data)
+    {
+        state.TagList.push(data)
+    }
 }
 
 //将仓库和方法对象挂载

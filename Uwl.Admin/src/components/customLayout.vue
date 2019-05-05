@@ -104,8 +104,24 @@ export default {
       },
       AddTags(e)
       {
-        // {id:2,lable:'测试1',path:'/test1',IsColse:true},
-        console.log(e)
+        var _this=this;
+        if(e!=null)
+        {
+          console.log(e)
+          var arr=_this.$store.state.TagList;
+          var len=arr.length;
+          for (var i = 0; i < len; i++) {
+            if(e===arr[i].path)
+            {
+              break;
+            }
+            else
+            {
+              var model={id:'3',lable:'测试2',path:e,IsColse:true};
+              _this.$store.commit("SaveTags",model)
+            }
+          }
+        }
       }
   },
   watch:{
