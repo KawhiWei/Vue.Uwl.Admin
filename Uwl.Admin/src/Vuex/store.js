@@ -10,7 +10,6 @@ const state={
     User:[],//存放后台返回的用户信息
     TagList:[
         {id:'1',lable:'个人主页',path:'/',IsColse:false},
-        {id:'2',lable:'测试1',path:'/test1',IsColse:true},
     ]
 }
 

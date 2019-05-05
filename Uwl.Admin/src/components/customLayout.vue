@@ -65,7 +65,7 @@
                   <router-link :to="item.path" style="color:#000" ><Icon type="md-home" />{{item.lable}}</router-link>
                   </Tag>              
               </div>
-              <div>
+              <div style="margin:10px;">
                 <router-view></router-view>
               </div>
             </Col>

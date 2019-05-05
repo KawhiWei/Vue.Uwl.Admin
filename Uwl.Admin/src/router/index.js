@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import login from '@/Views/login.vue'
-import test1 from '@/Views/test1.vue'
+import Menu from '@/Views/MenuMgr/Menu.vue'
 import test2 from '@/Views/test2.vue'
 // import Layout from '@/Views/Layout.vue'
 import PlatformHome from '@/Views/PlatformHome.vue'
@@ -48,11 +48,11 @@ const routes=
     component: customLayout,
     children:[
       {
-        path: '/test1',
-        name: 'test1',
-        component: test1,
+        path: '/menu/menumgr',
+        name: 'menumgr',
+        component: Menu,
         meta:{
-          title:'test1',
+          title:'菜单管理',
           requireAuth:true,//表示此页面打开是否需要登录
           NoNeedHome:false,//添加此字段表示不需要Home模板
         },
