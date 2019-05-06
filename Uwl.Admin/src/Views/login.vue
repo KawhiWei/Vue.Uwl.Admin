@@ -60,7 +60,8 @@
                     console.log(res.data.response);
                     console.log()
                     window.sessionStorage.setItem('userInfo',JSON.stringify(res.data.response));//将用户信息写入到session缓存中
-                    _this.$router.replace(_this.$route.query.ReturnUrl?_this.$route.query.ReturnUrl:'/')
+                    // _this.$router.replace(_this.$route.query.ReturnUrl?_this.$route.query.ReturnUrl:'/')
+                    _this.$router.replace('/')
                 })
             },
             //根据用户ID获取他的菜单

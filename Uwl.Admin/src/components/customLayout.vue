@@ -81,7 +81,7 @@ import {RequestMenuTree} from '../APIServer/Api.js';
 import SidebarMenu from '@/components/SidebarMenu.vue'
 export default {
   components:{SidebarMenu},
-  name: 'HelloWorld',
+  name: 'customLayout',
   data () {
     return {
       info:JSON.parse(window.sessionStorage.userInfo),
