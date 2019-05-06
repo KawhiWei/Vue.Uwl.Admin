@@ -7,6 +7,9 @@
             <Button type="error">删除</Button>
         </Row>
         <div>
+            <Table width="auto" border :columns="columns2" :data="MenuList"></Table>
+        </div>
+        <div>
             <PageView/>
         </div>
     </div>
@@ -22,6 +25,64 @@ export default {
   data () {
     return {
       info:JSON.parse(window.sessionStorage.userInfo),
+      columns2: [
+                    {
+                        title: '菜单名称',
+                        key: 'name',
+                        width: 150,
+                    },
+                    {
+                        title: '父节点',
+                        key: 'parentId',
+                        width: 300
+                    },
+                    {
+                        title: '路由地址',
+                        key: 'urlAddress',
+                        width: 150
+                    },
+                    {
+                        title: 'API接口',
+                        key: 'apiAddress',
+                        width: 150
+                    },
+                    {
+                        title: '排序',
+                        key: 'sort',
+                        width: 100
+                    },
+                    {
+                        title: '创建时间',
+                        key: 'createdDate',
+                        width: 150
+                    },
+                    {
+                        title: '创建人',
+                        key: 'createdName',
+                        width: 100
+                    },
+                    {
+                        title: '操作',
+                        key: 'action',
+                        width: 180,
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Button', {
+                                    props: {
+                                        type: 'text',
+                                        size: 'small'
+                                    }
+                                }, 'View'),
+                                h('Button', {
+                                    props: {
+                                        type: 'text',
+                                        size: 'small'
+                                    }
+                                }, 'Edit')
+                            ]);
+                        }
+                    }
+                ],
       MenuList:[],
     }
   },
@@ -32,10 +93,12 @@ export default {
   methods:{
       GetMenu:function()
       {
+          var _this=this;
           RequestMenuByPage({PageIndex:1,PageSize:20}).then(res=>
           {
               console.log(res.data.response.totalCount);
               console.log(res.data.response.data);
+              _this.MenuList=res.data.response.data;
           })
       }
   }
