@@ -7,9 +7,9 @@
             <Button type="error">删除</Button>
         </Row>
         <div>
-            <Table width="auto" border :columns="columns2" :data="MenuList"></Table>
+            <Table  border :columns="columns2" :data="MenuList"></Table>
         </div>
-        <div>
+        <div style="padding:5px;">
             <PageView v-on:pageref="GetMenu" ref="PageArr"/>
         </div>
     </div>

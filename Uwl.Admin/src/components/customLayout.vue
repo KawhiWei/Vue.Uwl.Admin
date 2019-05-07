@@ -27,15 +27,17 @@
     </div>
     <div class="Content">
       <template>
-        <Row>
+        <!-- <Row> -->
           <div>
             <!----左侧导航菜单------>
-            <Col span="3"
-             style="float:left;width:auto;">
+            <!-- <Col span="3"
+             style="float:left;width:auto;"> -->
+            <div style="float:left;width:auto;">
             <Menu @on-select="OpenTags">
               <!---------active-name     当前激活菜单的 name 值  ,:open-names="['2']"    当前打开的第几个菜单    -------------->
               <SidebarMenu v-for="menus in routerMenu" :name="menus.id" :key="menus.id" :item="menus"/>
             </Menu>
+            </div>
               <!---------active-name     当前激活菜单的 name 值  ,:open-names="['2']"    当前打开的第几个菜单    
               <Menu active-name="3-1" :open-names="['3']">
                   <MenuItem name="1-1">
@@ -57,9 +59,10 @@
                 </Submenu>
               </Menu>
               -------------->
-            </Col>
+            <!-- </Col> -->
             <!----右侧Tabs标签页------>
-            <Col span="21" style="width:auto;">
+            <Row>
+            <Col span="24">
               <div style="margin:5px 5px;">
                 <Tag type="dot" color="primary" :key="item.id"  :name="item.path" :closable="item.IsColse"  v-for=" item in TagsList" @on-close="handleCloseTags">
                   <router-link :to="item.path" style="color:#000" ><Icon type="md-home" />{{item.lable}}</router-link>
@@ -69,8 +72,9 @@
                 <router-view></router-view>
               </div>
             </Col>
+            </Row>
           </div>
-        </Row>
+        <!-- </Row> -->
       </template>
     </div>
 </div>
