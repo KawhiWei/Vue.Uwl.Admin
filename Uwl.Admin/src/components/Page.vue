@@ -17,7 +17,7 @@ export default {
       ClickPage:function(index)
       {
         this.pageIndex=index;
-        this.$emit('Pageref');
+        this.$emit('pageref');
       },
   },
 }
