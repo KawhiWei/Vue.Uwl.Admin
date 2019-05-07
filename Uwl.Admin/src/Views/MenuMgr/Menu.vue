@@ -61,15 +61,15 @@ export default {
   methods:{
       GetMenu:function()
       {
-          console.log(this.$refs.PageArr.pageIndex);
           var pageIndex=this.$refs.PageArr.pageIndex;//获取子组件中的属性
           var pageSize=this.$refs.PageArr.pagesize;//获取子组件中的属性
           var _this=this;
           RequestMenuByPage({PageIndex:pageIndex,PageSize:pageSize}).then(res=>
           {
-              console.log(res.data.response.totalCount);
-              console.log(res.data.response.data);
+            //   console.log(res.data.response.totalCount);
+            //   console.log(res.data.response.data);
               _this.MenuList=res.data.response.data;
+              _this.$refs.PageArr.Total=res.data.response.totalCount;
           })
       }
   }
