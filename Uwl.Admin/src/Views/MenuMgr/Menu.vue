@@ -10,7 +10,7 @@
             <Table width="auto" border :columns="columns2" :data="MenuList"></Table>
         </div>
         <div>
-            <PageView/>
+            <PageView v-on:pageref="GetMenu" ref="PageArr"/>
         </div>
     </div>
 </template>
@@ -25,47 +25,17 @@ export default {
   data () {
     return {
       info:JSON.parse(window.sessionStorage.userInfo),
-      columns2: [
-                    {
-                        title: '菜单名称',
-                        key: 'name',
-                        width: 150,
-                    },
-                    {
-                        title: '父节点',
-                        key: 'parentId',
-                        width: 300
-                    },
-                    {
-                        title: '路由地址',
-                        key: 'urlAddress',
-                        width: 150
-                    },
-                    {
-                        title: 'API接口',
-                        key: 'apiAddress',
-                        width: 150
-                    },
-                    {
-                        title: '排序',
-                        key: 'sort',
-                        width: 100
-                    },
-                    {
-                        title: '创建时间',
-                        key: 'createdDate',
-                        width: 150
-                    },
-                    {
-                        title: '创建人',
-                        key: 'createdName',
-                        width: 100
-                    },
-                    {
-                        title: '操作',
-                        key: 'action',
-                        width: 180,
-                        render: (h, params) => {
+      columns2: 
+      [
+        {title: '菜单名称',key: 'name',width: 150,},
+        {title: '父节点',key: 'parentId',width: 300},
+        {title: '路由地址',key: 'urlAddress',width: 150},
+        {title: 'API接口',key: 'apiAddress', width: 150},
+        {title: '排序',key: 'sort',width: 100,},
+        {title: '创建时间',key: 'createdDate',width: 150,},
+        {title: '创建人',key: 'createdName',width: 100,},
+        {title: '操作',key: 'action',width: 180,
+        render: (h, params) => {
                             return h('div', [
                                 h('Button', {
                                     props: {
@@ -78,12 +48,10 @@ export default {
                                         type: 'text',
                                         size: 'small'
                                     }
-                                }, 'Edit')
-                            ]);
-                        }
+                                }, 'Edit')]);}
                     }
                 ],
-      MenuList:[],
+      MenuList:[],//存放后台返回的数据
     }
   },
   mounted:function()
@@ -93,8 +61,11 @@ export default {
   methods:{
       GetMenu:function()
       {
+          console.log(this.$refs.PageArr.pageIndex);
+          var pageIndex=this.$refs.PageArr.pageIndex;//获取子组件中的属性
+          var pageSize=this.$refs.PageArr.pagesize;//获取子组件中的属性
           var _this=this;
-          RequestMenuByPage({PageIndex:1,PageSize:20}).then(res=>
+          RequestMenuByPage({PageIndex:pageIndex,PageSize:pageSize}).then(res=>
           {
               console.log(res.data.response.totalCount);
               console.log(res.data.response.data);

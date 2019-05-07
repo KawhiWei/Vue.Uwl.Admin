@@ -6,8 +6,9 @@ export default {
   name: 'PageView',
   data () {
     return {
-      pagesize:30,
-      pagesizeArr:[15, 30, 60,90,120],
+      pageIndex:1,
+      pagesize:5,
+      pagesizeArr:[5, 30, 60,90,120],
       Total:610,
     }
   },
@@ -15,7 +16,8 @@ export default {
       //点击翻页时调用主组件方法
       ClickPage:function(index)
       {
-          console.log(index)
+        this.pageIndex=index;
+        this.$emit('Pageref');
       },
   },
 }
