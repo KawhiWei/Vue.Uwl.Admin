@@ -7,8 +7,8 @@ export default {
   data () {
     return {
       pageIndex:1,
-      pagesize:5,
-      pagesizeArr:[5, 30, 60,90,120],
+      pagesize:15,
+      pagesizeArr:[15, 30, 60,90,120],
       Total:0,
     }
   },

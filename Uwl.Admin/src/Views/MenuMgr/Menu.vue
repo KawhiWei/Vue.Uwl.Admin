@@ -7,7 +7,10 @@
             <Button type="error">删除</Button>
         </Row>
         <div>
-            <Table  border :columns="columns2" :data="MenuList"></Table>
+            <Table 
+              highlight-row
+              @on-current-change="CurrentRow"
+              border :columns="columns2" :data="MenuList"></Table>
         </div>
         <div style="padding:5px;">
             <PageView v-on:pageref="GetMenu" ref="PageArr"/>
@@ -32,7 +35,7 @@ export default {
         {title: '路由地址',key: 'urlAddress',width: 150},
         {title: 'API接口',key: 'apiAddress', width: 150},
         {title: '排序',key: 'sort',width: 100,},
-        {title: '创建时间',key: 'createdDate',width: 150,},
+        {title: '创建时间',key: 'createAts',width: 150,},
         {title: '创建人',key: 'createdName',width: 100,},
         {title: '操作',key: 'action',width: 180,
         render: (h, params) => {
@@ -52,6 +55,7 @@ export default {
                     }
                 ],
       MenuList:[],//存放后台返回的数据
+      currentRow:'',//存放当前选中行的数据
     }
   },
   mounted:function()
@@ -71,6 +75,11 @@ export default {
               _this.MenuList=res.data.response.data;
               _this.$refs.PageArr.Total=res.data.response.totalCount;
           })
+      },
+      //单击表格选中的数据时
+      CurrentRow:function(val)
+      {
+          this.currentRow=val;
       }
   }
 }

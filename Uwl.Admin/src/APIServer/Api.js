@@ -114,18 +114,18 @@ const ToLogin=params=>{
 
 //登录获取Token和用户信息
 export const RequestLogin=params=>{
-    return axios.post(`${baseurl2}`+ApiControllerUrl.LoginUrl.GetTokenByUserAndPass,params);
+    return axios.post(`${baseurl1}`+ApiControllerUrl.LoginUrl.GetTokenByUserAndPass,params);
 }
 
 export const RequestUserInfo=params=>{
-  return axios.get(`${baseurl2}`+ApiControllerUrl.UsermanagerUrl.GetUserInfo,{params:params});
+  return axios.get(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.GetUserInfo,{params:params});
 }
 export const RequestMenuTree=params=>{
-  return axios.get(`${baseurl2}`+ApiControllerUrl.MenumanagerUrl.GetTreeMenu,{params:params});
+  return axios.get(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.GetTreeMenu,{params:params});
 }
 
 export const RequestMenuByPage=params=>{
-  return axios.post(`${baseurl2}`+ApiControllerUrl.MenumanagerUrl.GetMenuByPage,params);
+  return axios.post(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.GetMenuByPage,params);
 }
 
 
