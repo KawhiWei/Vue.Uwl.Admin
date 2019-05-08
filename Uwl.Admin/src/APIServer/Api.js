@@ -125,7 +125,7 @@ export const RequestMenuTree=params=>{
 }
 
 export const RequestMenuByPage=params=>{
-  return axios.post(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.GetMenuByPage,params);
+  return axios.get(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.GetMenuByPage,{params:params});
 }
 
 
