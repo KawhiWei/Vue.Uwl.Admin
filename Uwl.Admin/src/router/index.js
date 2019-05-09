@@ -113,6 +113,11 @@ router.beforeEach((to,from,next)=>{
     {
       if(store.state.token==null)
       {
+        var token=window.sessionStorage.getItem("Token");
+        store.state.token=token;
+      }
+      if(store.state.token==null)
+      {
         next({path:'/login',query:{ReturnUrl:to.fullPath}})
       }
       else
