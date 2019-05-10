@@ -33,8 +33,8 @@
                             <Input v-model="formValidate.APIAddress" placeholder="请输入API接口地址"/>
                         </FormItem>
                         <FormItem label="父级菜单" prop="ParentId">
-                            <Cascader v-bind:data="TreeArr" 
-                                v-model="ParentId" placeholder="请选择父级菜单">
+                            <Cascader v-bind:data="TreeArr"  @on-change="SelectParent"
+                                v-model="formValidate.ParentId" placeholder="请选择父级菜单">
                             </Cascader>
                             <!-- <Input v-model="formValidate.ParentId" placeholder="请输入"/> -->
                         </FormItem>
@@ -147,6 +147,14 @@ export default {
               _this.$refs.PageArr.Total=res.data.response.totalCount;
           })
       },
+
+      //选择级联时获取value
+      SelectParent(value,selectedData)
+      {
+          console.log(value);
+          console.log(value.pop())
+      },
+
       //单击表格选中的数据时
       CurrentRow:function(val)
       {
@@ -184,7 +192,7 @@ export default {
             }
         }
         this.TreeArr=arr;
-     }   
+     },   
   }
 }
 </script>
