@@ -27,11 +27,8 @@
     </div>
     <div class="Content">
       <template>
-        <!-- <Row> -->
+        <Row>
           <div>
-            <!----左侧导航菜单------>
-            <!-- <Col span="3"
-             style="float:left;width:auto;"> -->
             <div style="float:left;width:auto;">
             <Menu @on-select="OpenTags">
               <!---------active-name     当前激活菜单的 name 值  ,:open-names="['2']"    当前打开的第几个菜单    -------------->
@@ -57,12 +54,9 @@
                       <MenuItem name="3-2">Option 8</MenuItem>
                   </Submenu>
                 </Submenu>
-              </Menu>
-              -------------->
-            <!-- </Col> -->
+              </Menu>-------------->
             <!----右侧Tabs标签页------>
-            <Row>
-            <Col span="24">
+            <Col span="24" :class="collapsed?'content-collapsed':'content-expanded'">
               <div style="margin:5px 5px;">
                 <Tag type="dot" color="primary" :key="item.id"  :name="item.path" :closable="item.IsColse"  v-for=" item in TagsList" @on-close="handleCloseTags">
                   <router-link :to="item.path" style="color:#000" ><Icon type="md-home" />{{item.lable}}</router-link>
@@ -72,9 +66,8 @@
                 <router-view></router-view>
               </div>
             </Col>
-            </Row>
           </div>
-        <!-- </Row> -->
+        </Row>
       </template>
     </div>
 </div>
@@ -90,6 +83,7 @@ export default {
     return {
       info:JSON.parse(window.sessionStorage.userInfo),
       routerMenu:[],
+      collapsed: false,
     }
   },
   mounted()
@@ -104,6 +98,7 @@ export default {
         res=>{
           console.log(res.data.response.children);
           _this.routerMenu=res.data.response.children;
+          window.sessionStorage.setItem('menus',JSON.stringify(_this.routerMenu));
         })
       },
       //点击菜单添加Tags标签页
@@ -184,9 +179,14 @@ export default {
 </script>
 
 <style>
+
 .Headers{
   /* border: 1px red solid;
   height: 80px; */
   background:#6089d4;
+}
+.content-expanded{
+    max-width: calc(100% - 245px);
+    max-height: calc(100% - 80px);
 }
 </style>
