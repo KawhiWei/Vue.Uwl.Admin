@@ -1,5 +1,5 @@
 <template>
-<div class="layout">
+<div class="layout  Font_size">
     <div class="Headers">
       <template>
         <div>
@@ -179,7 +179,11 @@ export default {
 </script>
 
 <style>
-
+.Font_size
+{
+  font-size: 14px;
+  font-family:arial;
+}
 .Headers{
   /* border: 1px red solid;
   height: 80px; */

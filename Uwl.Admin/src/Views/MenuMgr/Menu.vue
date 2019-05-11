@@ -1,15 +1,29 @@
 <template>
     <div>
         <div>
-            <Row>
-                <Button type="info"  @click="AddModal">添加</Button>
-                <Button type="success">查看</Button>
-                <Button type="warning">修改</Button>
-                <Button type="error">删除</Button>
+            <Row style="margin:10px 0px">
+                <span>
+                    <span>菜单名称：</span><Input v-model="Search.Name"  style="width:180px;" placeholder="请输入菜单名称"/>
+                </span>
+                <span>
+                    <span>前端路由地址：</span><Input v-model="Search.frontRouter"  style="width:180px;" placeholder="请输入前端路由地址"/>
+                </span>
+                <span>
+                    <span>Api接口：</span><Input v-model="Search.apiUrl"  style="width:180px;" placeholder="请输入Api路由地址"/>
+                </span>
+                <Button type="info" icon="ios-search">查询</Button>
+                <Button type="success"  @click="AddModal" icon="md-add">添加</Button>
             </Row>
-            <hr style="margin-top:5px;"/>
+            <!-- <Row style="margin:10px 0px">
+                <span>
+                <span>操作：</span>
+                
+                <<Button type="warning">修改</Button>
+                <Button type="error">删除</Button>
+                </span>
+            </Row> -->
             <div>
-                <Table width="100%" 
+                <Table width="100%" border 
                 show-header
                 highlight-row
                 @on-current-change="CurrentRow"
@@ -70,33 +84,45 @@ export default {
         columns2: 
         [
             {title: '菜单名称',key: 'name'},
-            {title: '父节点',key: 'parentId'},
+            {title: '父节点',key: 'parentId',minWidth:80},
             {title: '路由地址',key: 'urlAddress'},
             {title: 'API接口',key: 'apiAddress'},
             {title: '排序',key: 'sort',},
             {title: '创建时间',key: 'createAts'},
             {title: '创建人',key: 'createdName'},
-            {title: '操作',key: 'action',width: 180,
-            render: (h, params) => {
-                                return h('div', [
-                                    h('Button', {
-                                        props: {
-                                            type: 'text',
-                                            size: 'small'
-                                        }
-                                    }, 'View'),
-                                    h('Button', {
-                                        props: {
-                                            type: 'text',
-                                            size: 'small'
-                                        }
-                                    }, 'Edit')]);}
+            {title: '操作',key: 'action',width: 140,
+            render: (h, params) => 
+            {
+                return h('div', [
+                    h('Button', {
+                        props: {
+                            type: 'warning',
+                            size: 'small'
+                        },
+                        style:{
+                            margin:'5px'
                         }
+                    }, '修改'),
+                    h('Button', {
+                        props: {
+                            type: 'error',
+                            size: 'small'
+                            },
+                            style:{
+                                margin:'5px'
+                            }
+                    }, '删除')]);}
+            }
         ],//列表表头
         MenuList:[],//列表存放后台返回的数据
         currentRow:'',//存放当前选中行的数据
         TreeArr: [],//级联选择器数组
         parentIdarr: [],//父级菜单已选中数组
+        Search:{///搜索对象存放
+            Name:'',
+            frontRouter:'',
+            apiUrl:'',
+        },
         //添加字段
         formValidate: 
         {
@@ -152,8 +178,6 @@ export default {
               _this.$refs.PageArr.Total=res.data.response.totalCount;
           })
       },
-
-
       //选择级联时获取value
       SelectParent(value,selectedData)
       {
@@ -207,7 +231,16 @@ export default {
                     if(res.status==200)
                     {
                         _this.FormVisible=false;
-                        _this.$Message.success(res);
+                        if(res.data.result==200)
+                        {
+                            _this.$Message.success(res.data.message);
+                            _this.GetMenu();
+                        }
+                        else
+                        {
+                            _this.$Message.success(res.data.message);
+                        }
+                        
                     }
                     else
                     {
