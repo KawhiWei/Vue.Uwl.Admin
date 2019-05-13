@@ -81,6 +81,7 @@ export default {
         info:JSON.parse(window.sessionStorage.userInfo),
         FormVisible:false,//Modal弹出框
         title:'添加菜单',
+        IsEdit:false,//是编辑还是新增菜单
         columns2: 
         [
             {title: '菜单名称',key: 'name'},
@@ -101,6 +102,32 @@ export default {
                         },
                         style:{
                             margin:'5px'
+                        },
+                        on:{
+                            click:()=>{
+                                var _this=this;
+                                this.formValidate=
+                                {
+                                    name: params.row.name,//菜单名称
+                                    urlAddress: params.row.urlAddress,//前端配置的路由
+                                    aPIAddress: params.row.apiAddress,//API接口
+                                    parentId: params.row.parentId,//父级菜单
+                                    sort: 0,//排序字段
+                                    icon: params.row.icon,//菜单图标
+                                    memo: params.row.memo,//备注
+                                    createdId:params.row.createdId,
+                                    createdName:params.row.createdName,
+                                    isDrop:params.row.isDrop,
+                                }
+                                this.title='编辑';
+                                this.FormVisible=true;
+                                this.IsEdit=true;
+                                RequestMenuTree({userid:''}).then(   //编辑时调用后台请求数据方法
+                                    res=>{
+                                    _this.tree(res.data.response);
+                                })
+                                console.log(this.IsEdit)
+                            }
                         }
                     }, '修改'),
                     h('Button', {
@@ -140,15 +167,15 @@ export default {
         //添加是字段校验
         ruleValidate: 
         {
-            Name: 
+            name: 
             [
                 { required: true, message: '请填写菜单名称', trigger: 'blur' }
             ],
-            UrlAddress: 
+            urlAddress: 
             [
                 { required: true, message: '请填写路由', trigger: 'blur' },
             ],
-            APIAddress: 
+            aPIAddress: 
             [
                 { required: true, message: '请填写API接口地址', trigger: 'blur' },
             ],
@@ -188,8 +215,8 @@ export default {
       //单击表格选中的数据时
       CurrentRow:function(val)
       {
-          this.currentRow=val;
-          console.log(this.currentRow);
+        //   this.currentRow=val;
+        //   console.log(this.currentRow);
       },
       //点击添加按钮弹出对话框
       AddModal()
@@ -219,6 +246,7 @@ export default {
 
       handleSubmit (name) 
       {
+
         this.$refs.formValidate.validate((valid) => {
             if (valid)
             {
@@ -226,31 +254,38 @@ export default {
                 let params=Object.assign({},this.formValidate);
                 params.createdId=this.info.id;
                 params.createdName=this.info.name;
-                ResponseMenuByAdd(params).then((res)=>
+                if(this.IsEdit)//true代表是编辑进来
                 {
-                    if(res.status==200)
+                    console.log('调用了编辑方法')
+                }
+                else //如果是编辑新增
+                {   
+                    ResponseMenuByAdd(params).then((res)=>
                     {
-                        _this.FormVisible=false;
-                        if(res.data.result==200)
+                        if(res.status==200)
                         {
-                            _this.$Message.success(res.data.message);
-                            _this.GetMenu();
+                            _this.FormVisible=false;
+                            if(res.data.result==200)
+                            {
+                                _this.$Message.success(res.data.message);
+                                _this.GetMenu();
+                            }
+                            else
+                            {
+                                _this.$Message.success(res.data.message);
+                            }
+                            
                         }
                         else
                         {
-                            _this.$Message.success(res.data.message);
+                            _this.$Message.error('Fail!');
                         }
-                        
-                    }
-                    else
-                    {
-                        _this.$Message.error('Fail!');
-                    }
-                })
+                    })
+                }
             }
             else
             {
-                this.$Message.error('Fail!');
+                this.$Message.error('参数有误，请重新填写');
             }
         })
       },
