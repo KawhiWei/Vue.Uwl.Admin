@@ -141,10 +141,10 @@ export default {
                             on:{
                                 click:()=>{
                                     console.log(params.row.id)
-                                    var arr =[];
                                     debugger
-                                    arr.push({Ids:params.row.id});
-                                    ResponseMenuByDelete({params:arr}).then(res=>{
+                                     var arr={Ids:params.row.id};
+                                    //var arr=['2893214a-bebc-4766-ba54-3820bed1e88d','2893214a-bebc-4766-ba54-3820bed1e88d'];
+                                    ResponseMenuByDelete(arr).then(res=>{
                                         console.log(res)
                                     })
                                 }

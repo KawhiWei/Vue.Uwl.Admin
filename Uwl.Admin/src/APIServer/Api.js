@@ -146,6 +146,6 @@ export const ResponseMenuByEdit=params=>{
 //删除菜单
 export const ResponseMenuByDelete=params=>{
   debugger
-  return axios.delete(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.Delete,params);
+  return axios.delete(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.Delete,{params:params});
 }
 //用户管理异步访问API接口
