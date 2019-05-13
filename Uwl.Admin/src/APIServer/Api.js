@@ -15,6 +15,7 @@ const ApiControllerUrl={
       GetTreeMenu:'/GetTree/TreeList',
       GetMenuByPage:'/Menus/PageMenu',
       AddMenu:'/Menus/AddMenu',
+      Delete:'/Menus/DeleteMenu',
     },
     UsermanagerUrl:{
       GetUserInfo:'/GetUser/UserInfo'
@@ -115,24 +116,36 @@ const ToLogin=params=>{
 
 //登录获取Token和用户信息
 export const RequestLogin=params=>{
-    return axios.post(`${baseurl2}`+ApiControllerUrl.LoginUrl.GetTokenByUserAndPass,params);
+    return axios.post(`${baseurl1}`+ApiControllerUrl.LoginUrl.GetTokenByUserAndPass,params);
 }
 
 export const RequestUserInfo=params=>{
-  return axios.get(`${baseurl2}`+ApiControllerUrl.UsermanagerUrl.GetUserInfo,{params:params});
+  return axios.get(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.GetUserInfo,{params:params});
 }
 export const RequestMenuTree=params=>{
-  return axios.get(`${baseurl2}`+ApiControllerUrl.MenumanagerUrl.GetTreeMenu,{params:params});
+  return axios.get(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.GetTreeMenu,{params:params});
 }
-
-export const RequestMenuByPage=params=>{
-  return axios.get(`${baseurl2}`+ApiControllerUrl.MenumanagerUrl.GetMenuByPage,{params:params});
-}
-
 
 //菜单管理异步访问API接口
 
+//分页显示菜单列表
+export const RequestMenuByPage=params=>{
+  return axios.get(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.GetMenuByPage,{params:params});
+}
+
+//添加菜单
 export const ResponseMenuByAdd=params=>{
-  return axios.post(`${baseurl2}`+ApiControllerUrl.MenumanagerUrl.AddMenu,params);
+  return axios.post(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.AddMenu,params);
+}
+
+//修改菜单
+export const ResponseMenuByEdit=params=>{
+  return axios.post(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.AddMenu,params);
+}
+
+//删除菜单
+export const ResponseMenuByDelete=params=>{
+  debugger
+  return axios.delete(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.Delete,params);
 }
 //用户管理异步访问API接口

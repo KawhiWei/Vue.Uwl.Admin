@@ -71,7 +71,7 @@
 <script>
 
 import PageView from '@/components/Page.vue'
-import {RequestMenuByPage,ResponseMenuByAdd,RequestMenuTree} from '../../APIServer/Api.js';
+import {RequestMenuByPage,ResponseMenuByAdd,RequestMenuTree,ResponseMenuByDelete} from '../../APIServer/Api.js';
 
 export default {
   components:{PageView},
@@ -137,6 +137,17 @@ export default {
                             },
                             style:{
                                 margin:'5px'
+                            },
+                            on:{
+                                click:()=>{
+                                    console.log(params.row.id)
+                                    var arr =[];
+                                    debugger
+                                    arr.push({Ids:params.row.id});
+                                    ResponseMenuByDelete({params:arr}).then(res=>{
+                                        console.log(res)
+                                    })
+                                }
                             }
                     }, '删除')]);}
             }
@@ -285,7 +296,7 @@ export default {
             }
             else
             {
-                this.$Message.error('参数有误，请重新填写');
+                this.$Message.error({content:'参数有误，请重新填写',duration:3});
             }
         })
       },
