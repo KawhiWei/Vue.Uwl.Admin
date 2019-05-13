@@ -143,7 +143,7 @@ export default {
                                     console.log(params.row.id)
                                     debugger
                                      var arr={Ids:params.row.id};
-                                    //var arr=['2893214a-bebc-4766-ba54-3820bed1e88d','2893214a-bebc-4766-ba54-3820bed1e88d'];
+                                    var arr=['2893214a-bebc-4766-ba54-3820bed1e88d','2893214a-bebc-4766-ba54-3820bed1e88d'];
                                     ResponseMenuByDelete(arr).then(res=>{
                                         console.log(res)
                                     })
