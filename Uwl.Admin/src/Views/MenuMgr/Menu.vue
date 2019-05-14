@@ -11,23 +11,17 @@
                 <span>
                     <span>Api接口：</span><Input v-model="Search.apiUrl"  style="width:180px;" placeholder="请输入Api路由地址"/>
                 </span>
-                <Button type="info" icon="ios-search">查询</Button>
+                <Button type="info" icon="ios-search" @click="search">查询</Button>
                 <Button type="success"  @click="AddModal" icon="md-add">添加</Button>
             </Row>
-            <!-- <Row style="margin:10px 0px">
-                <span>
-                <span>操作：</span>
-                
-                <<Button type="warning">修改</Button>
-                <Button type="error">删除</Button>
-                </span>
-            </Row> -->
             <div>
-                <Table width="100%" border 
+                
+                <Table width="100%" border :loading="loading"
                 show-header
                 highlight-row
                 @on-current-change="CurrentRow"
                 :columns="columns2" :data="MenuList"></Table>
+                <!-- <Spin size="large"> 加载中</Spin> -->
             </div>
             <div style="padding:5px;">
                 <PageView v-on:pageref="GetMenu" ref="PageArr"/>
@@ -81,9 +75,11 @@ export default {
         info:JSON.parse(window.sessionStorage.userInfo),
         FormVisible:false,//Modal弹出框
         title:'添加菜单',
+        loading:true,
         IsEdit:false,//是编辑还是新增菜单
         columns2: 
         [
+            {type:'selection',width: 60,align:'center'},
             {title: '菜单名称',key: 'name'},
             {title: '父节点',key: 'parentId',minWidth:80},
             {title: '路由地址',key: 'urlAddress'},
@@ -140,12 +136,30 @@ export default {
                             },
                             on:{
                                 click:()=>{
-                                    console.log(params.row.id)
+                                    var _this=this;
+                                    var arr=[params.row.id]
+                                    //var arr={Ids:params.row.id};
+                                    //var arr=['2893214a-bebc-4766-ba54-3820bed1e88d','2893214a-bebc-4766-ba54-3820bed1e88d'];
+                                    var str=JSON.stringify(arr)
+                                    console.log(str)
                                     debugger
-                                     var arr={Ids:params.row.id};
-                                    var arr=['2893214a-bebc-4766-ba54-3820bed1e88d','2893214a-bebc-4766-ba54-3820bed1e88d'];
-                                    ResponseMenuByDelete(arr).then(res=>{
-                                        console.log(res)
+                                    ResponseMenuByDelete({Ids:str}).then(res=>{
+                                        if(res.status==200)
+                                        {
+                                            if(res.data.success)
+                                            {
+                                                _this.$Message.success(res.data.msg);
+                                                _this.GetMenu();
+                                            }
+                                            else
+                                            {
+                                                _this.$Message.error({content:res.data.msg,duration:3});
+                                            }
+                                        }
+                                        else
+                                        {
+                                            _this.$Message.error({content:'参数有误，请重试!',duration:3});
+                                        }
                                     })
                                 }
                             }
@@ -208,8 +222,10 @@ export default {
           var pageIndex=this.$refs.PageArr.pageIndex;//获取子组件中的属性
           var pageSize=this.$refs.PageArr.pagesize;//获取子组件中的属性
           var _this=this;
+          this.loading=true;
           RequestMenuByPage({PageIndex:pageIndex,PageSize:pageSize}).then(res=>
           {
+              _this.loading=false;
             //   console.log(res.data.response.totalCount);
             //   console.log(res.data.response.data);
               _this.MenuList=res.data.response.data;
@@ -228,6 +244,10 @@ export default {
       {
         //   this.currentRow=val;
         //   console.log(this.currentRow);
+      },
+      search:function()
+      {
+          this.GetMenu();
       },
       //点击添加按钮弹出对话框
       AddModal()
@@ -254,7 +274,6 @@ export default {
             })
             this.FormVisible=true;
       },
-
       handleSubmit (name) 
       {
 
