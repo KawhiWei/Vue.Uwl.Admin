@@ -15,7 +15,7 @@ const ApiControllerUrl={
       GetTreeMenu:'/GetTree/TreeList',
       GetMenuByPage:'/Menus/PageMenu',
       AddMenu:'/Menus/AddMenu',
-      Delete:'/Menus/DeleteMenu',
+      Delete:'/Menus/MenuDelete',
     },
     UsermanagerUrl:{
       GetUserInfo:'/GetUser/UserInfo'

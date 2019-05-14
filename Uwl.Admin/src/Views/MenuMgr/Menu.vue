@@ -3,7 +3,8 @@
         <div>
             <Row style="margin:10px 0px">
                 <span>
-                    <span>菜单名称：</span><Input v-model="Search.Name"  style="width:180px;" placeholder="请输入菜单名称"/>
+                    <span>菜单名称：</span>
+                    <Input v-model="Search.Name"  style="width:180px;" placeholder="请输入菜单名称"/>
                 </span>
                 <span>
                     <span>前端路由地址：</span><Input v-model="Search.frontRouter"  style="width:180px;" placeholder="请输入前端路由地址"/>
@@ -35,10 +36,14 @@
                             <Input v-model="formValidate.name" placeholder="请输入菜单名称"/>
                         </FormItem>
                         <FormItem label="路由地址" prop="urlAddress">
+                            <!-- <Poptip trigger="hover" title="Title" content="content"> -->
                             <Input v-model="formValidate.urlAddress" placeholder="请输入前端路由地址"/>
+                            <!-- </Poptip> -->
                         </FormItem>
                          <FormItem label="API接口地址" prop="aPIAddress">
+                            <!-- <Poptip width="80%" trigger="hover" title="Title" content="451161616d1sa6d1as61d6as1d6as1d6as1d6as51d61s6das1d6as16" > -->
                             <Input v-model="formValidate.aPIAddress" placeholder="请输入API接口地址"/>
+                            <!-- </Poptip> -->
                         </FormItem>
                         <FormItem label="父级菜单" prop="parentIdarr">
                             <Cascader v-bind:data="TreeArr"  @on-change="SelectParent" change-on-select
@@ -79,15 +84,15 @@ export default {
         IsEdit:false,//是编辑还是新增菜单
         columns2: 
         [
-            {type:'selection',width: 60,align:'center'},
-            {title: '菜单名称',key: 'name'},
-            {title: '父节点',key: 'parentId',minWidth:80},
-            {title: '路由地址',key: 'urlAddress'},
-            {title: 'API接口',key: 'apiAddress'},
-            {title: '排序',key: 'sort',},
-            {title: '创建时间',key: 'createAts'},
-            {title: '创建人',key: 'createdName'},
-            {title: '操作',key: 'action',width: 140,
+            {type:'selection',minWidth: 60,align:'center'},
+            {title: '菜单名称',key: 'name',minWidth:100},
+            {title: '父节点',key: 'parentId',minWidth:120},
+            {title: '路由地址',key: 'urlAddress',minWidth:120},
+            {title: 'API接口',key: 'apiAddress',minWidth:120},
+            {title: '排序',key: 'sort',minWidth:20},
+            {title: '创建时间',key: 'createAts',minWidth:80},
+            {title: '创建人',key: 'createdName',minWidth:60},
+            {title: '操作',key: 'action',minWidth: 110,
             render: (h, params) => 
             {
                 return h('div', [
