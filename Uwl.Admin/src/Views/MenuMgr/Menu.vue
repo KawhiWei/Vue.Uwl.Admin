@@ -70,7 +70,7 @@
 <script>
 
 import PageView from '@/components/Page.vue'
-import {RequestMenuByPage,ResponseMenuByAdd,RequestMenuTree,ResponseMenuByDelete} from '../../APIServer/Api.js';
+import {RequestMenuByPage,ResponseMenuByAdd,RequestMenuTree,ResponseMenuByEdit,ResponseMenuByDelete} from '../../APIServer/Api.js';
 
 export default {
   components:{PageView},
@@ -120,6 +120,7 @@ export default {
                                     createdName:params.row.createdName,
                                     isDrop:params.row.isDrop,
                                 }
+                                this.id=params.row.id;
                                 this.title='编辑';
                                 this.FormVisible=true;
                                 this.IsEdit=true;
@@ -180,6 +181,7 @@ export default {
             frontRouter:'',
             apiUrl:'',
         },
+        id:'',//修改菜单的Id
         //添加字段
         formValidate: 
         {
@@ -289,9 +291,31 @@ export default {
                 let params=Object.assign({},this.formValidate);
                 params.createdId=this.info.id;
                 params.createdName=this.info.name;
+                params.id=this.id;
                 if(this.IsEdit)//true代表是编辑进来
                 {
+                    debugger
                     console.log('调用了编辑方法')
+                    ResponseMenuByEdit(params).then((res)=>
+                    {
+                        if(res.status==200)
+                        {
+                            if(res.data.success)
+                            {
+                                _this.FormVisible=false;
+                                _this.$Message.success(res.data.msg);
+                                _this.GetMenu();
+                            }
+                            else
+                            {
+                                _this.$Message.success(res.data.message);
+                            }
+                        }
+                        else
+                        {
+                            _this.$Message.success(res.data.message);
+                        }
+                    })
                 }
                 else //如果是编辑新增
                 {   

@@ -15,6 +15,7 @@ const ApiControllerUrl={
       GetTreeMenu:'/GetTree/TreeList',
       GetMenuByPage:'/Menus/PageMenu',
       AddMenu:'/Menus/AddMenu',
+      UpdateMenu:'/Menus/MenuUpdate',
       Delete:'/Menus/MenuDelete',
     },
     UsermanagerUrl:{
@@ -140,7 +141,8 @@ export const ResponseMenuByAdd=params=>{
 
 //修改菜单
 export const ResponseMenuByEdit=params=>{
-  return axios.post(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.AddMenu,params);
+  debugger
+  return axios.put(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.UpdateMenu,params);
 }
 
 //删除菜单
