@@ -291,9 +291,10 @@ export default {
                 let params=Object.assign({},this.formValidate);
                 params.createdId=this.info.id;
                 params.createdName=this.info.name;
-                params.id=this.id;
+                
                 if(this.IsEdit)//true代表是编辑进来
                 {
+                    params.id=this.id;
                     ResponseMenuByEdit(params).then((res)=>
                     {
                         _this.FormVisible=false;
