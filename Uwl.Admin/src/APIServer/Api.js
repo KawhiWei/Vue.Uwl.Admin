@@ -141,13 +141,11 @@ export const ResponseMenuByAdd=params=>{
 
 //修改菜单
 export const ResponseMenuByEdit=params=>{
-  debugger
   return axios.put(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.UpdateMenu,params);
 }
 
 //删除菜单
 export const ResponseMenuByDelete=params=>{
-  debugger
   return axios.delete(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.Delete,{params:params});
 }
 //用户管理异步访问API接口

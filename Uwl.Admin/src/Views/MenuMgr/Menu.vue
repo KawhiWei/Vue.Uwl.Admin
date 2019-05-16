@@ -294,51 +294,21 @@ export default {
                 params.id=this.id;
                 if(this.IsEdit)//true代表是编辑进来
                 {
-                    debugger
-                    console.log('调用了编辑方法')
                     ResponseMenuByEdit(params).then((res)=>
                     {
-                        if(res.status==200)
-                        {
-                            if(res.data.success)
-                            {
-                                _this.FormVisible=false;
-                                _this.$Message.success(res.data.msg);
-                                _this.GetMenu();
-                            }
-                            else
-                            {
-                                _this.$Message.success(res.data.message);
-                            }
-                        }
-                        else
-                        {
-                            _this.$Message.success(res.data.message);
-                        }
+                        _this.FormVisible=false;
+                        _this.Message(res);
+                        _this.GetMenu();
                     })
                 }
-                else //如果是编辑新增
+                else //否则是新增
                 {   
                     ResponseMenuByAdd(params).then((res)=>
                     {
-                        if(res.status==200)
-                        {
-                            _this.FormVisible=false;
-                            if(res.data.result==200)
-                            {
-                                _this.$Message.success(res.data.message);
-                                _this.GetMenu();
-                            }
-                            else
-                            {
-                                _this.$Message.success(res.data.message);
-                            }
-                            
-                        }
-                        else
-                        {
-                            _this.$Message.error('Fail!');
-                        }
+                        
+                        _this.FormVisible=false;
+                        _this.Message(res);
+                        _this.GetMenu();
                     })
                 }
             }
@@ -347,6 +317,26 @@ export default {
                 this.$Message.error({content:'参数有误，请重新填写',duration:3});
             }
         })
+      },
+      Message:function(res)
+      {
+            var _this=this;
+            if(res.status==200)
+            {
+                if(res.data.success)
+                {
+                    _this.$Message.success(res.data.msg);
+                    _this.GetMenu();
+                }
+                else
+                {
+                        _this.$Message.error(res.data.msg);
+                }
+            }
+            else
+            {
+                this.$Message.error('Fail!');
+            }
       },
       //递归添加级联组件需要的属性
       tree(obj)
