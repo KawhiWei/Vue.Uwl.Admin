@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import login from '@/Views/login.vue'
 import Menu from '@/Views/MenuMgr/Menu.vue'
+import User from '@/Views/UserMgr/User.vue'
 import test2 from '@/Views/test2.vue'
 // import Layout from '@/Views/Layout.vue'
 import PlatformHome from '@/Views/PlatformHome.vue'
@@ -41,9 +42,8 @@ const routes=
       },
     ]
   },
-  
   {
-    path: '/tests',
+    path: '/meuns',
     name: 'Layout',
     component: customLayout,
     children:[
@@ -53,6 +53,24 @@ const routes=
         component: Menu,
         meta:{
           title:'菜单管理',
+          requireAuth:true,//表示此页面打开是否需要登录
+          NoNeedHome:false,//添加此字段表示不需要Home模板
+        },
+      }
+    ]
+    
+  },
+  {
+    path: '/users',
+    name: 'Layout',
+    component: customLayout,
+    children:[
+      {
+        path: '/user/usermgr',
+        name: 'uermgr',
+        component: User,
+        meta:{
+          title:'用户管理',
           requireAuth:true,//表示此页面打开是否需要登录
           NoNeedHome:false,//添加此字段表示不需要Home模板
         },

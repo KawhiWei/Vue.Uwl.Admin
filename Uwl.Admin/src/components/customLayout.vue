@@ -117,8 +117,6 @@ export default {
           }
           if(!IsFlag)
           {
-            // var model={id:'3',lable:'测试2',path:e,IsColse:true};
-            // _this.$store.commit("SaveTags",model)
             var arr=_this.routerMenu;
             tree(arr);//调用递归方法添加tags标签
             function tree(arr)
