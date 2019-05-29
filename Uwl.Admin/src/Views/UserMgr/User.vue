@@ -16,7 +16,6 @@
                 <Button type="success"  @click="AddModal" icon="md-add">添加</Button>
             </Row>
             <div>
-                
                <!--  <Table width="100%" border :loading="loading"
                 show-header
                 highlight-row
