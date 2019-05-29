@@ -19,7 +19,8 @@ const ApiControllerUrl={
       Delete:'/Menus/MenuDelete',
     },
     UsermanagerUrl:{
-      GetUserInfo:'/GetUser/UserInfo'
+      GetUserInfo:'/User/UserInfo',
+      GetUserByPage:'/User/PageUser',
     }
 }
 //http request 拦截器
@@ -148,4 +149,12 @@ export const ResponseMenuByEdit=params=>{
 export const ResponseMenuByDelete=params=>{
   return axios.delete(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.Delete,{params:params});
 }
+
+
+
 //用户管理异步访问API接口
+
+//分页显示菜单列表
+export const RequestUserByPage=params=>{
+  return axios.get(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.GetUserByPage,{params:params});
+}
