@@ -211,10 +211,6 @@ export default {
             [
                 { required: true, message: '请填写API接口地址', trigger: 'blur' },
             ],
-            // parentIdarr: 
-            // [
-            //     { required: true, message: '请选择父级菜单', trigger: 'blur' },
-            // ],
         }
     }
   },

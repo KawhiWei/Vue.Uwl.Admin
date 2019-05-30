@@ -27,34 +27,131 @@
                 <PageView v-on:pageref="GetUser" ref="PageArr"/>
             </div>
         </div>
+        <div>
+            <!-- 添加菜单弹出框 -->
+            <Modal v-model="FormVisible" :title="title" width="80%" height="80%" :mask-closable="false" @on-ok="handleSubmit('formValidate')">
+                <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
+                        <FormItem label="姓名" prop="name">
+                            <Input v-model="formValidate.name" placeholder="请输入姓名"/>
+                        </FormItem>
+                        <FormItem label="登录账号" prop="account">
+                            <!-- <Poptip trigger="hover" title="Title" content="content"> -->
+                            <Input v-model="formValidate.account" placeholder="请输入登录账号"/>
+                            <!-- </Poptip> -->
+                        </FormItem>
+                        <!-- <FormItem label="登录密码" prop="password">
+                            <Input v-model="formValidate.password" placeholder="请输入登录密码"/>
+                        </FormItem> -->
+                         <FormItem label="邮箱" prop="email">
+                            <Input v-model="formValidate.email" placeholder="请输入邮箱地址"/>
+                        </FormItem>
+                        <FormItem label="手机号" prop="mobile">
+                            <Input  v-model="formValidate.mobile" placeholder="请输入手机号"/>
+                        </FormItem>
+                        <FormItem label="微信" prop="weChat">
+                            <Input v-model="formValidate.weChat" placeholder="请输入微信号"/>
+                        </FormItem>
+                        <FormItem label="员工类型" prop="empliyeeType">
+                            <Input  v-model="formValidate.empliyeeType" placeholder="请选择员工类型"/>
+                        </FormItem>
+                        <FormItem label="性别" prop="sexflag">
+                            <RadioGroup v-model="sexflag">
+                                <Radio label="man">男</Radio>
+                                <Radio label="woman">女</Radio>
+                            </RadioGroup>
+                        </FormItem>
+                        <FormItem label="职位" prop="jobName">
+                            <Input v-model="formValidate.jobName" placeholder="请输入职位名称"/>
+                        </FormItem>
+                </Form>
+                <div slot="footer">
+                        <Button type="primary" @click="handleSubmit('formValidate')">提交</Button>
+                        <Button @click="FormVisible = false" style="margin-left: 8px">取消</Button>
+                </div>
+            </Modal>
+        </div>
     </div>
 </template>
 
 <script>
 import PageView from '@/components/Page.vue'
-import {RequestUserByPage} from '../../APIServer/Api.js';
+import {RequestUserByPage,ResponseUserByAdd} from '../../APIServer/Api.js';
 export default {
     name:'User',
     components:{PageView},
     data(){
         return {
+            info:JSON.parse(window.sessionStorage.userInfo),
             loading:true,
             Search:{
                 name:'',
                 accont:'',
                 AccontState:'',
             },
+            sexflag:'',
+             //添加字段
+            formValidate: 
+            {
+                name: '',//姓名
+                account: '',//登录账号
+                email: '',//邮箱
+                weChat: '',//微信
+                mobile: '',//手机号
+                empliyeeType: 0,//菜单图标
+                password: '',//登录密码
+                qq:'',//qq账号
+                sex: true,//性别
+                jobName:'',//职位名称
+                createdId:'',//创建人ID
+                createdName:'',//创建人
+                isDrop:false,//是否删除
+            },
+            //添加是字段校验
+            ruleValidate: 
+            {
+                name: 
+                [
+                    { required: true, message: '请填写姓名', trigger: 'blur' }
+                ],
+                account: 
+                [
+                    { required: true, message: '请填写登录账号', trigger: 'blur' },
+                ],
+                email: 
+                [
+                    { required: true, message: '请填写邮箱地址', trigger: 'blur' },
+                    { type: 'email', message: 'Incorrect email format', trigger: 'blur' }
+                ],
+            },
+            title:'',
+            FormVisible:false,
             currentRow:'',//存放当前选中行的数据
             columns2: [
-            {type:'selection',minWidth: 60,align:'center'},
-            {title: '菜单名称',key: 'name',minWidth:100},
-            {title: '父节点',key: 'parentId',minWidth:120},
-            {title: '路由地址',key: 'urlAddress',minWidth:120},
-            {title: 'API接口',key: 'apiAddress',minWidth:120},
-            {title: '排序',key: 'sort',minWidth:20},
-            {title: '创建时间',key: 'createAts',minWidth:80},
-            {title: '创建人',key: 'createdName',minWidth:60},
-            {title: '操作',key: 'action',minWidth: 110,
+            {type:'selection',minWidth: 60,align:'center',fixed: 'left',},
+            {title: '姓名',key: 'name',minWidth:100},
+            {title: '登录账号',key: 'account',minWidth:120},
+            {title: '邮箱',key: 'email',minWidth:120},
+            {title: '手机号',key: 'mobile',minWidth:120},
+            {title: '微信',key: 'weChat',minWidth:120},
+            {title: '性别',key: 'sex',minWidth:120},
+            {title: '账号状态',key: 'accountState',minWidth:80,
+            render:(h,params)=>{
+                var text="";
+                if(params.row.accountState==0)
+                {
+                    text="正常"
+                    return h('Tag',{props:{color:'green'}},text);
+                }
+                if(params.row.accountState==1)
+                {
+                    text="冻结中"
+                    return h('Tag',{props:{color:'orange'}},text);
+                }
+                
+            }},
+            {title: '创建时间',key: 'createAts',minWidth:100},
+            {title: '创建人',key: 'createdName',minWidth:80},
+            {title: '操作',key: 'action',minWidth: 140,fixed: 'right',
             render: (h, params) => 
             {
                 return h('div', [
@@ -132,8 +229,7 @@ export default {
                                 }
                             }
                     }, '删除')]);}
-            }
-            ],//列表表头
+            }],//列表表头
         UserList:[],//列表存放后台返回的数据
         }
     },
@@ -152,6 +248,35 @@ export default {
             //   this.currentRow=val;
             //   console.log(this.currentRow);
         },
+        //提交按钮事件
+        handleSubmit(name)
+        {
+            this.$refs.formValidate.validate((valid)=>{
+                if(valid)
+                {
+                    var _this=this;
+                    var sexflag=true;//默认性别是男
+                    if(this.sexflag=='woman')
+                    {
+                        var sexflag=false;
+                    }
+                    this.formValidate.sex=sexflag;
+                    let params=Object.assign({},this.formValidate);
+                    params.createdId=this.info.id;
+                    params.createdName=this.info.name;
+                    console.log(params);
+                    debugger
+                    ResponseUserByAdd(params).then((res)=>
+                    {
+                        _this.FormVisible=false;
+                    })
+                }
+                else
+                {
+                    this.$Message.error({content:'参数有误，请重新填写',duration:3});
+                }
+            })
+        },
         GetUser:function()
         {
             var pageIndex=this.$refs.PageArr.pageIndex;//获取子组件中的属性
@@ -163,10 +288,28 @@ export default {
                 _this.loading=false;
                 _this.UserList=res.data.response.data;
                 _this.$refs.PageArr.Total=res.data.response.totalCount;
+                console.log(_this.UserList)
             });
         },
         AddModal:function() {
-            
+            this.title="添加用户";
+            this.sexflag='';
+            this.formValidate=
+            {
+                name: '',//姓名
+                account: '',//登录账号
+                email: '',//邮箱
+                weChat: '',//微信
+                mobile: '',//手机号
+                empliyeeType: 0,//菜单图标
+                password: '',//登录密码
+                qq:'',//qq账号
+                jobName:'',//职位名称
+                createdId:'',//创建人ID
+                createdName:'',//创建人
+                isDrop:false,//是否删除
+            },
+            this.FormVisible=true;
         }
     }
 }

@@ -21,6 +21,7 @@ const ApiControllerUrl={
     UsermanagerUrl:{
       GetUserInfo:'/User/UserInfo',
       GetUserByPage:'/User/PageUser',
+      AddUser:'/User/AddUser',
     }
 }
 //http request 拦截器
@@ -154,7 +155,13 @@ export const ResponseMenuByDelete=params=>{
 
 //用户管理异步访问API接口
 
-//分页显示菜单列表
+//分页显示用户信息列表
 export const RequestUserByPage=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.GetUserByPage,{params:params});
+}
+
+//添加用户信息
+export const ResponseUserByAdd=params=>{
+  debugger
+  return axios.post(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.AddUser,params);
 }
