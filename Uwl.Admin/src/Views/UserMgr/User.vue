@@ -133,8 +133,18 @@ export default {
             {title: '邮箱',key: 'email',minWidth:120},
             {title: '手机号',key: 'mobile',minWidth:120},
             {title: '微信',key: 'weChat',minWidth:120},
-            {title: '性别',key: 'sex',minWidth:120},
-            {title: '账号状态',key: 'accountState',minWidth:80,
+            {title: '性别',key: 'sex',minWidth:80,align:'center',render:(h,params)=>{
+                if(params.row.sex)
+                {
+                    return h('Tag',{props:{color:'primary'}},'男');
+                }
+                else
+                {
+                    return h('Tag',{props:{color:'primary',}},'女');
+                }
+                
+            }},
+            {title: '账号状态',key: 'accountState',minWidth:100,align:'center',
             render:(h,params)=>{
                 var text="";
                 if(params.row.accountState==0)
@@ -169,24 +179,29 @@ export default {
                                 this.formValidate=
                                 {
                                     name: params.row.name,//菜单名称
-                                    urlAddress: params.row.urlAddress,//前端配置的路由
-                                    aPIAddress: params.row.apiAddress,//API接口
-                                    parentId: params.row.parentId,//父级菜单
-                                    sort: 0,//排序字段
-                                    icon: params.row.icon,//菜单图标
-                                    memo: params.row.memo,//备注
+                                    account: params.row.account,//前端配置的路由
+                                    email: params.row.email,//API接口
+                                    weChat: params.row.weChat,//父级菜单
+                                    mobile: params.row.weChat,//排序字段
+                                    empliyeeType: params.row.empliyeeType,//菜单图标
+                                    qq: params.row.qq,//备注
+                                    jobName:params.row.jobName,
                                     createdId:params.row.createdId,
                                     createdName:params.row.createdName,
                                     isDrop:params.row.isDrop,
+                                };
+                                if(params.row.true)
+                                {
+                                    this.sexflag='man';
+                                }
+                                else
+                                {
+                                    this.sexflag='woman';
                                 }
                                 this.id=params.row.id;
                                 this.title='编辑';
                                 this.FormVisible=true;
                                 this.IsEdit=true;
-                                RequestMenuTree({userid:''}).then(   //编辑时调用后台请求数据方法
-                                    res=>{
-                                    _this.tree(res.data.response);
-                                })
                                 console.log(this.IsEdit)
                             }
                         }
