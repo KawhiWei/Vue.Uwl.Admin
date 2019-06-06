@@ -284,13 +284,12 @@ export default {
             if (valid)
             {
                 var _this=this;
-                let params=Object.assign({},this.formValidate);
-                params.createdId=this.info.id;
-                params.createdName=this.info.name;
-                
+                let params=Object.assign({},this.formValidate);                
                 if(this.IsEdit)//true代表是编辑进来
                 {
                     params.id=this.id;
+                    params.updateName=this.info.name;
+                    params.updateId=this.info.id;
                     ResponseMenuByEdit(params).then((res)=>
                     {
                         _this.FormVisible=false;
@@ -300,6 +299,8 @@ export default {
                 }
                 else //否则是新增
                 {   
+                    params.createdId=this.info.id;
+                    params.createdName=this.info.name;
                     ResponseMenuByAdd(params).then((res)=>
                     {
                         

@@ -75,7 +75,7 @@
 
 <script>
 import PageView from '@/components/Page.vue'
-import {RequestUserByPage,ResponseUserByAdd} from '../../APIServer/Api.js';
+import {RequestUserByPage,ResponseUserByAdd,ResponseUserByEdit} from '../../APIServer/Api.js';
 export default {
     name:'User',
     components:{PageView},
@@ -88,6 +88,7 @@ export default {
                 accont:'',
                 AccontState:'',
             },
+            IsEdit:false,
             sexflag:'',
              //添加字段
             formValidate: 
@@ -105,7 +106,9 @@ export default {
                 createdId:'',//创建人ID
                 createdName:'',//创建人
                 isDrop:false,//是否删除
+                accountState:0,
             },
+            id:'',//修改用户的Id
             //添加是字段校验
             ruleValidate: 
             {
@@ -182,14 +185,17 @@ export default {
                                     account: params.row.account,//前端配置的路由
                                     email: params.row.email,//API接口
                                     weChat: params.row.weChat,//父级菜单
-                                    mobile: params.row.weChat,//排序字段
+                                    mobile: params.row.mobile,//排序字段
                                     empliyeeType: params.row.empliyeeType,//菜单图标
+                                    password:'',
                                     qq: params.row.qq,//备注
                                     jobName:params.row.jobName,
                                     createdId:params.row.createdId,
                                     createdName:params.row.createdName,
                                     isDrop:params.row.isDrop,
+                                    accountState:params.row.accountState,
                                 };
+                                this.id=params.row.id;
                                 if(params.row.true)
                                 {
                                     this.sexflag='man';
@@ -270,21 +276,38 @@ export default {
                 if(valid)
                 {
                     var _this=this;
+                    debugger
                     var sexflag=true;//默认性别是男
-                    if(this.sexflag=='woman')
+                    if(_this.sexflag=='woman')
                     {
                         var sexflag=false;
                     }
                     this.formValidate.sex=sexflag;
                     let params=Object.assign({},this.formValidate);
-                    params.createdId=this.info.id;
-                    params.createdName=this.info.name;
-                    console.log(params);
-                    debugger
-                    ResponseUserByAdd(params).then((res)=>
+                    if(this.IsEdit)
                     {
-                        _this.FormVisible=false;
-                    })
+                        console.log("点击了修改保存")
+                        params.id=this.id;
+                        params.updateName=this.info.name;
+                        params.updateId=this.info.id;
+                        ResponseUserByEdit(params).then((res)=>
+                        {
+                            _this.FormVisible=false;
+                            _this.GetUser();
+                        })
+                    }
+                    else
+                    {
+                        params.createdId=this.info.id;
+                        params.createdName=this.info.name;
+                        console.log(params);
+                        debugger
+                        ResponseUserByAdd(params).then((res)=>
+                        {
+                            _this.FormVisible=false;
+                            _this.GetUser();
+                        })
+                    }
                 }
                 else
                 {

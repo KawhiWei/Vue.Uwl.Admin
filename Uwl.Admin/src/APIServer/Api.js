@@ -22,6 +22,7 @@ const ApiControllerUrl={
       GetUserInfo:'/User/UserInfo',
       GetUserByPage:'/User/PageUser',
       AddUser:'/User/AddUser',
+      UpdateUser:'/User/UpdateUser',
     }
 }
 //http request 拦截器
@@ -162,6 +163,9 @@ export const RequestUserByPage=params=>{
 
 //添加用户信息
 export const ResponseUserByAdd=params=>{
-  debugger
   return axios.post(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.AddUser,params);
+}
+//添加用户信息
+export const ResponseUserByEdit=params=>{
+  return axios.put(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.UpdateUser,params);
 }
