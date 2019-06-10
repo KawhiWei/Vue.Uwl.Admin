@@ -293,6 +293,8 @@ export default {
                         ResponseUserByEdit(params).then((res)=>
                         {
                             _this.FormVisible=false;
+                            //_this.$Msg.SuMsg(res.data.msg);
+                            //debugger
                             _this.GetUser();
                         })
                     }
@@ -301,7 +303,6 @@ export default {
                         params.createdId=this.info.id;
                         params.createdName=this.info.name;
                         console.log(params);
-                        debugger
                         ResponseUserByAdd(params).then((res)=>
                         {
                             _this.FormVisible=false;

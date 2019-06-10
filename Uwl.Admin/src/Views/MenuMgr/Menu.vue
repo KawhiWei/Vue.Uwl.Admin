@@ -71,7 +71,7 @@
 
 import PageView from '@/components/Page.vue'
 import {RequestMenuByPage,ResponseMenuByAdd,RequestMenuTree,ResponseMenuByEdit,ResponseMenuByDelete} from '../../APIServer/Api.js';
-
+import '@/Public/Message.js'
 export default {
   components:{PageView},
   name: 'HelloWorld',
