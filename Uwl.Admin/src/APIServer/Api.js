@@ -23,6 +23,7 @@ const ApiControllerUrl={
       GetUserByPage:'/User/PageUser',
       AddUser:'/User/AddUser',
       UpdateUser:'/User/UpdateUser',
+      DeleteUser:'/User/DeleteUser',
     }
 }
 //http request 拦截器
@@ -168,4 +169,9 @@ export const ResponseUserByAdd=params=>{
 //添加用户信息
 export const ResponseUserByEdit=params=>{
   return axios.put(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.UpdateUser,params);
+}
+
+//删除菜单
+export const ResponseUserByDelete=params=>{
+  return axios.delete(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.DeleteUser,{params:params});
 }

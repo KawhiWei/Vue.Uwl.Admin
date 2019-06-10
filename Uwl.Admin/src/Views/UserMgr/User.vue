@@ -75,7 +75,7 @@
 
 <script>
 import PageView from '@/components/Page.vue'
-import {RequestUserByPage,ResponseUserByAdd,ResponseUserByEdit} from '../../APIServer/Api.js';
+import {RequestUserByPage,ResponseUserByAdd,ResponseUserByEdit,ResponseUserByDelete} from '../../APIServer/Api.js';
 export default {
     name:'User',
     components:{PageView},
@@ -229,13 +229,13 @@ export default {
                                     var str=JSON.stringify(arr)
                                     console.log(str)
                                     debugger
-                                    ResponseMenuByDelete({Ids:str}).then(res=>{
+                                    ResponseUserByDelete({Ids:str}).then(res=>{
                                         if(res.status==200)
                                         {
                                             if(res.data.success)
                                             {
                                                 _this.$Message.success(res.data.msg);
-                                                _this.GetMenu();
+                                                _this.GetUser();
                                             }
                                             else
                                             {
@@ -293,7 +293,7 @@ export default {
                         ResponseUserByEdit(params).then((res)=>
                         {
                             _this.FormVisible=false;
-                            //_this.$Msg.SuMsg(res.data.msg);
+                            _this.$Message.success(res.data.msg);
                             //debugger
                             _this.GetUser();
                         })
