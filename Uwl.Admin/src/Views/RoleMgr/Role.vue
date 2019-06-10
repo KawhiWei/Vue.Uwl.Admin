@@ -3,14 +3,8 @@
         <div>
             <Row style="margin:10px 0px">
                 <span>
-                    <span>姓名：</span>
-                    <Input v-model="Search.name"  style="width:180px;" placeholder="请输入菜单名称"/>
-                </span>
-                <span>
-                    <span>账号：</span><Input v-model="Search.accont"  style="width:180px;" placeholder="请输入前端路由地址"/>
-                </span>
-                <span>
-                    <span>账号状态：</span><Input v-model="Search.AccontState"  style="width:180px;" placeholder="请输入Api路由地址"/>
+                    <span>角色名称：</span>
+                    <Input v-model="Search.name"  style="width:180px;" placeholder="请输入角色名称"/>
                 </span>
                 <Button type="info" icon="ios-search" @click="search">查询</Button>
                 <Button type="success"  @click="AddModal" icon="md-add">添加</Button>
@@ -20,7 +14,7 @@
                 show-header
                 highlight-row
                 @on-current-change="CurrentRow"
-                :columns="columns2" :data="UserList"></Table>
+                :columns="columns2" :data="List"></Table>
                 <!--<Spin size="large"> 加载中</Spin> -->
             </div>
             <div style="padding:5px;">
@@ -75,7 +69,7 @@
 
 <script>
 import PageView from '@/components/Page.vue'
-import {RequestUserByPage,ResponseUserByAdd,ResponseUserByEdit} from '../../APIServer/Api.js';
+import {RequestRoleByPage} from '../../APIServer/Api.js';
 export default {
     name:'Role',
     components:{PageView},
@@ -93,20 +87,12 @@ export default {
              //添加字段
             formValidate: 
             {
-                name: '',//姓名
-                account: '',//登录账号
-                email: '',//邮箱
-                weChat: '',//微信
-                mobile: '',//手机号
-                empliyeeType: 0,//菜单图标
-                password: '',//登录密码
-                qq:'',//qq账号
-                sex: true,//性别
-                jobName:'',//职位名称
+                name: '',//角色名称
+                memo: '',//说明
+                roletState: '',//角色状态
                 createdId:'',//创建人ID
                 createdName:'',//创建人
                 isDrop:false,//是否删除
-                accountState:0,
             },
             id:'',//修改用户的Id
             //添加是字段校验
@@ -114,48 +100,25 @@ export default {
             {
                 name: 
                 [
-                    { required: true, message: '请填写姓名', trigger: 'blur' }
-                ],
-                account: 
-                [
-                    { required: true, message: '请填写登录账号', trigger: 'blur' },
-                ],
-                email: 
-                [
-                    { required: true, message: '请填写邮箱地址', trigger: 'blur' },
-                    { type: 'email', message: 'Incorrect email format', trigger: 'blur' }
+                    { required: true, message: '请填写角色名称', trigger: 'blur' }
                 ],
             },
             title:'',
             FormVisible:false,
             currentRow:'',//存放当前选中行的数据
             columns2: [
-            {type:'selection',minWidth: 60,align:'center',fixed: 'left',},
-            {title: '姓名',key: 'name',minWidth:100},
-            {title: '登录账号',key: 'account',minWidth:120},
-            {title: '邮箱',key: 'email',minWidth:120},
-            {title: '手机号',key: 'mobile',minWidth:120},
-            {title: '微信',key: 'weChat',minWidth:120},
-            {title: '性别',key: 'sex',minWidth:80,align:'center',render:(h,params)=>{
-                if(params.row.sex)
-                {
-                    return h('Tag',{props:{color:'primary'}},'男');
-                }
-                else
-                {
-                    return h('Tag',{props:{color:'primary',}},'女');
-                }
-                
-            }},
-            {title: '账号状态',key: 'accountState',minWidth:100,align:'center',
+            {type:'selection',minWidth: 40, maxWidth:60,align:'center',fixed: 'left',},
+            {title: '角色名称',key: 'name',minWidth:100},
+            {title: '角色说明',key: 'memo',minWidth:120},
+            {title: '角色状态',key: 'accountState',minWidth:100,align:'center',
             render:(h,params)=>{
                 var text="";
-                if(params.row.accountState==0)
+                if(params.row.roletState==0)
                 {
                     text="正常"
                     return h('Tag',{props:{color:'green'}},text);
                 }
-                if(params.row.accountState==1)
+                if(params.row.roletState==1)
                 {
                     text="冻结中"
                     return h('Tag',{props:{color:'orange'}},text);
@@ -164,7 +127,7 @@ export default {
             }},
             {title: '创建时间',key: 'createAts',minWidth:100},
             {title: '创建人',key: 'createdName',minWidth:80},
-            {title: '操作',key: 'action',minWidth: 140,fixed: 'right',
+            {title: '操作',key: 'action',minWidth: 140,
             render: (h, params) => 
             {
                 return h('div', [
@@ -251,7 +214,7 @@ export default {
                             }
                     }, '删除')]);}
             }],//列表表头
-        UserList:[],//列表存放后台返回的数据
+            List:[],//列表存放后台返回的数据
         }
     },
     mounted:function()
@@ -321,28 +284,22 @@ export default {
             var pageSize=this.$refs.PageArr.pagesize;//获取子组件中的属性
             var _this=this;
             this.loading=true;
-            RequestUserByPage({PageIndex:pageIndex,PageSize:pageSize}).then(res=>
+            RequestRoleByPage({PageIndex:pageIndex,PageSize:pageSize}).then(res=>
             {
                 _this.loading=false;
-                _this.UserList=res.data.response.data;
+                _this.List=res.data.response.data;
                 _this.$refs.PageArr.Total=res.data.response.totalCount;
-                console.log(_this.UserList)
+                console.log(_this.List)
             });
         },
         AddModal:function() {
-            this.title="添加用户";
+            this.title="添加角色";
             this.sexflag='';
             this.formValidate=
             {
-                name: '',//姓名
-                account: '',//登录账号
-                email: '',//邮箱
-                weChat: '',//微信
-                mobile: '',//手机号
-                empliyeeType: 0,//菜单图标
-                password: '',//登录密码
-                qq:'',//qq账号
-                jobName:'',//职位名称
+                name: '',//角色名称
+                memo: '',//说明
+                roletState: '',//角色状态
                 createdId:'',//创建人ID
                 createdName:'',//创建人
                 isDrop:false,//是否删除

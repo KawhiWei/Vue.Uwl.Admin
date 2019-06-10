@@ -71,7 +71,6 @@
 
 import PageView from '@/components/Page.vue'
 import {RequestMenuByPage,ResponseMenuByAdd,RequestMenuTree,ResponseMenuByEdit,ResponseMenuByDelete} from '../../APIServer/Api.js';
-import '@/Public/Message.js'
 export default {
   components:{PageView},
   name: 'HelloWorld',
@@ -271,7 +270,7 @@ export default {
                 createdName:'',
                 isDrop:false,
             },
-            RequestMenuTree({userid:''}).then(
+            RequestMenuTree({userid:'ad73d0f6-33c9-40e3-8c56-f0ec8e35315f'}).then(
                 res=>{
                 _this.tree(res.data.response);
             })

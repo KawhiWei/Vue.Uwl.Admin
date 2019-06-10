@@ -24,6 +24,13 @@ const ApiControllerUrl={
       AddUser:'/User/AddUser',
       UpdateUser:'/User/UpdateUser',
       DeleteUser:'/User/DeleteUser',
+    },
+    RolemanagerUrl:{
+      GetUserInfo:'/User/UserInfo',
+      GetRoleByPage:'/Roles/PageByRole',
+      AddUser:'/User/AddUser',
+      UpdateUser:'/User/UpdateUser',
+      DeleteUser:'/User/DeleteUser',
     }
 }
 //http request 拦截器
@@ -174,4 +181,11 @@ export const ResponseUserByEdit=params=>{
 //删除菜单
 export const ResponseUserByDelete=params=>{
   return axios.delete(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.DeleteUser,{params:params});
+}
+
+//角色管理异步访问API接口
+
+//分页显示用户信息列表
+export const RequestRoleByPage=params=>{
+  return axios.get(`${baseurl1}`+ApiControllerUrl.RolemanagerUrl.GetRoleByPage,{params:params});
 }
