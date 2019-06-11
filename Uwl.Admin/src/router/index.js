@@ -4,6 +4,7 @@ import login from '@/Views/login.vue'
 import Menu from '@/Views/MenuMgr/Menu.vue'
 import User from '@/Views/UserMgr/User.vue'
 import Role from '@/Views/RoleMgr/Role.vue'
+import Assignment from '@/Views/Assignment/RoleAssigMenu.vue' //角色分配菜单组件注入
 import test2 from '@/Views/test2.vue'
 // import Layout from '@/Views/Layout.vue'
 import PlatformHome from '@/Views/PlatformHome.vue'
@@ -110,6 +111,24 @@ const routes=
         component: Role,
         meta:{
           title:'角色管理',
+          requireAuth:true,//表示此页面打开是否需要登录
+          NoNeedHome:false,//添加此字段表示不需要Home模板
+        },
+      }
+    ]
+    
+  },
+  {
+    path: '/roleAssig',
+    name: 'Layout',
+    component: customLayout,
+    children:[
+      {
+        path: '/role/RoleAssig',
+        name: 'uermgr',
+        component: Assignment,
+        meta:{
+          title:'角色分配菜单',
           requireAuth:true,//表示此页面打开是否需要登录
           NoNeedHome:false,//添加此字段表示不需要Home模板
         },

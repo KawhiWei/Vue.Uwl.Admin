@@ -26,11 +26,11 @@ const ApiControllerUrl={
       DeleteUser:'/User/DeleteUser',
     },
     RolemanagerUrl:{
-      GetUserInfo:'/User/UserInfo',
+      GetUserInfo:'/Roles/UserInfo',
       GetRoleByPage:'/Roles/PageByRole',
-      AddUser:'/User/AddUser',
-      UpdateUser:'/User/UpdateUser',
-      DeleteUser:'/User/DeleteUser',
+      AddRole:'/Roles/AddRole',
+      UpdateRole:'/Roles/UpdateRole',
+      DeleteRole:'/Roles/DeleteRole',
     }
 }
 //http request 拦截器
@@ -173,7 +173,7 @@ export const RequestUserByPage=params=>{
 export const ResponseUserByAdd=params=>{
   return axios.post(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.AddUser,params);
 }
-//添加用户信息
+//修改用户信息
 export const ResponseUserByEdit=params=>{
   return axios.put(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.UpdateUser,params);
 }
@@ -188,4 +188,17 @@ export const ResponseUserByDelete=params=>{
 //分页显示用户信息列表
 export const RequestRoleByPage=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.RolemanagerUrl.GetRoleByPage,{params:params});
+}
+
+//添加角色信息
+export const ResponseRoleByAdd=params=>{
+  return axios.post(`${baseurl1}`+ApiControllerUrl.RolemanagerUrl.AddRole,params);
+}
+//修改用户信息
+export const ResponseRoleByEdit=params=>{
+  return axios.put(`${baseurl1}`+ApiControllerUrl.RolemanagerUrl.UpdateRole,params);
+}
+//删除角色
+export const ResponseRoleByDelete=params=>{
+  return axios.delete(`${baseurl1}`+ApiControllerUrl.RolemanagerUrl.DeleteRole,{params:params});
 }

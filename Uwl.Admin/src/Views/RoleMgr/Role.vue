@@ -1,3 +1,4 @@
+<!--角色管理组件-->
 <template>
     <div>
         <div>
@@ -18,44 +19,25 @@
                 <!--<Spin size="large"> 加载中</Spin> -->
             </div>
             <div style="padding:5px;">
-                <PageView v-on:pageref="GetUser" ref="PageArr"/>
+                <PageView v-on:pageref="GetRole" ref="PageArr"/>
             </div>
         </div>
         <div>
             <!-- 添加菜单弹出框 -->
-            <Modal v-model="FormVisible" :title="title" width="80%" height="80%" :mask-closable="false" @on-ok="handleSubmit('formValidate')">
+            <Modal v-model="FormVisible" :title="title" width="50%" height="80%" :mask-closable="false" @on-ok="handleSubmit('formValidate')">
                 <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
-                        <FormItem label="姓名" prop="name">
-                            <Input v-model="formValidate.name" placeholder="请输入姓名"/>
+                        <FormItem label="角色名称" prop="name">
+                            <Input v-model="formValidate.name" placeholder="请输入角色名称"/>
                         </FormItem>
-                        <FormItem label="登录账号" prop="account">
+                        <FormItem label="角色说明" prop="memo">
                             <!-- <Poptip trigger="hover" title="Title" content="content"> -->
-                            <Input v-model="formValidate.account" placeholder="请输入登录账号"/>
+                            <Input v-model="formValidate.memo" placeholder="请输入角色说明"/>
                             <!-- </Poptip> -->
                         </FormItem>
-                        <!-- <FormItem label="登录密码" prop="password">
-                            <Input v-model="formValidate.password" placeholder="请输入登录密码"/>
-                        </FormItem> -->
-                         <FormItem label="邮箱" prop="email">
-                            <Input v-model="formValidate.email" placeholder="请输入邮箱地址"/>
-                        </FormItem>
-                        <FormItem label="手机号" prop="mobile">
-                            <Input  v-model="formValidate.mobile" placeholder="请输入手机号"/>
-                        </FormItem>
-                        <FormItem label="微信" prop="weChat">
-                            <Input v-model="formValidate.weChat" placeholder="请输入微信号"/>
-                        </FormItem>
-                        <FormItem label="员工类型" prop="empliyeeType">
-                            <Input  v-model="formValidate.empliyeeType" placeholder="请选择员工类型"/>
-                        </FormItem>
-                        <FormItem label="性别" prop="sexflag">
-                            <RadioGroup v-model="sexflag">
-                                <Radio label="man">男</Radio>
-                                <Radio label="woman">女</Radio>
-                            </RadioGroup>
-                        </FormItem>
-                        <FormItem label="职位" prop="jobName">
-                            <Input v-model="formValidate.jobName" placeholder="请输入职位名称"/>
+                         <FormItem label="角色状态" prop="roletState">
+                             <Select v-model="formValidate.roletState" style="width:200px">
+                                <Option v-for="item in stateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                            </Select>
                         </FormItem>
                 </Form>
                 <div slot="footer">
@@ -69,7 +51,7 @@
 
 <script>
 import PageView from '@/components/Page.vue'
-import {RequestRoleByPage} from '../../APIServer/Api.js';
+import {RequestRoleByPage,ResponseRoleByAdd,ResponseRoleByEdit,ResponseRoleByDelete} from '../../APIServer/Api.js';
 export default {
     name:'Role',
     components:{PageView},
@@ -83,7 +65,6 @@ export default {
                 AccontState:'',
             },
             IsEdit:false,
-            sexflag:'',
              //添加字段
             formValidate: 
             {
@@ -102,12 +83,16 @@ export default {
                 [
                     { required: true, message: '请填写角色名称', trigger: 'blur' }
                 ],
+                roletState: 
+                [
+                    { required: true, message: '请选择角色状态', trigger: 'change' }
+                ],
             },
             title:'',
             FormVisible:false,
             currentRow:'',//存放当前选中行的数据
             columns2: [
-            {type:'selection',minWidth: 40, maxWidth:60,align:'center',fixed: 'left',},
+            {type:'selection',minWidth: 40, maxWidth:60,align:'center'},
             {title: '角色名称',key: 'name',minWidth:100},
             {title: '角色说明',key: 'memo',minWidth:120},
             {title: '角色状态',key: 'accountState',minWidth:100,align:'center',
@@ -142,21 +127,14 @@ export default {
                         on:{
                             click:()=>{
                                 var _this=this;
+                                console.log(params);
                                 this.formValidate=
                                 {
-                                    name: params.row.name,//菜单名称
-                                    account: params.row.account,//前端配置的路由
-                                    email: params.row.email,//API接口
-                                    weChat: params.row.weChat,//父级菜单
-                                    mobile: params.row.mobile,//排序字段
-                                    empliyeeType: params.row.empliyeeType,//菜单图标
-                                    password:'',
-                                    qq: params.row.qq,//备注
-                                    jobName:params.row.jobName,
+                                    name: params.row.name,//角色名称
+                                    memo: params.row.memo,//说明
+                                    roletState: params.row.roletState+'',//角色状态
                                     createdId:params.row.createdId,
                                     createdName:params.row.createdName,
-                                    isDrop:params.row.isDrop,
-                                    accountState:params.row.accountState,
                                 };
                                 this.id=params.row.id;
                                 if(params.row.true)
@@ -192,13 +170,13 @@ export default {
                                     var str=JSON.stringify(arr)
                                     console.log(str)
                                     debugger
-                                    ResponseMenuByDelete({Ids:str}).then(res=>{
+                                    ResponseRoleByDelete({Ids:str}).then(res=>{
                                         if(res.status==200)
                                         {
                                             if(res.data.success)
                                             {
                                                 _this.$Message.success(res.data.msg);
-                                                _this.GetMenu();
+                                                _this.GetRole();
                                             }
                                             else
                                             {
@@ -215,6 +193,10 @@ export default {
                     }, '删除')]);}
             }],//列表表头
             List:[],//列表存放后台返回的数据
+            stateList:[
+                {label:'激活',value:'0'},
+                {label:'禁用',value:'1'},
+            ],//列表存放后台返回的数据
         }
     },
     mounted:function()
@@ -224,7 +206,7 @@ export default {
     methods:{
         search:function()
         {
-            this.GetUser();
+            this.GetRole();
         },
         //单击表格选中的数据时
         CurrentRow:function(val)
@@ -239,46 +221,38 @@ export default {
                 if(valid)
                 {
                     var _this=this;
-                    debugger
-                    var sexflag=true;//默认性别是男
-                    if(_this.sexflag=='woman')
-                    {
-                        var sexflag=false;
-                    }
-                    this.formValidate.sex=sexflag;
                     let params=Object.assign({},this.formValidate);
                     if(this.IsEdit)
                     {
-                        console.log("点击了修改保存")
                         params.id=this.id;
                         params.updateName=this.info.name;
                         params.updateId=this.info.id;
-                        ResponseUserByEdit(params).then((res)=>
+                        console.log(params);
+                        debugger
+                        ResponseRoleByEdit(params).then((res)=>
                         {
                             _this.FormVisible=false;
-                            _this.GetUser();
+                            _this.GetRole();
                         })
                     }
                     else
                     {
                         params.createdId=this.info.id;
                         params.createdName=this.info.name;
-                        console.log(params);
-                        debugger
-                        ResponseUserByAdd(params).then((res)=>
+                        ResponseRoleByAdd(params).then((res)=>
                         {
                             _this.FormVisible=false;
-                            _this.GetUser();
+                            _this.GetRole();
                         })
                     }
                 }
                 else
                 {
-                    this.$Message.error({content:'参数有误，请重新填写',duration:3});
+                    this.$Message.error({content:'有必填项未填写，请确认',duration:3});
                 }
             })
         },
-        GetUser:function()
+        GetRole:function()
         {
             var pageIndex=this.$refs.PageArr.pageIndex;//获取子组件中的属性
             var pageSize=this.$refs.PageArr.pagesize;//获取子组件中的属性
