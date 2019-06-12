@@ -31,6 +31,9 @@ const ApiControllerUrl={
       AddRole:'/Roles/AddRole',
       UpdateRole:'/Roles/UpdateRole',
       DeleteRole:'/Roles/DeleteRole',
+    },
+    RoleAssigMenuUrl:{ //角色分配权限接口定义
+      GetAllRole:'/Roles/GetAllRole',
     }
 }
 //http request 拦截器
@@ -201,4 +204,11 @@ export const ResponseRoleByEdit=params=>{
 //删除角色
 export const ResponseRoleByDelete=params=>{
   return axios.delete(`${baseurl1}`+ApiControllerUrl.RolemanagerUrl.DeleteRole,{params:params});
+}
+
+///角色权限分配接口
+
+//分页显示用户信息列表
+export const RoleAssigGetAllRole=params=>{
+  return axios.get(`${baseurl1}`+ApiControllerUrl.RoleAssigMenuUrl.GetAllRole);
 }

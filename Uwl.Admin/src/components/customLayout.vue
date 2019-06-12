@@ -96,7 +96,6 @@ export default {
         var _this=this;
         RequestMenuTree({userid:userId}).then(
         res=>{
-          console.log(res.data.response.children);
           _this.routerMenu=res.data.response.children;
           window.sessionStorage.setItem('menus',JSON.stringify(_this.routerMenu));
         })
