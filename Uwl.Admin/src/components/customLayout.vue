@@ -17,7 +17,7 @@
                 <DropdownMenu slot="list">
                   <DropdownItem>个人资料</DropdownItem>
                   <DropdownItem>修改密码</DropdownItem>
-                  <DropdownItem>登出</DropdownItem>
+                  <DropdownItem @click.native="logOut">登出</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </Col>
@@ -99,6 +99,10 @@ export default {
           _this.routerMenu=res.data.response.children;
           window.sessionStorage.setItem('menus',JSON.stringify(_this.routerMenu));
         })
+      },
+      logOut()
+      {
+        this.$router.push('/login');
       },
       //点击菜单添加Tags标签页
       OpenTags(e)

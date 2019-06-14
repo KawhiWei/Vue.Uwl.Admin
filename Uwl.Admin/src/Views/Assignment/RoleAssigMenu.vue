@@ -4,8 +4,13 @@
         <Row>
         <Col span="6" >
             <Card>
-                <p slot="title">角色权限</p>
-                <div style="border:1px red solid" @click="ss" :key="role.id" v-for="role in RoleList">
+                <span slot="title" style="font-weight:bold;"> 
+                    <span >角色权限</span>      
+                    <span style="float:right">当前选中:
+                        <span style="color:red;">{{roleName}}</span> 
+                    </span>
+                </span>
+                <div @click="ss(index,role)" :key="role.id" v-for="(role,index) in RoleList" class="Man" :class="{Manbgcol:changebgcol == index }">
                     <span>{{role.name}}</span>
                 </div>
             </Card>
@@ -26,7 +31,9 @@ export default {
     data(){
         return {
             RoleList: [],
-            randomMovieList: []
+            randomMovieList: [],
+            changebgcol: null,
+            roleName:'',
         }
     },
     mounted:function()
@@ -42,14 +49,25 @@ export default {
                _this.RoleList=res.data.response.data;
            })
        },
-       ss:function()
-       {
-
+       ss:function(index,item){
+           var _this=this;
+           console.log(item)
+           _this.roleName=item.name
+           _this.changebgcol = index;
        }
     }
 }
 </script>
 <style scoped>
-
+.Man{
+    border: 1px solid #e8eaec;
+    margin: 10px 0;
+    padding: 5px ;
+    cursor: pointer;
+}
+.Manbgcol{
+    background: #6089d4;
+    color: #fff;
+}
 </style>
 
