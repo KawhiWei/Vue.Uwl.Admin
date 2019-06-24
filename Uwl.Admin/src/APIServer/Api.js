@@ -18,6 +18,7 @@ const ApiControllerUrl={
       UpdateMenu:'/Menus/MenuUpdate',
       Delete:'/Menus/MenuDelete',
     },
+    //用户管理API接口
     UsermanagerUrl:{
       GetUserInfo:'/User/UserInfo',
       GetUserByPage:'/User/PageUser',
@@ -25,6 +26,7 @@ const ApiControllerUrl={
       UpdateUser:'/User/UpdateUser',
       DeleteUser:'/User/DeleteUser',
     },
+    //角色管理API接口
     RolemanagerUrl:{
       GetUserInfo:'/Roles/UserInfo',
       GetRoleByPage:'/Roles/PageByRole',
@@ -32,6 +34,15 @@ const ApiControllerUrl={
       UpdateRole:'/Roles/UpdateRole',
       DeleteRole:'/Roles/DeleteRole',
     },
+    //按钮管理API接口
+    ButtonmanagerUrl:{
+      GetButtonInfo:'/Roles/UserInfo',
+      GetButtonByPage:'/Button/PageButton',
+      AddButton:'/Button/AddButton',
+      UpdateButton:'/Roles/UpdateRole',
+      DeleteButton:'/Roles/DeleteRole',
+    },
+    //权限分配API接口
     RoleAssigMenuUrl:{ //角色分配权限接口定义
       GetAllRole:'/Roles/GetAllRole',
     }
@@ -192,7 +203,6 @@ export const ResponseUserByDelete=params=>{
 export const RequestRoleByPage=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.RolemanagerUrl.GetRoleByPage,{params:params});
 }
-
 //添加角色信息
 export const ResponseRoleByAdd=params=>{
   return axios.post(`${baseurl1}`+ApiControllerUrl.RolemanagerUrl.AddRole,params);
@@ -205,6 +215,19 @@ export const ResponseRoleByEdit=params=>{
 export const ResponseRoleByDelete=params=>{
   return axios.delete(`${baseurl1}`+ApiControllerUrl.RolemanagerUrl.DeleteRole,{params:params});
 }
+
+//分页显示按钮信息列表
+export const RequestButtonByPage=params=>{
+  return axios.get(`${baseurl1}`+ApiControllerUrl.ButtonmanagerUrl.GetButtonByPage,{params:params});
+}
+//添加按钮方法
+export const ResponsebuttonByAdd=params=>{
+  debugger
+  return axios.post(`${baseurl1}`+ApiControllerUrl.ButtonmanagerUrl.AddButton,params);
+}
+
+
+
 
 ///角色权限分配接口
 

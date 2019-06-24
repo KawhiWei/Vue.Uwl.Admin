@@ -1,6 +1,5 @@
 <!--按钮管理组件-->
 <template>
-    
 <div>
     <div>
         <Row style="margin:10px 0px">
@@ -14,7 +13,7 @@
                 <span>
                     <span>账号状态：</span><Input  style="width:180px;" placeholder="请输入Api路由地址"/>
                 </span>
-                <Button type="info" icon="ios-search" >查询</Button>
+                <Button type="info" icon="ios-search" @click="Search" >查询</Button>
                 <Button type="success"  @click="AddModal" icon="md-add">添加</Button>
         </Row>
     </div>
@@ -25,31 +24,22 @@
             <!-- 添加菜单弹出框 -->
             <Modal v-model="FormVisible" :title="title" width="80%" height="80%" :mask-closable="false" @on-ok="handleSubmit('formValidate')">
                 <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
-                        <FormItem label="姓名" prop="name">
-                            <Input v-model="formValidate.name" placeholder="请输入姓名"/>
+                        <FormItem label="按钮名称" prop="name">
+                            <Input v-model="formValidate.name" placeholder="请填写按钮名称"/>
                         </FormItem>
-                        <FormItem label="登录账号" prop="account">
+                        <FormItem label="API地址" prop="apiAddress">
                             <!-- <Poptip trigger="hover" title="Title" content="content"> -->
-                            <Input v-model="formValidate.account" placeholder="请输入登录账号"/>
+                            <Input v-model="formValidate.apiAddress" placeholder="请填写调用API接口地址"/>
                             <!-- </Poptip> -->
                         </FormItem>
-                        <!-- <FormItem label="登录密码" prop="password">
-                            <Input v-model="formValidate.password" placeholder="请输入登录密码"/>
-                        </FormItem> -->
-                         <FormItem label="邮箱" prop="email">
-                            <Input v-model="formValidate.email" placeholder="请输入邮箱地址"/>
+                         <FormItem label="JS事件" prop="keyCode">
+                            <Input v-model="formValidate.keyCode" placeholder="请填写按钮事件"/>
                         </FormItem>
-                        <FormItem label="手机号" prop="mobile">
-                            <Input  v-model="formValidate.mobile" placeholder="请输入手机号"/>
+                        <FormItem label="按钮样式" prop="buttonStyle">
+                            <Input  v-model="formValidate.buttonStyle" placeholder="请填写按钮样式或类型"/>
                         </FormItem>
-                        <FormItem label="微信" prop="weChat">
-                            <Input v-model="formValidate.weChat" placeholder="请输入微信号"/>
-                        </FormItem>
-                        <FormItem label="员工类型" prop="empliyeeType">
-                            <Input  v-model="formValidate.empliyeeType" placeholder="请选择员工类型"/>
-                        </FormItem>
-                        <FormItem label="职位" prop="jobName">
-                            <Input v-model="formValidate.jobName" placeholder="请输入职位名称"/>
+                        <FormItem label="按钮备注" prop="memo">
+                            <Input v-model="formValidate.memo" placeholder="请输入备注"/>
                         </FormItem>
                 </Form>
                 <div slot="footer">
@@ -62,58 +52,112 @@
 </template>
 <script>
 import PageView from '@/components/Page.vue'
-// import {RequestMenuByPage,ResponseMenuByAdd,RequestMenuTree,ResponseMenuByEdit,ResponseMenuByDelete} from '../../APIServer/Api.js';
+import {RequestButtonByPage,ResponsebuttonByAdd} from '../../APIServer/Api.js';
 export default {
   components:{PageView},
   name: 'Buttons',
   data () {
     return {
+            info:JSON.parse(window.sessionStorage.userInfo),
             //添加字段
             FormVisible:false,
             formValidate: 
             {
-                name: '',//姓名
-                account: '',//登录账号
-                email: '',//邮箱
-                weChat: '',//微信
-                mobile: '',//手机号
-                empliyeeType: 0,//菜单图标
-                password: '',//登录密码
-                qq:'',//qq账号
-                sex: true,//性别
-                jobName:'',//职位名称
+                name: '',//按钮名称
+                memo: '',//备注
+                keyCode: '',//事件
+                apiAddress: '',//API接口地址
+                buttonStyle: '',//按钮颜色/样式
                 createdId:'',//创建人ID
                 createdName:'',//创建人
                 isDrop:false,//是否删除
-                accountState:0,
             },
+            IsEdit:false,
             title:'',
             ruleValidate: 
             {
                 name: 
                 [
-                    { required: true, message: '请填写姓名', trigger: 'blur' }
+                    { required: true, message: '请填写按钮名称', trigger: 'blur' }
                 ],
-                account: 
+                keyCode: 
                 [
-                    { required: true, message: '请填写登录账号', trigger: 'blur' },
+                    { required: true, message: '请填写按钮事件', trigger: 'blur' },
                 ],
-                email: 
+                apiAddress: 
                 [
-                    { required: true, message: '请填写邮箱地址', trigger: 'blur' },
-                    { type: 'email', message: 'Incorrect email format', trigger: 'blur' }
+                    { required: true, message: '请填写调用API接口地址', trigger: 'blur' },
                 ],
             },
+            list:[],
     }
   },
   mounted:function()
   {
-      
+      this.Search();
   },
   methods:{
       Search()
       {
-
+          this.Get();
+      },
+      handleSubmit()
+      {
+          this.$refs.formValidate.validate((valid)=>{
+                if(valid)
+                {
+                    var _this=this;
+                    debugger
+                    let params=Object.assign({},this.formValidate);
+                    console.log(params)
+                    if(this.IsEdit)
+                    {
+                        console.log("点击了修改保存")
+                        params.id=this.id;
+                        params.updateName=this.info.name;
+                        params.updateId=this.info.id;
+                        ResponseUserByEdit(params).then((res)=>
+                        {
+                            _this.FormVisible=false;
+                            _this.$Message.success(res.data.msg);
+                            //debugger
+                            _this.GetUser();
+                        })
+                    }
+                    else
+                    {
+                        params.createdId=this.info.id;
+                        params.createdName=this.info.name;
+                        console.log(params);
+                        debugger
+                        ResponsebuttonByAdd(params).then((res)=>
+                        {
+                            _this.FormVisible=false;
+                            _this.Get();
+                        })
+                    }
+                }
+                else
+                {
+                    this.$Message.error({content:'参数有误，请重新填写',duration:3});
+                }
+            })
+      },
+      Get()
+      {
+          var pageIndex=this.$refs.PageArr.pageIndex;//获取子组件中的属性
+          var pageSize=this.$refs.PageArr.pagesize;//获取子组件中的属性
+          var _this=this;
+        //   this.loading=true;
+          RequestButtonByPage({PageIndex:pageIndex,PageSize:pageSize}).then(res=>
+          {
+            //   _this.loading=false;
+            //    console.log(res.data.response.totalCount);
+            //    console.log(res.data.response.data);
+               _this.list=res.data.response.data;
+               console.log(_this.list)
+              _this.$refs.PageArr.Total=res.data.response.totalCount;
+          })
       },
       AddModal:function() {
             this.title="添加用户";
@@ -121,16 +165,12 @@ export default {
             this.formValidate=
             {
                 name: '',//姓名
-                account: '',//登录账号
-                email: '',//邮箱
-                weChat: '',//微信
-                mobile: '',//手机号
-                empliyeeType: 0,//菜单图标
-                password: '',//登录密码
-                qq:'',//qq账号
-                jobName:'',//职位名称
-                createdId:'',//创建人ID
-                createdName:'',//创建人
+                memo: '',//登录账号
+                keyCode: '',//邮箱
+                apiAddress: '',//微信
+                buttonStyle: '',//手机号
+                createdId: '',//菜单图标
+                createdName: '',//登录密码
                 isDrop:false,//是否删除
             },
             this.FormVisible=true;
