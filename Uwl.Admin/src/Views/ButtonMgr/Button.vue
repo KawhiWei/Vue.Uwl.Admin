@@ -17,7 +17,15 @@
                 <Button type="success"  @click="AddModal" icon="md-add">添加</Button>
         </Row>
     </div>
+    <div>
+        <Table width="100%" border :loading="loading"
+                show-header
+                highlight-row
+                @on-current-change="CurrentRow"
+                :columns="columns2" :data="list"></Table>
+    </div>
     <div style="padding:5px;">
+
         <PageView v-on:pageref="Search" ref="PageArr"/>
     </div>
     <div>
@@ -61,6 +69,7 @@ export default {
             info:JSON.parse(window.sessionStorage.userInfo),
             //添加字段
             FormVisible:false,
+            loading:true,
             formValidate: 
             {
                 name: '',//按钮名称
@@ -72,6 +81,7 @@ export default {
                 createdName:'',//创建人
                 isDrop:false,//是否删除
             },
+            currentRow:'',
             IsEdit:false,
             title:'',
             ruleValidate: 
@@ -89,6 +99,16 @@ export default {
                     { required: true, message: '请填写调用API接口地址', trigger: 'blur' },
                 ],
             },
+            columns2: [
+            {type:'selection',minWidth: 60,maxWidth: 60,align:'center',fixed: 'left',},
+            {title: '按钮名称',key: 'name',minWidth:100},
+            {title: 'Api路由地址',key: 'apiAddress',minWidth:120},
+            {title: '按钮JS事件',key: 'keyCode',minWidth:120},
+            {title: '按钮样式',key: 'buttonStyle',minWidth:120},
+            {title: '备注',key: 'memo',minWidth:120},
+            {title: '创建人',key: 'createdName',minWidth:80,align:'center'},
+            {title: '创建事件',key: 'createAts',minWidth:80,align:'center'}
+            ],
             list:[],
     }
   },
@@ -151,7 +171,7 @@ export default {
         //   this.loading=true;
           RequestButtonByPage({PageIndex:pageIndex,PageSize:pageSize}).then(res=>
           {
-            //   _this.loading=false;
+               _this.loading=false;
             //    console.log(res.data.response.totalCount);
             //    console.log(res.data.response.data);
                _this.list=res.data.response.data;
@@ -174,7 +194,13 @@ export default {
                 isDrop:false,//是否删除
             },
             this.FormVisible=true;
-        }
+      },
+      //单击表格选中的数据时
+        CurrentRow:function(val)
+        {
+            //   this.currentRow=val;
+            //   console.log(this.currentRow);
+        },
   }
 }
 </script>

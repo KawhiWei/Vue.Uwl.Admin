@@ -124,7 +124,8 @@ export default {
                                 this.title='编辑';
                                 this.FormVisible=true;
                                 this.IsEdit=true;
-                                RequestMenuTree({userid:''}).then(   //编辑时调用后台请求数据方法
+                                this.TreeArr=[];
+                                RequestMenuTree({userid:_this.info.id}).then(   //编辑时调用后台请求数据方法
                                     res=>{
                                     _this.tree(res.data.response);
                                 })

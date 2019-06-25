@@ -137,17 +137,18 @@ export default {
             {title: '邮箱',key: 'email',minWidth:120},
             {title: '手机号',key: 'mobile',minWidth:120},
             {title: '微信',key: 'weChat',minWidth:120},
-            {title: '性别',key: 'sex',minWidth:80,align:'center',render:(h,params)=>{
-                if(params.row.sex)
+            {title: '性别',key: 'sex',minWidth:80,align:'center',render:(h,params)=>
                 {
-                    return h('Tag',{props:{color:'primary'}},'男');
+                    if(params.row.sex)
+                    {
+                        return h('Tag',{props:{color:'primary'}},'男');
+                    }
+                    else
+                    {
+                        return h('Tag',{props:{color:'primary',}},'女');
+                    }
                 }
-                else
-                {
-                    return h('Tag',{props:{color:'primary',}},'女');
-                }
-                
-            }},
+            },
             {title: '账号状态',key: 'accountState',minWidth:100,align:'center',
             render:(h,params)=>{
                 var text="";
