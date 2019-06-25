@@ -60,7 +60,7 @@
 </template>
 <script>
 import PageView from '@/components/Page.vue'
-import {RequestButtonByPage,ResponsebuttonByAdd} from '../../APIServer/Api.js';
+import {RequestButtonByPage,ResponsebuttonByAdd,RequestButtonByAll} from '../../APIServer/Api.js';
 export default {
   components:{PageView},
   name: 'Buttons',
@@ -115,8 +115,15 @@ export default {
   mounted:function()
   {
       this.Search();
+      this.GetAll();
   },
   methods:{
+      GetAll()
+      {
+          RequestButtonByAll({}).then(res=>{
+              console.log(res)
+          })
+      },
       Search()
       {
           this.Get();

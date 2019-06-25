@@ -40,6 +40,7 @@ const ApiControllerUrl={
       GetButtonByPage:'/Button/PageButton',
       AddButton:'/Button/AddButton',
       UpdateButton:'/Roles/UpdateRole',
+      GetAllButton:'/Button/AllButton',
       DeleteButton:'/Roles/DeleteRole',
     },
     //权限分配API接口
@@ -222,8 +223,11 @@ export const RequestButtonByPage=params=>{
 }
 //添加按钮方法
 export const ResponsebuttonByAdd=params=>{
-  debugger
   return axios.post(`${baseurl1}`+ApiControllerUrl.ButtonmanagerUrl.AddButton,params);
+}
+//Get获取所有按钮方法
+export const RequestButtonByAll=params=>{
+  return axios.get(`${baseurl1}`+ApiControllerUrl.ButtonmanagerUrl.GetAllButton,params);
 }
 
 
