@@ -58,7 +58,20 @@
                         <FormItem label="备注" prop="memo">
                             <Input v-model="formValidate.memo" placeholder="请输入备注"/>
                         </FormItem>
+                         <!-- <div style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;">
+                            <span></span>
+                            全选
+                        </div> -->
+                        <FormItem label="菜单按钮">
+                            <CheckboxGroup v-model="buttonIds" @on-change="checkAllGroupChange">
+                               <Checkbox size="large" :label="v.id" :key="v.id" v-for='v in buttonList'>
+                                    <span>{{v.name}}</span>
+                                </Checkbox>
+                            </CheckboxGroup>
+                        </FormItem>
                 </Form>
+                <div>
+                </div>
                 <div slot="footer">
                         <Button type="primary" @click="handleSubmit('formValidate')">提交</Button>
                         <Button @click="FormVisible = false" style="margin-left: 8px">取消</Button>
@@ -71,7 +84,7 @@
 <script>
 
 import PageView from '@/components/Page.vue'
-import {RequestMenuByPage,ResponseMenuByAdd,RequestMenuTree,ResponseMenuByEdit,ResponseMenuByDelete} from '../../APIServer/Api.js';
+import {RequestMenuByPage,ResponseMenuByAdd,RequestMenuTree,ResponseMenuByEdit,ResponseMenuByDelete,RequestButtonByAll} from '../../APIServer/Api.js';
 export default {
   components:{PageView},
   name: 'HelloWorld',
@@ -129,6 +142,10 @@ export default {
                                     res=>{
                                     _this.tree(res.data.response);
                                 })
+                                _this.buttonList=[];
+                                RequestButtonByAll({}).then(res=>{
+                                _this.buttonList=res.data.response;
+                                })
                                 console.log(this.IsEdit)
                             }
                         }
@@ -174,6 +191,7 @@ export default {
             }
         ],//列表表头
         MenuList:[],//列表存放后台返回的数据
+        buttonList:[],//列表存放后台返回的数据
         currentRow:'',//存放当前选中行的数据
         TreeArr: [],//级联选择器数组
         parentIdarr: [],//父级菜单已选中数组
@@ -196,7 +214,9 @@ export default {
             createdId:'',
             createdName:'',
             isDrop:false,
+            buttonIds:'',
         },
+        buttonIds:[],
         //添加是字段校验
         ruleValidate: 
         {
@@ -218,7 +238,6 @@ export default {
   mounted:function()
   {
       this.GetMenu();
-      //this.tree(JSON.parse(window.sessionStorage.menus));//调用递归方法添加级联组件需要的属性
   },
   methods:{
       GetMenu:function()
@@ -235,6 +254,10 @@ export default {
               _this.MenuList=res.data.response.data;
               _this.$refs.PageArr.Total=res.data.response.totalCount;
           })
+      },
+      checkAllGroupChange(item)
+      {
+          console.log(item);
       },
       //选择级联时获取value
       SelectParent(value,selectedData)
@@ -271,10 +294,15 @@ export default {
                 createdId:'',
                 createdName:'',
                 isDrop:false,
+                buttonIds:['3f4f938c-384c-498d-4af0-08d6f87ea475'],
             },
             RequestMenuTree({userid:'ad73d0f6-33c9-40e3-8c56-f0ec8e35315f'}).then(
                 res=>{
                 _this.tree(res.data.response);
+            })
+            _this.buttonList=[];
+            RequestButtonByAll({}).then(res=>{
+              _this.buttonList=res.data.response;
             })
             this.FormVisible=true;
       },
@@ -285,7 +313,9 @@ export default {
             if (valid)
             {
                 var _this=this;
-                let params=Object.assign({},this.formValidate);                
+                this.formValidate.buttonIds=JSON.stringify(this.buttonIds);
+                let params=Object.assign({},this.formValidate);     
+                console.log(this.formValidate);
                 if(this.IsEdit)//true代表是编辑进来
                 {
                     params.id=this.id;
