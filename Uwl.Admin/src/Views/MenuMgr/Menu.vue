@@ -135,7 +135,6 @@ export default {
                                 }
                                 this.id=params.row.id;
                                 this.title='编辑';
-                                this.FormVisible=true;
                                 this.IsEdit=true;
                                 this.TreeArr=[];
                                 RequestMenuTree({userid:_this.info.id}).then(   //编辑时调用后台请求数据方法
@@ -144,9 +143,9 @@ export default {
                                 })
                                 _this.buttonList=[];
                                 RequestButtonByAll({}).then(res=>{
-                                _this.buttonList=res.data.response;
+                                    _this.buttonList=res.data.response;
                                 })
-                                console.log(this.IsEdit)
+                                this.FormVisible=true;
                             }
                         }
                     }, '修改'),
@@ -323,9 +322,7 @@ export default {
                     params.updateId=this.info.id;
                     ResponseMenuByEdit(params).then((res)=>
                     {
-                        _this.FormVisible=false;
                         _this.Message(res);
-                        _this.GetMenu();
                     })
                 }
                 else //否则是新增
@@ -355,6 +352,8 @@ export default {
                 if(res.data.success)
                 {
                     _this.$Message.success(res.data.msg);
+                    _this.buttonIds=[];
+                    _this.FormVisible=false;
                     _this.GetMenu();
                 }
                 else
