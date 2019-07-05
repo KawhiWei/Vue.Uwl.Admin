@@ -43,6 +43,10 @@ const ApiControllerUrl={
       GetAllButton:'/Button/AllButton',
       DeleteButton:'/Roles/DeleteRole',
     },
+    //按钮管理API接口
+    MenuButtonUrl:{
+      GetButtonByMenuId:'/Menus/GetButtonListByMenuId',
+    },
     //权限分配API接口
     RoleAssigMenuUrl:{ //角色分配权限接口定义
       GetAllRole:'/Roles/GetAllRole',
@@ -228,6 +232,15 @@ export const ResponsebuttonByAdd=params=>{
 //Get获取所有按钮方法
 export const RequestButtonByAll=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.ButtonmanagerUrl.GetAllButton,params);
+}
+
+
+
+
+
+//根据菜单ID获取改菜单下的按钮
+export const RequestButtonByMenuId=params=>{
+  return axios.get(`${baseurl1}`+ApiControllerUrl.MenuButtonUrl.GetButtonByMenuId,{params:params});
 }
 
 

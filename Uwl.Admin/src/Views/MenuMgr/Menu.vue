@@ -77,7 +77,7 @@
           </TabPane>
           <!---页面按钮设置--->
           <TabPane label="页面按钮" name="name2">
-            <CheckboxGroup v-model="buttonIdarr" @on-change="checkAllGroupChange">
+            <CheckboxGroup v-model="buttonIdarrChecked" @on-change="checkAllGroupChange">
               <Checkbox size="large" :label="v.id" :key="v.id" v-for="v in buttonList">
                 <span>{{v.name}}</span>
               </Checkbox>              
@@ -101,7 +101,8 @@ import {
   RequestMenuTree,
   ResponseMenuByEdit,
   ResponseMenuByDelete,
-  RequestButtonByAll
+  RequestButtonByAll,
+  RequestButtonByMenuId
 } from "../../APIServer/Api.js";
 export default {
   components: { PageView },
@@ -163,10 +164,14 @@ export default {
                           _this.tree(res.data.response);
                         }
                       );
-                      _this.buttonIdarr = [];
+                      _this.buttonIdarrChecked = [];
                       RequestButtonByAll({}).then(res => {
                         _this.buttonList = res.data.response;
                       });
+                      console.log(this.id)
+                      RequestButtonByMenuId({menuId:this.id}).then(res=>{
+                        _this.buttonIdarrChecked=res.data.response;
+                      })
                       this.FormVisible = true;
                     }
                   }
@@ -245,7 +250,7 @@ export default {
         isDrop: false,
         buttonIds: '',
       },
-      buttonIdarr: [],
+      buttonIdarrChecked: [],
       //添加是字段校验
       ruleValidate: {
         name: [{ required: true, message: "请填写菜单名称", trigger: "blur" }],
@@ -310,7 +315,7 @@ export default {
         createdId: "",
         createdName: "",
         isDrop: false,
-        buttonIdarr: []
+        buttonIdarrChecked: []
       }),
         RequestMenuTree({
           userid: "ad73d0f6-33c9-40e3-8c56-f0ec8e35315f"
@@ -328,7 +333,7 @@ export default {
       this.$refs.formValidate.validate(valid => {
         if (valid) {
           var _this = this;
-          this.formValidate.buttonIds = JSON.stringify(this.buttonIdarr);
+          this.formValidate.buttonIds = JSON.stringify(this.buttonIdarrChecked);
           let params = Object.assign({}, this.formValidate);
           console.log(this.formValidate);
           if (this.IsEdit) {
