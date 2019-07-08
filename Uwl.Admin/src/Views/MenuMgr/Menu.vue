@@ -46,7 +46,7 @@
         @on-ok="handleSubmit('formValidate')"
       >
       <!---菜单基本信息--->
-        <Tabs :animated="false">
+        <Tabs v-model="panelName" :animated="false" on-click="Names(1)" >
            <TabPane label="基本信息" name="name1">
             <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
               <FormItem label="菜单名称" prop="name">
@@ -114,6 +114,7 @@ export default {
       title: "添加菜单",
       loading: true,
       IsEdit: false, //是编辑还是新增菜单
+      panelName:'name1',
       columns2: [
         { type: "selection", minWidth: 60, align: "center" },
         { title: "菜单名称", key: "name", minWidth: 100 },
@@ -158,6 +159,7 @@ export default {
                       this.title = "编辑";
                       this.IsEdit = true;
                       this.TreeArr = [];
+                      this.panelName='name1',
                       RequestMenuTree({ userid: _this.info.id }).then(
                         //编辑时调用后台请求数据方法
                         res => {
@@ -168,7 +170,6 @@ export default {
                       RequestButtonByAll({}).then(res => {
                         _this.buttonList = res.data.response;
                       });
-                      console.log(this.id)
                       RequestButtonByMenuId({menuId:this.id}).then(res=>{
                         _this.buttonIdarrChecked=res.data.response;
                       })
@@ -267,6 +268,10 @@ export default {
     this.GetMenu();
   },
   methods: {
+    Names:function(name)
+    {
+      console.log(name)
+    },
     GetMenu: function() {
       var pageIndex = this.$refs.PageArr.pageIndex; //获取子组件中的属性
       var pageSize = this.$refs.PageArr.pagesize; //获取子组件中的属性

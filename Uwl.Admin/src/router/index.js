@@ -198,7 +198,8 @@ router.beforeEach((to,from,next)=>{
         next();
       }
     }
-    else{
+    else
+    {
       next();
     }
   }
