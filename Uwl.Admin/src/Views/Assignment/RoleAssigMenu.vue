@@ -10,14 +10,16 @@
                         <span style="color:red;">{{roleName}}</span> 
                     </span>
                 </span>
-                <div @click="ss(index,role)" :key="role.id" v-for="(role,index) in RoleList" class="Man" :class="{Manbgcol:changebgcol == index }">
+                <div @click="RoleAssig(index,role)" :key="role.id" v-for="(role,index) in RoleList" class="Man" :class="{Manbgcol:changebgcol == index }">
                     <span>{{role.name}}</span>
                 </div>
             </Card>
         </Col>
         <Col span="18" style="color:green">
             <Card>
-                <Tree  show-checkbox></Tree>
+                <Tree :data="randomMovieList" @on-check-change="SelectChecked" show-checkbox>
+
+                </Tree>
             </Card>
         </Col>
     </Row>
@@ -25,7 +27,7 @@
 </template>
 
 <script>
-import {RoleAssigGetAllRole} from '../../APIServer/Api.js';
+import {RoleAssigGetAllRole,RequestGetAllRole} from '../../APIServer/Api.js';
 export default {
     name:'RoleAssigMenu',//角色分配菜单组件
     data(){
@@ -42,18 +44,25 @@ export default {
     },  
     methods:
     {
+       //获取所有的角色
        GetRoleList:function()
        {
            var _this=this;
-           RoleAssigGetAllRole({}).then(res=>{
+           RequestGetAllRole({}).then(res=>{
                _this.RoleList=res.data.response.data;
            })
        },
-       ss:function(index,item){
-           var _this=this;
-           console.log(item)
+       RoleAssig:function(index,item){
+            var _this=this;
+            RoleAssigGetAllRole({roleId:item.id}).then(res=>{
+               _this.randomMovieList=res.data.response.children;
+            })
            _this.roleName=item.name
            _this.changebgcol = index;
+       },
+       SelectChecked(item)
+       {
+           console.log(item)
        }
     }
 }

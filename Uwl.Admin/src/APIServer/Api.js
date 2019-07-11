@@ -49,6 +49,7 @@ const ApiControllerUrl={
     },
     //权限分配API接口
     RoleAssigMenuUrl:{ //角色分配权限接口定义
+      GetRoleAssig:'/RoleAssig/GetRoleAssigTree',
       GetAllRole:'/Roles/GetAllRole',
     }
 }
@@ -144,12 +145,10 @@ const ToLogin=params=>{
   });
 }
 
-
 //登录获取Token和用户信息
 export const RequestLogin=params=>{
     return axios.post(`${baseurl1}`+ApiControllerUrl.LoginUrl.GetTokenByUserAndPass,params);
 }
-
 export const RequestUserInfo=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.GetUserInfo,{params:params});
 }
@@ -157,23 +156,20 @@ export const RequestMenuTree=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.GetTreeMenu,{params:params});
 }
 
-//菜单管理异步访问API接口
 
+//菜单管理异步访问API接口
 //分页显示菜单列表
 export const RequestMenuByPage=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.GetMenuByPage,{params:params});
 }
-
 //添加菜单
 export const ResponseMenuByAdd=params=>{
   return axios.post(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.AddMenu,params);
 }
-
 //修改菜单
 export const ResponseMenuByEdit=params=>{
   return axios.put(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.UpdateMenu,params);
 }
-
 //删除菜单
 export const ResponseMenuByDelete=params=>{
   return axios.delete(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.Delete,{params:params});
@@ -182,12 +178,10 @@ export const ResponseMenuByDelete=params=>{
 
 
 //用户管理异步访问API接口
-
 //分页显示用户信息列表
 export const RequestUserByPage=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.GetUserByPage,{params:params});
 }
-
 //添加用户信息
 export const ResponseUserByAdd=params=>{
   return axios.post(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.AddUser,params);
@@ -196,15 +190,16 @@ export const ResponseUserByAdd=params=>{
 export const ResponseUserByEdit=params=>{
   return axios.put(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.UpdateUser,params);
 }
-
-//删除菜单
+//删除用户
 export const ResponseUserByDelete=params=>{
   return axios.delete(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.DeleteUser,{params:params});
 }
 
-//角色管理异步访问API接口
 
-//分页显示用户信息列表
+
+
+//角色管理异步访问API接口
+//分页显示角色信息列表
 export const RequestRoleByPage=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.RolemanagerUrl.GetRoleByPage,{params:params});
 }
@@ -212,7 +207,7 @@ export const RequestRoleByPage=params=>{
 export const ResponseRoleByAdd=params=>{
   return axios.post(`${baseurl1}`+ApiControllerUrl.RolemanagerUrl.AddRole,params);
 }
-//修改用户信息
+//修改角色信息
 export const ResponseRoleByEdit=params=>{
   return axios.put(`${baseurl1}`+ApiControllerUrl.RolemanagerUrl.UpdateRole,params);
 }
@@ -220,6 +215,10 @@ export const ResponseRoleByEdit=params=>{
 export const ResponseRoleByDelete=params=>{
   return axios.delete(`${baseurl1}`+ApiControllerUrl.RolemanagerUrl.DeleteRole,{params:params});
 }
+
+
+
+
 
 //分页显示按钮信息列表
 export const RequestButtonByPage=params=>{
@@ -234,21 +233,18 @@ export const RequestButtonByAll=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.ButtonmanagerUrl.GetAllButton,params);
 }
 
-
-
-
-
 //根据菜单ID获取改菜单下的按钮
 export const RequestButtonByMenuId=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.MenuButtonUrl.GetButtonByMenuId,{params:params});
 }
 
 
-
-
 ///角色权限分配接口
-
-//分页显示用户信息列表
+//根据角色ID获取所有的菜单和按钮
 export const RoleAssigGetAllRole=params=>{
+  return axios.get(`${baseurl1}`+ApiControllerUrl.RoleAssigMenuUrl.GetRoleAssig,{params:params});
+}
+//根据角色ID获取所有的菜单和按钮
+export const RequestGetAllRole=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.RoleAssigMenuUrl.GetAllRole);
 }
