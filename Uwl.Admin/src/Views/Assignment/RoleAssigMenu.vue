@@ -17,7 +17,7 @@
         </Col>
         <Col span="18" style="color:green">
             <Card>
-                <Tree :data="randomMovieList" @on-check-change="SelectChecked" show-checkbox>
+                <Tree :data="randomMovieList" @on-check-change="SelectChecked" show-checkbox :render="renderContent">
 
                 </Tree>
             </Card>
@@ -56,13 +56,18 @@ export default {
             var _this=this;
             RoleAssigGetAllRole({roleId:item.id}).then(res=>{
                _this.randomMovieList=res.data.response.children;
+               console.log(_this.randomMovieList)
             })
            _this.roleName=item.name
            _this.changebgcol = index;
        },
        SelectChecked(item)
        {
-           console.log(item)
+       },
+       renderContent(h, { root, node, data })
+       {
+           console.log(data);
+           return h();
        }
     }
 }
