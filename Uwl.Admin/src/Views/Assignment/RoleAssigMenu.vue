@@ -15,7 +15,7 @@
                 </div>
             </Card>
         </Col>
-        <Col span="18" style="color:green">
+        <Col span="18">
             <Card>
                 <Tree :data="randomMovieList" @on-check-change="SelectChecked" show-checkbox :render="renderContent">
 
@@ -36,6 +36,7 @@ export default {
             randomMovieList: [],
             changebgcol: null,
             roleName:'',
+            selectlist: ['653d408b-817c-45a9-2c83-08d709986660'],
         }
     },
     mounted:function()
@@ -50,24 +51,84 @@ export default {
            var _this=this;
            RequestGetAllRole({}).then(res=>{
                _this.RoleList=res.data.response.data;
+               
            })
        },
+       //获取所有的菜单和按钮
        RoleAssig:function(index,item){
             var _this=this;
             RoleAssigGetAllRole({roleId:item.id}).then(res=>{
-               _this.randomMovieList=res.data.response.children;
-               console.log(_this.randomMovieList)
+               _this.treeRecursion(res.data.response.children);
             })
            _this.roleName=item.name
            _this.changebgcol = index;
        },
        SelectChecked(item)
        {
+           console.log(item);
        },
+       //tree组件渲染自定义视图
        renderContent(h, { root, node, data })
        {
-           console.log(data);
-           return h();
+            return h(
+                'span',{
+                    style:{
+                        width:'100%'
+                    }
+                },
+                [
+                    h('span',[h('span',data.title),]),//加载每条数据的title
+                    //加载子级自定义内容
+                    h(
+                        'span',{style:{display:"inline-block",float:"right",marginRight: "32px"}},//定义样式和边距
+                        [
+                            h
+                            (
+                                "CheckboxGroup",
+                                {
+                                    props:{value:this.selectlist},
+                                    on:{"on-change":event=>{
+                                        console.log(event)
+                                        this.selectlist=event;
+                                        }}
+                                },//定义一个复选框数组
+                                (data.buttonsList||[]).map(
+                                    obj=>{return h("Checkbox",{props:{label:obj.id}},obj.lable
+                                )})//渲染出复选框数组下面的所有子级
+                            )
+                        ]
+                    
+                    )
+                ]
+            );
+       },
+       //递归方法
+       treeRecursion(obj)
+       {
+           var crr=obj; 
+           function tree(crr) {
+               crr.forEach(element => {
+                   element.checked=element.ischecked;
+                    var arr=element.children;
+                   if(arr.length>0)
+                   {
+                       tree(arr);
+                   }
+
+
+               }); 
+            //    (var i = 0; i < crr.length; i++) {
+            //        crr[i].checked=crr[i].ischecked;
+            //        var arr=crr[i].children;
+            //        if(arr.length>0)
+            //        {
+            //            tree(arr);
+            //        }
+            //    }
+           }
+           tree(crr)
+           console.log(obj);
+           this.randomMovieList=obj;
        }
     }
 }
