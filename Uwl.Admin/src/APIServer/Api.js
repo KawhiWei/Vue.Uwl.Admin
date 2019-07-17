@@ -12,45 +12,44 @@ const ApiControllerUrl={
     },
     //菜单管理Url存放位置
     MenumanagerUrl:{
-      GetTreeMenu:'/GetTree/TreeList',
-      GetMenuByPage:'/Menus/PageMenu',
-      AddMenu:'/Menus/AddMenu',
-      UpdateMenu:'/Menus/MenuUpdate',
-      Delete:'/Menus/MenuDelete',
+      GetTreeMenu:'/GetTree/TreeList',//根据角色获取菜单
+      GetMenuByPage:'/Menus/PageMenu',//菜单列表分页
+      AddMenu:'/Menus/AddMenu',//添加菜单
+      UpdateMenu:'/Menus/MenuUpdate',//修改菜单
+      Delete:'/Menus/MenuDelete',//删除菜单
     },
     //用户管理API接口
     UsermanagerUrl:{
-      GetUserInfo:'/User/UserInfo',
-      GetUserByPage:'/User/PageUser',
-      AddUser:'/User/AddUser',
-      UpdateUser:'/User/UpdateUser',
-      DeleteUser:'/User/DeleteUser',
+      GetUserInfo:'/User/UserInfo',//根据ID获取用户信息
+      GetUserByPage:'/User/PageUser',//用户列表分页
+      AddUser:'/User/AddUser',//添加用户
+      UpdateUser:'/User/UpdateUser',//修改用户
+      DeleteUser:'/User/DeleteUser',//删除用户
     },
     //角色管理API接口
     RolemanagerUrl:{
-      GetUserInfo:'/Roles/UserInfo',
-      GetRoleByPage:'/Roles/PageByRole',
-      AddRole:'/Roles/AddRole',
-      UpdateRole:'/Roles/UpdateRole',
-      DeleteRole:'/Roles/DeleteRole',
+      GetRoleByPage:'/Roles/PageByRole',//角色列表分页
+      AddRole:'/Roles/AddRole',//添加角色
+      UpdateRole:'/Roles/UpdateRole',//修改角色
+      DeleteRole:'/Roles/DeleteRole',//删除角色
     },
     //按钮管理API接口
     ButtonmanagerUrl:{
-      GetButtonInfo:'/Roles/UserInfo',
-      GetButtonByPage:'/Button/PageButton',
-      AddButton:'/Button/AddButton',
-      UpdateButton:'/Roles/UpdateRole',
-      GetAllButton:'/Button/AllButton',
-      DeleteButton:'/Roles/DeleteRole',
+      GetButtonByPage:'/Button/PageButton',//按钮分页
+      AddButton:'/Button/AddButton',//添加按钮
+      UpdateButton:'/Roles/UpdateRole',//修改按钮
+      GetAllButton:'/Button/AllButton',//获取所有的按钮
+      DeleteButton:'/Roles/DeleteRole',//删除按钮
     },
     //按钮管理API接口
     MenuButtonUrl:{
-      GetButtonByMenuId:'/Menus/GetButtonListByMenuId',
+      GetButtonByMenuId:'/Menus/GetButtonListByMenuId',//根据菜单ID获取按钮
     },
     //权限分配API接口
     RoleAssigMenuUrl:{ //角色分配权限接口定义
-      GetRoleAssig:'/RoleAssig/GetRoleAssigTree',
-      GetAllRole:'/Roles/GetAllRole',
+      GetRoleAssig:'/RoleAssig/GetRoleAssigTree',//根据角色ID获取菜单和按钮列表
+      GetAllRole:'/Roles/GetAllRole',//获取所有的角色列表
+      SaveRoleAssig:'/RoleAssig/SaveRoleAssig',//保存权限
     }
 }
 //http request 拦截器
@@ -239,12 +238,16 @@ export const RequestButtonByMenuId=params=>{
 }
 
 
-///角色权限分配接口
+///////////////////角色权限分配接口
+//获取所有的角色列表
+export const RequestGetAllRole=params=>{
+  return axios.get(`${baseurl1}`+ApiControllerUrl.RoleAssigMenuUrl.GetAllRole);
+}
 //根据角色ID获取所有的菜单和按钮
 export const RoleAssigGetAllRole=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.RoleAssigMenuUrl.GetRoleAssig,{params:params});
 }
-//根据角色ID获取所有的菜单和按钮
-export const RequestGetAllRole=params=>{
-  return axios.get(`${baseurl1}`+ApiControllerUrl.RoleAssigMenuUrl.GetAllRole);
+//角色保存权限
+export const ResponseRoleAssigBySave=params=>{
+  return axios.post(`${baseurl1}`+ApiControllerUrl.RoleAssigMenuUrl.SaveRoleAssig,params);
 }

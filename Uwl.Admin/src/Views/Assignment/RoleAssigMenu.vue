@@ -7,7 +7,7 @@
                 <span slot="title" style="font-weight:bold;"> 
                     <span >角色权限</span>      
                     <span style="float:right">当前选中:
-                        <span style="color:red;">{{roleName}}</span> 
+                        <span style="color:red;">{{roleRow.name}}</span> 
                     </span>
                 </span>
                 <div @click="RoleAssig(index,role)" :key="role.id" v-for="(role,index) in RoleList" class="Man" :class="{Manbgcol:changebgcol == index }">
@@ -17,8 +17,8 @@
         </Col>
         <Col span="18">
             <Card>
-                <Tree :data="randomMovieList" @on-check-change="SelectChecked" show-checkbox :render="renderContent">
-
+                <div><Button  type="primary" @click="Gets">保存修改</Button></div>
+                <Tree :data="randomMovieList" ref="mm" @on-check-change="SelectChecked" show-checkbox :render="renderContent">
                 </Tree>
             </Card>
         </Col>
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import {RoleAssigGetAllRole,RequestGetAllRole} from '../../APIServer/Api.js';
+import {RoleAssigGetAllRole,RequestGetAllRole,ResponseRoleAssigBySave} from '../../APIServer/Api.js';
 export default {
     name:'RoleAssigMenu',//角色分配菜单组件
     data(){
@@ -35,8 +35,8 @@ export default {
             RoleList: [],
             randomMovieList: [],
             changebgcol: null,
-            roleName:'',
-            selectlist: ['653d408b-817c-45a9-2c83-08d709986660'],
+            roleRow:{},
+            selectlist: [],
         }
     },
     mounted:function()
@@ -60,7 +60,7 @@ export default {
             RoleAssigGetAllRole({roleId:item.id}).then(res=>{
                _this.treeRecursion(res.data.response.children);
             })
-           _this.roleName=item.name
+           _this.roleRow=item
            _this.changebgcol = index;
        },
        SelectChecked(item)
@@ -88,7 +88,6 @@ export default {
                                 {
                                     props:{value:this.selectlist},
                                     on:{"on-change":event=>{
-                                        console.log(event)
                                         this.selectlist=event;
                                         }}
                                 },//定义一个复选框数组
@@ -105,31 +104,44 @@ export default {
        //递归方法
        treeRecursion(obj)
        {
+           var _this=this;
            var crr=obj; 
            function tree(crr) {
                crr.forEach(element => {
                    element.checked=element.ischecked;
-                    var arr=element.children;
+                   if(element.buttonsList.length>0)
+                   {
+                       var btnarr=element.buttonsList;
+                       btnarr.forEach(arr=>{
+                           if(arr.ischecked)
+                           {
+                               _this.selectlist.push(arr.id);
+                           }
+                       });
+                   }
+                   var arr=element.children;
                    if(arr.length>0)
                    {
                        tree(arr);
                    }
-
-
                }); 
-            //    (var i = 0; i < crr.length; i++) {
-            //        crr[i].checked=crr[i].ischecked;
-            //        var arr=crr[i].children;
-            //        if(arr.length>0)
-            //        {
-            //            tree(arr);
-            //        }
-            //    }
            }
            tree(crr)
-           console.log(obj);
-           this.randomMovieList=obj;
+           _this.randomMovieList=obj;
+       },
+       Gets()
+       {
+           console.log(this.roleRow.id);
+           var btn=JSON.stringify(this.selectlist);
+           var menus=JSON.stringify(this.$refs.mm.getCheckedAndIndeterminateNodes());
+           var role=this.roleRow.id;
+           var param={RoleId:role,menuIds:menus,BtnIds:btn};
+           console.log(param)
+           ResponseRoleAssigBySave(param).then(res=>{
+               console.log(res.data)
+           })
        }
+       
     }
 }
 </script>
