@@ -37,6 +37,7 @@ export default {
             changebgcol: null,
             roleRow:{},
             selectlist: [],
+            info: JSON.parse(window.sessionStorage.userInfo),
         }
     },
     mounted:function()
@@ -134,8 +135,7 @@ export default {
            console.log(this.roleRow.id);
            var btn=JSON.stringify(this.selectlist);
            var menus=JSON.stringify(this.$refs.mm.getCheckedAndIndeterminateNodes());
-           var role=this.roleRow.id;
-           var param={RoleId:role,menuIds:menus,BtnIds:btn};
+           var param={RoleId:this.roleRow.id,menuIds:menus,BtnIds:btn,CreatedId:this.info.id,CreatedName:this.info.name};
            console.log(param)
            ResponseRoleAssigBySave(param).then(res=>{
                console.log(res.data)
