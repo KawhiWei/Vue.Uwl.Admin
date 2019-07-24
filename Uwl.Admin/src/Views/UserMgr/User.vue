@@ -30,24 +30,22 @@
         </div>
         <div>
             <!-- 添加菜单弹出框 -->
-            <Modal v-model="FormVisible" :title="title" width="80%" height="80%" :mask-closable="false" @on-ok="handleSubmit('formValidate')">
+            <Modal v-model="FormVisible" :title="title" width="60%" height="99%" :mask-closable="false" @on-ok="handleSubmit('formValidate')">
                 <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
                         <FormItem label="姓名" prop="name">
                             <Input v-model="formValidate.name" placeholder="请输入姓名"/>
                         </FormItem>
                         <FormItem label="登录账号" prop="account">
-                            <!-- <Poptip trigger="hover" title="Title" content="content"> -->
                             <Input v-model="formValidate.account" placeholder="请输入登录账号"/>
-                            <!-- </Poptip> -->
                         </FormItem>
-                        <!-- <FormItem label="登录密码" prop="password">
-                            <Input v-model="formValidate.password" placeholder="请输入登录密码"/>
-                        </FormItem> -->
                          <FormItem label="邮箱" prop="email">
                             <Input v-model="formValidate.email" placeholder="请输入邮箱地址"/>
                         </FormItem>
                         <FormItem label="手机号" prop="mobile">
                             <Input  v-model="formValidate.mobile" placeholder="请输入手机号"/>
+                        </FormItem>
+                        <FormItem label="角色" prop="jobName">
+                            <Input v-model="formValidate.jobName" placeholder="请输入职位名称"/>
                         </FormItem>
                         <FormItem label="微信" prop="weChat">
                             <Input v-model="formValidate.weChat" placeholder="请输入微信号"/>

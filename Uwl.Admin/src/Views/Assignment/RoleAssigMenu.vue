@@ -5,7 +5,7 @@
         <Col span="6" >
             <Card>
                 <span slot="title" style="font-weight:bold;"> 
-                    <span >角色权限</span>      
+                    <span >角色列表</span>      
                     <span style="float:right">当前选中:
                         <span style="color:red;">{{roleRow.name}}</span> 
                     </span>
@@ -121,6 +121,17 @@ export default {
                        });
                    }
                    var arr=element.children;
+                   var Ischeck=[];
+                   arr.forEach(element => {
+                       if(element.ischecked)
+                        {
+                            Ischeck.push(element);
+                        }
+                   });
+                   if(Ischeck.length<arr.length)
+                   {
+                       element.checked=false;
+                   }
                    if(arr.length>0)
                    {
                        tree(arr);
