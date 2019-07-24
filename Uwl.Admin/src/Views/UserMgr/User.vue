@@ -45,7 +45,9 @@
                             <Input  v-model="formValidate.mobile" placeholder="请输入手机号"/>
                         </FormItem>
                         <FormItem label="角色" prop="jobName">
-                            <Input v-model="formValidate.jobName" placeholder="请输入职位名称"/>
+                            <Select v-model="model10" multiple style="width:260px">
+                                <Option v-for="item in roleArr" :value="item.id" :key="item.id">{{ item.name }}</Option>
+                            </Select>
                         </FormItem>
                         <FormItem label="微信" prop="weChat">
                             <Input v-model="formValidate.weChat" placeholder="请输入微信号"/>
@@ -74,7 +76,7 @@
 
 <script>
 import PageView from '@/components/Page.vue'
-import {RequestUserByPage,ResponseUserByAdd,ResponseUserByEdit,ResponseUserByDelete} from '../../APIServer/Api.js';
+import {RequestUserByPage,ResponseUserByAdd,ResponseUserByEdit,RequestGetAllRole,ResponseUserByDelete} from '../../APIServer/Api.js';
 export default {
     name:'User',
     components:{PageView},
@@ -107,6 +109,8 @@ export default {
                 isDrop:false,//是否删除
                 accountState:0,
             },
+            roleArr:[],
+            model10: [],
             id:'',//修改用户的Id
             //添加是字段校验
             ruleValidate: 
@@ -208,7 +212,8 @@ export default {
                                 this.title='编辑';
                                 this.FormVisible=true;
                                 this.IsEdit=true;
-                                console.log(this.IsEdit)
+                                this.roleArr=[];
+                                this.GetAllRole();
                             }
                         }
                     }, '修改'),
@@ -348,7 +353,16 @@ export default {
                 createdName:'',//创建人
                 isDrop:false,//是否删除
             },
+            this.roleArr=[];
+            this.GetAllRole();
             this.FormVisible=true;
+        },
+        GetAllRole:function()
+        {
+            var _this=this;
+            RequestGetAllRole({}).then(res=>{
+               _this.roleArr=res.data.response.data;
+            })
         }
     }
 }
