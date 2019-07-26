@@ -45,7 +45,7 @@
                             <Input  v-model="formValidate.mobile" placeholder="请输入手机号"/>
                         </FormItem>
                         <FormItem label="角色" prop="jobName">
-                            <Select v-model="model10" multiple style="width:260px">
+                            <Select v-model="model10" multiple style="width:260px" @on-change="GetIds">
                                 <Option v-for="item in roleArr" :value="item.id" :key="item.id">{{ item.name }}</Option>
                             </Select>
                         </FormItem>
@@ -213,6 +213,7 @@ export default {
                                 this.FormVisible=true;
                                 this.IsEdit=true;
                                 this.roleArr=[];
+                                this.model10=[];
                                 this.GetAllRole();
                             }
                         }
@@ -363,6 +364,10 @@ export default {
             RequestGetAllRole({}).then(res=>{
                _this.roleArr=res.data.response.data;
             })
+        },
+        GetIds:function(item)
+        {
+            console.log(this.model10)
         }
     }
 }
