@@ -45,7 +45,7 @@
                             <Input  v-model="formValidate.mobile" placeholder="请输入手机号"/>
                         </FormItem>
                         <FormItem label="角色" prop="jobName">
-                            <Select v-model="model10" multiple style="width:260px" @on-change="GetIds">
+                            <Select v-model="roleArrIds" multiple style="width:260px" @on-change="GetIds">
                                 <Option v-for="item in roleArr" :value="item.id" :key="item.id">{{ item.name }}</Option>
                             </Select>
                         </FormItem>
@@ -108,9 +108,10 @@ export default {
                 createdName:'',//创建人
                 isDrop:false,//是否删除
                 accountState:0,
+                roleIds:'',
             },
             roleArr:[],
-            model10: [],
+            roleArrIds: [],
             id:'',//修改用户的Id
             //添加是字段校验
             ruleValidate: 
@@ -308,6 +309,7 @@ export default {
                     {
                         params.createdId=this.info.id;
                         params.createdName=this.info.name;
+                        params.roleIds=JSON.stringify(this.roleArrIds);
                         console.log(params);
                         ResponseUserByAdd(params).then((res)=>
                         {
@@ -353,8 +355,10 @@ export default {
                 createdId:'',//创建人ID
                 createdName:'',//创建人
                 isDrop:false,//是否删除
+                roleIds:'',
             },
             this.roleArr=[];
+            this.roleArrIds=[];
             this.GetAllRole();
             this.FormVisible=true;
         },
@@ -367,7 +371,6 @@ export default {
         },
         GetIds:function(item)
         {
-            console.log(this.model10)
         }
     }
 }
