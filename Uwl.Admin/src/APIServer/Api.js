@@ -26,6 +26,10 @@ const ApiControllerUrl={
       UpdateUser:'/User/UpdateUser',//修改用户
       DeleteUser:'/User/DeleteUser',//删除用户
     },
+    //用户角色API接口
+    UserRolemanagerUrl:{
+      GetUserRoleId:'/UserRoles/UserRoleByUserId',//根据ID获取用户信息
+    },
     //角色管理API接口
     RolemanagerUrl:{
       GetRoleByPage:'/Roles/PageByRole',//角色列表分页
@@ -214,7 +218,10 @@ export const ResponseRoleByEdit=params=>{
 export const ResponseRoleByDelete=params=>{
   return axios.delete(`${baseurl1}`+ApiControllerUrl.RolemanagerUrl.DeleteRole,{params:params});
 }
-
+//根据用户Id获取已选的角色
+export const RequestRoleByUserId=params=>{
+  return axios.get(`${baseurl1}`+ApiControllerUrl.UserRolemanagerUrl.GetUserRoleId,{params:params});
+}
 
 
 

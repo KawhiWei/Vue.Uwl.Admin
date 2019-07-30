@@ -45,7 +45,7 @@
                             <Input  v-model="formValidate.mobile" placeholder="请输入手机号"/>
                         </FormItem>
                         <FormItem label="角色" prop="jobName">
-                            <Select v-model="roleArrIds" multiple style="width:260px" @on-change="GetIds">
+                            <Select v-model="roleArrIds" multiple style="width:260px">
                                 <Option v-for="item in roleArr" :value="item.id" :key="item.id">{{ item.name }}</Option>
                             </Select>
                         </FormItem>
@@ -76,7 +76,7 @@
 
 <script>
 import PageView from '@/components/Page.vue'
-import {RequestUserByPage,ResponseUserByAdd,ResponseUserByEdit,RequestGetAllRole,ResponseUserByDelete} from '../../APIServer/Api.js';
+import {RequestUserByPage,ResponseUserByAdd,ResponseUserByEdit,RequestGetAllRole,RequestRoleByUserId,ResponseUserByDelete} from '../../APIServer/Api.js';
 export default {
     name:'User',
     components:{PageView},
@@ -144,11 +144,11 @@ export default {
                 {
                     if(params.row.sex)
                     {
-                        return h('Tag',{props:{color:'primary'}},'男');
+                        return h('Tag',{props:{color:'blue'}},'男');
                     }
                     else
                     {
-                        return h('Tag',{props:{color:'primary',}},'女');
+                        return h('Tag',{props:{color:'magenta',}},'女');
                     }
                 }
             },
@@ -210,6 +210,7 @@ export default {
                                     this.sexflag='woman';
                                 }
                                 this.id=params.row.id;
+                                this.GetRoleIdlist(this.id);
                                 this.title='编辑';
                                 this.FormVisible=true;
                                 this.IsEdit=true;
@@ -369,9 +370,14 @@ export default {
                _this.roleArr=res.data.response.data;
             })
         },
-        GetIds:function(item)
+        GetRoleIdlist:function(userId)
         {
-        }
+            var _this=this;
+            _this.roleArrIds=[];
+            RequestRoleByUserId({userId:userId}).then(res=>{
+               _this.roleArrIds=res.data.response;
+            })
+        },
     }
 }
 </script>
