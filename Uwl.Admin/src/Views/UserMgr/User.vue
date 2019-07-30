@@ -284,7 +284,6 @@ export default {
                 if(valid)
                 {
                     var _this=this;
-                    debugger
                     var sexflag=true;//默认性别是男
                     if(_this.sexflag=='woman')
                     {
@@ -298,11 +297,11 @@ export default {
                         params.id=this.id;
                         params.updateName=this.info.name;
                         params.updateId=this.info.id;
+                        params.roleIds=JSON.stringify(this.roleArrIds);
                         ResponseUserByEdit(params).then((res)=>
                         {
                             _this.FormVisible=false;
                             _this.$Message.success(res.data.msg);
-                            //debugger
                             _this.GetUser();
                         })
                     }
