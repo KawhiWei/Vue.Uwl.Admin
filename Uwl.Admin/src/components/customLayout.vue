@@ -88,18 +88,13 @@ export default {
   },
   mounted()
   {
-     this.GetMenu(this.info.id)
+      var arr=JSON.parse(window.localStorage.router);
+      if(arr.length>=0)
+      {
+        this.routerMenu=arr;
+      }
   },
   methods:{
-      GetMenu(userId)
-      {
-        var _this=this;
-        RequestMenuTree({userid:userId}).then(
-        res=>{
-          _this.routerMenu=res.data.response.children;
-          window.sessionStorage.setItem('menus',JSON.stringify(_this.routerMenu));
-        })
-      },
       logOut()
       {
         this.$router.push('/login');

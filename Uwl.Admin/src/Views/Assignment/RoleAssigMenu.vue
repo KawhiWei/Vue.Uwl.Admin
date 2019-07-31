@@ -109,12 +109,11 @@ export default {
            var crr=obj; 
            function tree(crr) {
                crr.forEach(element => {
-                   element.checked=element.ischecked;
                    if(element.buttonsList.length>0)
                    {
                        var btnarr=element.buttonsList;
                        btnarr.forEach(arr=>{
-                           if(arr.ischecked)
+                           if(arr.checked)
                            {
                                _this.selectlist.push(arr.id);
                            }
@@ -123,7 +122,7 @@ export default {
                    var arr=element.children;
                    var Ischeck=[];
                    arr.forEach(element => {
-                       if(element.ischecked)
+                       if(element.checked)
                         {
                             Ischeck.push(element);
                         }
@@ -139,6 +138,7 @@ export default {
                }); 
            }
            tree(crr)
+           console.log(obj);
            _this.randomMovieList=obj;
        },
        Gets()

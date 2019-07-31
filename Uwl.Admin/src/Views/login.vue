@@ -23,8 +23,11 @@
 </div>
 </template>
 <script>
-    import {RequestLogin,RequestUserInfo} from '../APIServer/Api.js';
-    export default {
+import {RequestLogin,RequestUserInfo,RequestMenuTree} from '../APIServer/Api.js';
+import router from '../router'
+import {filterAsyncRouterMap} from '../router/index.js';
+
+export default {
         data () {
             return {
                 formInline: {
@@ -57,9 +60,15 @@
                 var _this=this;
                 // debugger
                 RequestUserInfo({token:tokens}).then(res=>{
-                    console.log(res.data.response);
-                    console.log()
+                    console.log(res.data.response.id);
                     window.sessionStorage.setItem('userInfo',JSON.stringify(res.data.response));//将用户信息写入到session缓存中
+                    RequestMenuTree({userid:res.data.response.id}).then(
+                        res=>{
+                        var routeArr=res.data.response.children;
+                        window.localStorage.setItem('router',JSON.stringify(routeArr));
+                        routeArr=filterAsyncRouterMap(routeArr)
+                        router.addRoutes(routeArr);       
+                    })
                     // _this.$router.replace(_this.$route.query.ReturnUrl?_this.$route.query.ReturnUrl:'/')
                     _this.$router.replace('/')
                 })
