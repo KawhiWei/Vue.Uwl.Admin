@@ -88,6 +88,23 @@ export default {
   },
   mounted()
   {
+      var _this=this;
+      {
+        var getroute=this.$route;
+        //刷新页面之前先判断当前路由是否存在Tags中，如果存在直接跳出循环,不存在则添加到Tags中
+        for (var i = 0; i < this.$store.state.TagList.length; i++)
+        {
+            if(getroute.path==this.$store.state.TagList[i].path)
+            {
+              break;
+            }
+            else
+            {
+              var model={id:'2',lable:getroute.name,path:getroute.path,IsColse:true};
+              _this.$store.commit("SaveTags",model)
+            }
+        }
+      }
       var arr=JSON.parse(window.localStorage.router);
       if(arr.length>=0)
       {

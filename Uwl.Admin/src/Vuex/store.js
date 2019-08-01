@@ -9,7 +9,7 @@ const state={
     token:null,//存放后台获取到的Token，
     User:[],//存放后台返回的用户信息
     TagList:[
-        {id:'1',lable:'个人主页',path:'/',IsColse:false},
+        {id:'1',lable:'个人主页',path:'/PlatformHome',IsColse:false},
     ]
 }
 

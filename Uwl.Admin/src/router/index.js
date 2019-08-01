@@ -15,7 +15,7 @@ const _import =require('@/router/_import_'+process.env.NODE_ENV)//获取组件�
 
 
 Vue.use(Router)
-
+let addRouFlag = false
 
 //定义并 New 一个Vue路由对象
 const createRouters=()=>new Router(
@@ -57,9 +57,44 @@ const createRouters=()=>new Router(
     ],
   }
 )
-
-
 const router = createRouters()
+router.beforeEach((to,from,next)=>{
+  if(window.localStorage.router)
+  {
+    var arr=JSON.parse(window.localStorage.router?window.localStorage.router:'');//获取缓存中的路由
+    if(arr.length<=0)
+    {
+      next({path:'/login',query:{ReturnUrl:to.fullPath}})
+    }
+    else
+    {
+      arr=filterAsyncRouterMap(arr)//动态添加组件
+      router.addRoutes(arr)//添加动态路由
+      if(!addRouFlag)//动态加载路由时需要添加一个变量避免陷入死循环
+      {
+        addRouFlag=true;
+        //跳转动态路由时不可直接next(),  需要用此写法next({ ...to, replace: true })
+        next({ ...to, replace: true });
+      }
+    }
+  }
+  if(to.meta.requireAuth)
+  {
+    if(store.state.token==null)
+    {
+      var token=window.sessionStorage.getItem("Token");
+      store.state.token=token;
+    }
+    if(store.state.token==null)
+    {
+      next({path:'/login',query:{ReturnUrl:to.fullPath}})
+    }
+    else{   next();      }
+  }
+  else{      next();    }
+}
+
+)
 export function filterAsyncRouterMap(asyncRouter)
 {
     //循环路由
@@ -89,36 +124,9 @@ export function filterAsyncRouterMap(asyncRouter)
         }
         return true;
     })
-    console.log(accessroutes)
     return accessroutes;
-
 }
 
 
 
-
-router.beforeEach((to,from,next)=>{
-    if(to.meta.requireAuth)
-    {
-      if(store.state.token==null)
-      {
-        var token=window.sessionStorage.getItem("Token");
-        store.state.token=token;
-      }
-      if(store.state.token==null)
-      {
-        next({path:'/login',query:{ReturnUrl:to.fullPath}})
-      }
-      else
-      {
-        next();
-      }
-    }
-    else
-    {
-      next();
-    }
-  }
-
-)
 export default router;
