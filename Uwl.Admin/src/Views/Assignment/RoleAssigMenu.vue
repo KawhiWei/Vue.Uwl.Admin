@@ -106,6 +106,7 @@ export default {
        treeRecursion(obj)
        {
            var _this=this;
+           _this.randomMovieList=[];
            var crr=obj; 
            function tree(crr) {
                crr.forEach(element => {
@@ -138,16 +139,15 @@ export default {
                }); 
            }
            tree(crr)
-           console.log(obj);
            _this.randomMovieList=obj;
        },
        Gets()
        {
-           console.log(this.roleRow.id);
+        //    console.log(this.roleRow.id);
            var btn=JSON.stringify(this.selectlist);
            var menus=JSON.stringify(this.$refs.mm.getCheckedAndIndeterminateNodes());
            var param={RoleId:this.roleRow.id,menuIds:menus,BtnIds:btn,CreatedId:this.info.id,CreatedName:this.info.name};
-           console.log(param)
+        //    console.log(param)
            ResponseRoleAssigBySave(param).then(res=>{
                console.log(res.data)
            })

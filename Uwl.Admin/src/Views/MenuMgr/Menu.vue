@@ -46,8 +46,6 @@
         @on-ok="handleSubmit('formValidate')"
       >
       <!---菜单基本信息--->
-        <Tabs v-model="panelName" :animated="false" on-click="Names(1)" >
-           <TabPane label="基本信息" name="name1">
             <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
               <FormItem label="菜单名称" prop="name">
                 <Input v-model="formValidate.name" placeholder="请输入菜单名称" />
@@ -74,17 +72,6 @@
                 <Input v-model="formValidate.memo" placeholder="请输入备注" />
               </FormItem>
             </Form>
-          </TabPane>
-          <!---页面按钮设置--->
-          <TabPane label="页面按钮" name="name2">
-            <CheckboxGroup v-model="buttonIdarrChecked" @on-change="checkAllGroupChange">
-              <Checkbox size="large" :label="v.id" :key="v.id" v-for="v in buttonList">
-                <span>{{v.name}}</span>
-              </Checkbox>              
-            </CheckboxGroup>
-          </TabPane>
-        </Tabs>
-        <div></div>
         <div slot="footer">
           <Button type="primary" @click="handleSubmit('formValidate')">提交</Button>
           <Button @click="FormVisible = false" style="margin-left: 8px">取消</Button>

@@ -105,10 +105,18 @@ export default {
             }
         }
       }
-      var arr=JSON.parse(window.localStorage.router);
-      if(arr.length>=0)
+      if(window.localStorage.router)
       {
-        this.routerMenu=arr;
+        
+        var arr=JSON.parse(window.localStorage.router);
+        if(arr.length>=0)
+        {
+          this.routerMenu=arr;
+        }
+      }
+      else
+      {
+        this.turnToRoute('/login')
       }
   },
   methods:{
