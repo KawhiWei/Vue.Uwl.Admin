@@ -7,7 +7,7 @@ var baseurl2="http://139.199.219.154:9600";
 const ApiControllerUrl={
     //登录Url存放位置
     LoginUrl:{
-        GetTokenByUserAndPass:'/Login/Token',//根据用户名和密码获取Token
+        GetTokenByUserAndPass:'/Login/TokenAssig',//根据用户名和密码获取Token
         GetUserByToken:'',//根据Token获取用户个人信息
     },
     //菜单管理Url存放位置

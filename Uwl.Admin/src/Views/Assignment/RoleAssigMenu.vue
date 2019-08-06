@@ -148,8 +148,8 @@ export default {
            var menus=JSON.stringify(this.$refs.mm.getCheckedAndIndeterminateNodes());
            var param={RoleId:this.roleRow.id,menuIds:menus,BtnIds:btn,CreatedId:this.info.id,CreatedName:this.info.name};
         //    console.log(param)
-           ResponseRoleAssigBySave(param).then(res=>{
-               console.log(res.data)
+                ResponseRoleAssigBySave(param).then(res=>{
+                console.log(res.data)
            })
        }
        
