@@ -68,7 +68,6 @@ export default {
                 var _this=this;
                 // debugger
                 RequestUserInfo({token:tokens}).then(res=>{
-                    console.log(res.data.response.id);
                     window.sessionStorage.setItem('userInfo',JSON.stringify(res.data.response));//将用户信息写入到session缓存中
                     RequestMenuTree({userid:res.data.response.id}).then(
                         res=>{

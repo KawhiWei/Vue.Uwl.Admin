@@ -1,5 +1,6 @@
 import axios from 'axios' //在APi访问接口引入Vuex
 import router from '../router/index'
+import Vue from 'vue';
 var baseurl1="https://localhost:5001";
 var baseurl2="http://139.199.219.154:9600";
 
@@ -65,22 +66,23 @@ axios.interceptors.request.use(
         }
         return config;
     },
-    err=>{
-        return Promises.reject(err);
+    error=>{
+        return Promises.reject(error);
     }
 )
-axios.interceptors.request.use(response=>{//没有错误数据原封返回
+axios.interceptors.response.use(response=>{//没有错误数据原封返回
     return response;
     },
     //如果有返回错误
     error=>{
         if(error.response)
         {
-            console.log(error.response.status)
-            switch (err.response.status) //判断返回错误类型
+            // console.log(error.response.status)
+            // console.log(error.response.data)
+            switch (error.response.status) //判断返回错误类型
             {
                 case 400:
-                  err.message = '请求错误'
+                  error.message = '请求错误'
                   break
                 case 401:
                   if(window.sessionStorage.getItem('Token'))//获取缓存中的Token
@@ -91,40 +93,40 @@ axios.interceptors.request.use(response=>{//没有错误数据原封返回
                   {
                     ToLogin();
                   }
-                  err.message = '未授权，请登录'
+                  error.message = '未授权，请登录'
                   break
                 case 403:
-                  err.message = '拒绝访问'
+                  error.status=error.response.status
+                  error.message = error.response.data.Message;
                   break
                 case 404:
-                  err.message = `请求地址出错: ${err.response.config.url}`
+                  error.message = `请求地址出错: ${error.response.config.url}`
                   break
                 case 408:
-                  err.message = '请求超时'
+                  error.message = '请求超时'
                   break
                 case 500:
-                  err.message = '服务器内部错误'
+                  error.message = '服务器内部错误'
                   break
                 case 501:
-                  err.message = '服务未实现'
+                  error.message = '服务未实现'
                   break
                 case 502:
-                  err.message = '网关错误'
+                  error.message = '网关错误'
                   break
                 case 503:
-                  err.message = '服务不可用'
+                  error.message = '服务不可用'
                   break
                 case 504:
-                  err.message = '网关超时'
+                  error.message = '网关超时'
                   break
                 case 505:
-                  err.message = 'HTTP版本不受支持'
+                  error.message = 'HTTP版本不受支持'
                   break
                 default:
             }
         }
-        console.error(error)
-        return Promise.reject(error) // 返回接口返回的错误信息
+        return error // 返回接口返回的错误信息
     },
 )
 /**
@@ -138,7 +140,7 @@ axios.interceptors.request.use(response=>{//没有错误数据原封返回
 // function AxiosGet(url,params,success)
 // {
 //   console.log(url);
-//   axios.get(`${baseurl1}`+url,{params:params}).then(function(res){success(res.data)}).catch(function(err){let res=err.response});
+//   axios.get(`${baseurl1}`+url,{params:params}).then(function(res){success(res.data)}).catch(function(error){let res=error.response});
 // }
 
 const ToLogin=params=>{

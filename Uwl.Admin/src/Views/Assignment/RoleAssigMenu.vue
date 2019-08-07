@@ -51,6 +51,7 @@ export default {
        {
            var _this=this;
            RequestGetAllRole({}).then(res=>{
+               console.log(res)
                _this.RoleList=res.data.response.data;
                
            })

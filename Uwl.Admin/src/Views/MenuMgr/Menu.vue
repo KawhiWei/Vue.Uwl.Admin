@@ -266,11 +266,19 @@ export default {
       this.loading = true;
       RequestMenuByPage({ PageIndex: pageIndex, PageSize: pageSize }).then(
         res => {
-          _this.loading = false;
-          //   console.log(res.data.response.totalCount);
-          //   console.log(res.data.response.data);
-          _this.MenuList = res.data.response.data;
-          _this.$refs.PageArr.Total = res.data.response.totalCount;
+          if(res.status!=200)
+          {
+            var err=JSON.parse(res.response.data)
+            this.$Message.error({content:err.Message,duration:3});
+            _this.loading=false;
+          }
+          else
+          {
+            _this.loading = false;
+            _this.MenuList = res.data.response.data;
+            _this.$refs.PageArr.Total = res.data.response.totalCount;
+          }
+          
         }
       );
     },

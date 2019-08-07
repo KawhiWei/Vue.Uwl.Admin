@@ -332,10 +332,17 @@ export default {
             this.loading=true;
             RequestUserByPage({PageIndex:pageIndex,PageSize:pageSize}).then(res=>
             {
-                _this.loading=false;
-                _this.UserList=res.data.response.data;
-                _this.$refs.PageArr.Total=res.data.response.totalCount;
-                console.log(_this.UserList)
+                if(res.status!=200)
+                {
+                    var err=JSON.parse(res.response.data)
+                    this.$Message.error({content:err.Message,duration:3});
+                    _this.loading=false;
+                }
+                else{
+                    _this.loading=false;
+                    _this.UserList=res.data.response.data;
+                    _this.$refs.PageArr.Total=res.data.response.totalCount;
+                }
             });
         },
         AddModal:function() {

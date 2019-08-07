@@ -260,10 +260,19 @@ export default {
             this.loading=true;
             RequestRoleByPage({PageIndex:pageIndex,PageSize:pageSize}).then(res=>
             {
-                _this.loading=false;
-                _this.List=res.data.response.data;
-                _this.$refs.PageArr.Total=res.data.response.totalCount;
-                console.log(_this.List)
+                if(res.status!=200)
+                {
+                    var err=JSON.parse(res.response.data)
+                    this.$Message.error({content:err.Message,duration:3});
+                    _this.loading=false;
+                }
+                else{
+                    _this.loading=false;
+                    _this.List=res.data.response.data;
+                    _this.$refs.PageArr.Total=res.data.response.totalCount;
+                    console.log(_this.List)
+                }
+                
             });
         },
         AddModal:function() {
