@@ -51,9 +51,17 @@ export default {
        {
            var _this=this;
            RequestGetAllRole({}).then(res=>{
-               console.log(res)
-               _this.RoleList=res.data.response.data;
-               
+              if(res.status!=200)
+              {
+                var err=JSON.parse(res.response.data)
+                this.$Message.error({content:err.Message,duration:3});
+                _this.loading=false;
+              }
+              else
+              { 
+                console.log(res)
+                _this.RoleList=res.data.response.data;
+              }
            })
        },
        //获取所有的菜单和按钮

@@ -2,9 +2,8 @@
 <div class="Bg-img">
     <div class="login">
         <div class="loginlogo">
-            我是放Logo的
         </div>
-        <Form>
+        <Form class="foms">
             <FormItem>
             <Input type="text" v-model="formInline.user" placeholder="Username">
                 <Icon type="ios-person-outline" slot="prepend"></Icon>
@@ -16,7 +15,7 @@
             </Input>
         </FormItem>
         <FormItem>
-            <Button type="primary" @click="handleSubmit()">Login</Button>
+            <Button type="primary" style="width:100%;" @click="handleSubmit()">Login</Button>
         </FormItem>
         </Form>
     </div>
@@ -99,14 +98,24 @@ export default {
     position: absolute;
 }
 .Bg-img .login{
-    width: 600px;
-    height: 450px;
-    border: 1px red solid;
+    width: 30%;
+    height:38%;
+    background-color: white;
+    position: relative;
+    left: 48%;
+    top: 20%;
+    border-radius:10px; 
+    right: 20%;
+    opacity: 1;
+    padding: 25px 30px 25px 50px;
 }
+.Bg-img .login .foms
+{
+    width: 96%;
+}
+
 .Bg-img .login .loginlogo{
-    width: 350px;
+    width: 96%;
     height: 140px;
-    border: 1px solid yellow;
-    text-align: center;
 }
 </style>
