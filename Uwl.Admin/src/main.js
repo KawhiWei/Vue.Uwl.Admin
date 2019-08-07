@@ -7,10 +7,15 @@ import store from '@/Vuex/store'//在全局Main.js中引入Store仓库
 import iview from 'iview' //引入Iview前端js框架
 import 'iview/dist/styles/iview.css' //引入Iview的CSS文件
 import Msg from './Public/Message.js'
+import Echarts from 'echarts'
 
 Vue.config.productionTip = false
 Vue.prototype.$Msg=Msg
 Vue.use(iview) //挂载iview框架
+
+Vue.prototype.echarts=Echarts
+Vue.use(Echarts)
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
