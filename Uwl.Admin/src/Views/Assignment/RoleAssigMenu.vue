@@ -68,7 +68,17 @@ export default {
        RoleAssig:function(index,item){
             var _this=this;
             RoleAssigGetAllRole({roleId:item.id}).then(res=>{
-               _this.treeRecursion(res.data.response.children);
+                debugger
+              if(res.status!=200)
+              {
+                  
+                var err=JSON.parse(res.response.data)
+                this.$Message.error({content:err.Message,duration:3});
+              }
+              else
+              {
+                  _this.treeRecursion(res.data.response.children);
+              }
             })
            _this.roleRow=item
            _this.changebgcol = index;
