@@ -137,7 +137,6 @@ axios.interceptors.response.use(response=>{//没有错误数据原封返回
 
 const ToLogin=params=>{
   store.commit("SaveToken","");
-  store.commit("SaveTags","");
   window.sessionStorage.setItem('Token',"");
   window.localStorage.setItem('router',"");
   router.replace({

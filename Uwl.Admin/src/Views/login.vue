@@ -75,7 +75,7 @@ export default {
                         router.addRoutes(routeArr);       
                     })
                     // _this.$router.replace(_this.$route.query.ReturnUrl?_this.$route.query.ReturnUrl:'/')
-                    _this.$router.replace('/')
+                    _this.$router.push('/')
                 })
             },
             //根据用户ID获取他的菜单
