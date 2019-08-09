@@ -51,7 +51,6 @@ export default {
             handleSubmit() {
                 var _this=this;
                 RequestLogin({User:_this.formInline.user,Password:_this.formInline.password}).then(res=>{
-                    console.log(res)
                     if(res.data.success)
                     {
                         _this.$store.commit("SaveToken",res.data.response.token)

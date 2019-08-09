@@ -1,6 +1,7 @@
 import axios from 'axios' //在APi访问接口引入Vuex
 import router from '../router/index'
 import Vue from 'vue';
+import store from '../Vuex/store'
 var baseurl1="https://localhost:5001";
 var baseurl2="http://139.199.219.154:9600";
 
@@ -77,22 +78,13 @@ axios.interceptors.response.use(response=>{//没有错误数据原封返回
     error=>{
         if(error.response)
         {
-            // console.log(error.response.status)
-            // console.log(error.response.data)
             switch (error.response.status) //判断返回错误类型
             {
                 case 400:
                   error.message = '请求错误'
                   break
                 case 401:
-                  if(window.sessionStorage.getItem('Token'))//获取缓存中的Token
-                  {
-                    //config.headers.Authorization="Bearer "+window.sessionStorage.getItem('Token');
-                  }
-                  else
-                  {
-                    ToLogin();
-                  }
+                  ToLogin();
                   error.message = '未授权，请登录'
                   break
                 case 403:
@@ -144,6 +136,10 @@ axios.interceptors.response.use(response=>{//没有错误数据原封返回
 // }
 
 const ToLogin=params=>{
+  store.commit("SaveToken","");
+  store.commit("SaveTags","");
+  window.sessionStorage.setItem('Token',"");
+  window.localStorage.setItem('router',"");
   router.replace({
     path:'/login',
     query:{ReturnUrl:router.currentRoute.fullPath}
