@@ -167,7 +167,16 @@ export default {
            var param={RoleId:this.roleRow.id,menuIds:menus,BtnIds:btn,CreatedId:this.info.id,CreatedName:this.info.name};
         //    console.log(param)
                 ResponseRoleAssigBySave(param).then(res=>{
-                console.log(res.data)
+                    if(res.status!=200)
+                    {
+                        var err=JSON.parse(res.response.data)
+                        this.$Message.error({content:err.Message,duration:3});
+                        _this.loading=false;
+                    }
+                    else
+                    {
+                        console.log(res.data)
+                    }
            })
        }
        
