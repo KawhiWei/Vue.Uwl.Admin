@@ -72,10 +72,21 @@ export default {
                         var routeArr=res.data.response.children;
                         window.localStorage.setItem('router',JSON.stringify(routeArr));
                         routeArr=filterAsyncRouterMap(routeArr)
-                        router.addRoutes(routeArr);       
+                        router.addRoutes(routeArr); 
+                        debugger
+                        if(_this.$route.query.ReturnUrl)
+                        {
+                            _this.$router.push(_this.$route.query.ReturnUrl);    
+                        }
+                        else
+                        {
+                            _this.$router.push('/');
+                        }
+                        
                     })
-                    // _this.$router.replace(_this.$route.query.ReturnUrl?_this.$route.query.ReturnUrl:'/')
-                    _this.$router.push('/')
+                    
+                    
+                    //_this.$router.push('/')
                 })
             },
             //根据用户ID获取他的菜单

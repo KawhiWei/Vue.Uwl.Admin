@@ -88,9 +88,12 @@ export default {
   },
   mounted()
   {
+      this.$store.commit("SaveTags","");
+      this.$store.commit("SaveTags",{id:'1',lable:'个人主页',path:'/PlatformHome',IsColse:false});
       var _this=this;
       {
         var getroute=this.$route;
+        debugger
         //刷新页面之前先判断当前路由是否存在Tags中，如果存在直接跳出循环,不存在则添加到Tags中
         for (var i = 0; i < this.$store.state.TagList.length; i++)
         {
@@ -122,6 +125,10 @@ export default {
   methods:{
       logOut()
       {
+        store.commit("SaveToken","");
+        window.sessionStorage.setItem('Token',"");
+        window.localStorage.setItem('router',"");
+        this.$store.commit("SaveTags","")
         this.$router.push('/login');
       },
       //点击菜单添加Tags标签页

@@ -67,7 +67,6 @@ export default {
        RoleAssig:function(index,item){
             var _this=this;
             RoleAssigGetAllRole({roleId:item.id}).then(res=>{
-                debugger
               if(res.status!=200)
               {
                   
@@ -165,7 +164,6 @@ export default {
            var btn=JSON.stringify(this.selectlist);
            var menus=JSON.stringify(this.$refs.mm.getCheckedAndIndeterminateNodes());
            var param={RoleId:this.roleRow.id,menuIds:menus,BtnIds:btn,CreatedId:this.info.id,CreatedName:this.info.name};
-        //    console.log(param)
                 ResponseRoleAssigBySave(param).then(res=>{
                     if(res.status!=200)
                     {
