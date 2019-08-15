@@ -2,8 +2,8 @@ import axios from 'axios' //在APi访问接口引入Vuex
 import router from '../router/index'
 import Vue from 'vue';
 import store from '../Vuex/store'
-var baseurl1="https://localhost:5001";
-var baseurl2="http://139.199.219.154:9600";
+var baseurl1="http://139.199.219.154:8561";
+// var baseurl2="http://139.199.219.154:9600";
 
 
 const ApiControllerUrl={
