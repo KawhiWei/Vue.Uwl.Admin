@@ -73,7 +73,6 @@ export default {
                         window.localStorage.setItem('router',JSON.stringify(routeArr));
                         routeArr=filterAsyncRouterMap(routeArr)
                         router.addRoutes(routeArr); 
-                        debugger
                         if(_this.$route.query.ReturnUrl)
                         {
                             _this.$router.push(_this.$route.query.ReturnUrl);    

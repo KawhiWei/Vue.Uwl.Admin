@@ -2,7 +2,7 @@ import axios from 'axios' //在APi访问接口引入Vuex
 import router from '../router/index'
 import Vue from 'vue';
 import store from '../Vuex/store'
-var baseurl1="http://139.199.219.154:8561";
+var baseurl1="https://localhost:5001";//"http://139.199.219.154:8561";
 // var baseurl2="http://139.199.219.154:9600";
 
 
@@ -45,11 +45,13 @@ const ApiControllerUrl={
       AddButton:'/Button/AddButton',//添加按钮
       UpdateButton:'/Roles/UpdateRole',//修改按钮
       GetAllButton:'/Button/AllButton',//获取所有的按钮
+
       DeleteButton:'/Roles/DeleteRole',//删除按钮
+      GetButtonByMenuId:'/Button/GetBtnByMenuId',//根据菜单ID获取按钮
     },
     //按钮管理API接口
     MenuButtonUrl:{
-      GetButtonByMenuId:'/Menus/GetButtonListByMenuId',//根据菜单ID获取按钮
+      
     },
     //权限分配API接口
     RoleAssigMenuUrl:{ //角色分配权限接口定义
@@ -238,7 +240,7 @@ export const RequestButtonByAll=params=>{
 
 //根据菜单ID获取改菜单下的按钮
 export const RequestButtonByMenuId=params=>{
-  return axios.get(`${baseurl1}`+ApiControllerUrl.MenuButtonUrl.GetButtonByMenuId,{params:params});
+  return axios.get(`${baseurl1}`+ApiControllerUrl.ButtonmanagerUrl.GetButtonByMenuId,{params:params});
 }
 
 

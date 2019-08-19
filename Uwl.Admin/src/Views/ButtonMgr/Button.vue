@@ -60,7 +60,7 @@
 </template>
 <script>
 import PageView from '@/components/Page.vue'
-import {RequestButtonByPage,ResponsebuttonByAdd,RequestButtonByAll} from '../../APIServer/Api.js';
+import {RequestButtonByPage,ResponsebuttonByAdd} from '../../APIServer/Api.js';
 export default {
   components:{PageView},
   name: 'Buttons',
@@ -112,18 +112,26 @@ export default {
             list:[],
     }
   },
+  created:function()
+  {
+      var menuId=this.$getArrs.getBtnArr(this.$route).id;
+      var res=this.$getArrs.getBtnBmenuid(menuId);
+      debugger
+      if(res.status!=200)
+      {
+        var err=JSON.parse(res.response.data)
+        this.$Message.error({content:err.Message,duration:3});
+      }
+      else
+      { 
+        console.log(res)
+      }
+  },
   mounted:function()
   {
       this.Search();
-      this.GetAll();
   },
   methods:{
-      GetAll()
-      {
-          RequestButtonByAll({}).then(res=>{
-              console.log(res)
-          })
-      },
       Search()
       {
           this.Get();
@@ -155,8 +163,6 @@ export default {
                     {
                         params.createdId=this.info.id;
                         params.createdName=this.info.name;
-                        console.log(params);
-                        debugger
                         ResponsebuttonByAdd(params).then((res)=>
                         {
                             _this.FormVisible=false;

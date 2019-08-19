@@ -270,7 +270,6 @@ export default {
                     _this.loading=false;
                     _this.List=res.data.response.data;
                     _this.$refs.PageArr.Total=res.data.response.totalCount;
-                    console.log(_this.List)
                 }
                 
             });
