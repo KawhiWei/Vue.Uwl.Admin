@@ -40,6 +40,12 @@
                             <Input v-model="formValidate.apiAddress" placeholder="请填写调用API接口地址"/>
                             <!-- </Poptip> -->
                         </FormItem>
+                        <FormItem label="是否显示" prop="isShow">
+                            <i-switch v-model="formValidate.isShow" size="large" style="width:50px;">
+                                <span slot="open">On</span>
+                                <span slot="close">Off</span>
+                            </i-switch>
+                        </FormItem>
                          <FormItem label="JS事件" prop="keyCode">
                             <Input v-model="formValidate.keyCode" placeholder="请填写按钮事件"/>
                         </FormItem>
@@ -80,6 +86,7 @@ export default {
                 createdId:'',//创建人ID
                 createdName:'',//创建人
                 isDrop:false,//是否删除
+                isShow:false
             },
             currentRow:'',
             IsEdit:false,
@@ -116,16 +123,15 @@ export default {
   {
       var menuId=this.$getArrs.getBtnArr(this.$route).id;
       var res=this.$getArrs.getBtnBmenuid(menuId);
-      debugger
-      if(res.status!=200)
-      {
-        var err=JSON.parse(res.response.data)
-        this.$Message.error({content:err.Message,duration:3});
-      }
-      else
-      { 
-        console.log(res)
-      }
+    //   if(res.status!=200)
+    //   {
+    //     var err=JSON.parse(res.response.data)
+    //     this.$Message.error({content:err.Message,duration:3});
+    //   }
+    //   else
+    //   { 
+    //     console.log(res)
+    //   }
   },
   mounted:function()
   {
@@ -165,8 +171,13 @@ export default {
                         params.createdName=this.info.name;
                         ResponsebuttonByAdd(params).then((res)=>
                         {
-                            _this.FormVisible=false;
-                            _this.Get();
+                            if(res.data.success)
+                            {
+                                _this.FormVisible=false;
+                                _this.$Message.success(res.data.msg);
+                                _this.Get();
+                            }
+                            
                         })
                     }
                 }

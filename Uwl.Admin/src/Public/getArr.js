@@ -26,7 +26,7 @@ export default {
     },
     getBtnBmenuid:function(Id) {
         var btnArr;
-        RequestButtonByMenuId({menuId:Id}).then(res=>{
+        RequestButtonByMenuId({menuId:Id}).then((res)=>{
             btnArr=res;
         });
         return btnArr;

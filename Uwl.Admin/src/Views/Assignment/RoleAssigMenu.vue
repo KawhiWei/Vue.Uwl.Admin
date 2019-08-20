@@ -169,13 +169,19 @@ export default {
                     {
                         var err=JSON.parse(res.response.data)
                         this.$Message.error({content:err.Message,duration:3});
-                        _this.loading=false;
                     }
                     else
                     {
-                        console.log(res.data)
+                        if(res.data.success)
+                        {
+                            this.$Message.success({content:res.data.msg,duration:3});
+                        }
+                        else
+                        {
+                            this.$Message.error({content:res.data.msg,duration:3});
+                        }
                     }
-           })
+                })
        }
        
     }
