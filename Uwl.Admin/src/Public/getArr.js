@@ -1,6 +1,6 @@
-import {RequestButtonByMenuId} from '../APIServer/Api.js';
 
 export default {
+    //根据路由获取到菜单id
     getBtnArr:function(route) {
         var routemo=route.path;
         var routerarr= JSON.parse(window.localStorage.getItem('router'));
@@ -24,11 +24,4 @@ export default {
         getBtn(routerarr);
         return rows;
     },
-    getBtnBmenuid:function(Id) {
-        var btnArr;
-        RequestButtonByMenuId({menuId:Id}).then((res)=>{
-            btnArr=res;
-        });
-        return btnArr;
-    }
 }

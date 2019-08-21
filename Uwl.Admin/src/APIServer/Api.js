@@ -16,6 +16,7 @@ const ApiControllerUrl={
     MenumanagerUrl:{
       GetTreeMenu:'/GetTree/TreeList',//根据角色获取菜单
       GetMenuByPage:'/Menus/PageMenu',//菜单列表分页
+      GetAllMenu:'/Menus/MenuList',//获取所有菜单非分页
       AddMenu:'/Menus/AddMenu',//添加菜单
       UpdateMenu:'/Menus/MenuUpdate',//修改菜单
       Delete:'/Menus/MenuDelete',//删除菜单
@@ -43,10 +44,8 @@ const ApiControllerUrl={
     ButtonmanagerUrl:{
       GetButtonByPage:'/Button/PageButton',//按钮分页
       AddButton:'/Button/AddButton',//添加按钮
-      UpdateButton:'/Roles/UpdateRole',//修改按钮
-      GetAllButton:'/Button/AllButton',//获取所有的按钮
-
-      DeleteButton:'/Roles/DeleteRole',//删除按钮
+      UpdateButton:'/Button/UpdateButton',//修改按钮
+      DeleteButton:'/Button/DeleteButton',//删除按钮
       GetButtonByMenuId:'/Button/GetBtnByMenuId',//根据菜单ID获取按钮
     },
     //按钮管理API接口
@@ -157,6 +156,9 @@ export const RequestUserInfo=params=>{
 export const RequestMenuTree=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.GetTreeMenu,{params:params});
 }
+export const RequestAllMenu=params=>{
+  return axios.get(`${baseurl1}`+ApiControllerUrl.MenumanagerUrl.GetAllMenu,{params:params});
+}
 
 
 //菜单管理异步访问API接口
@@ -232,10 +234,6 @@ export const RequestButtonByPage=params=>{
 //添加按钮方法
 export const ResponsebuttonByAdd=params=>{
   return axios.post(`${baseurl1}`+ApiControllerUrl.ButtonmanagerUrl.AddButton,params);
-}
-//Get获取所有按钮方法
-export const RequestButtonByAll=params=>{
-  return axios.get(`${baseurl1}`+ApiControllerUrl.ButtonmanagerUrl.GetAllButton,params);
 }
 
 //根据菜单ID获取改菜单下的按钮

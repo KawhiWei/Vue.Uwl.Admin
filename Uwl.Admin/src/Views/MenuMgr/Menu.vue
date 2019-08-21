@@ -88,7 +88,6 @@ import {
   RequestMenuTree,
   ResponseMenuByEdit,
   ResponseMenuByDelete,
-  RequestButtonByAll,
   RequestButtonByMenuId
 } from "../../APIServer/Api.js";
 export default {
@@ -154,9 +153,6 @@ export default {
                         }
                       );
                       _this.buttonIdarrChecked = [];
-                      RequestButtonByAll({}).then(res => {
-                        _this.buttonList = res.data.response;
-                      });
                       RequestButtonByMenuId({menuId:this.id}).then(res=>{
                         _this.buttonIdarrChecked=res.data.response;
                       })
@@ -323,10 +319,6 @@ export default {
           _this.tree(res.data.response);
         });
       _this.buttonList = [];
-      RequestButtonByAll({}).then(res => {
-        _this.buttonList = res.data.response;
-        console.log(_this.buttonList)
-      });
       this.FormVisible = true;
     },
     handleSubmit(name) {
