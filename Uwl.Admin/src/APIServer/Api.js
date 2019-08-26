@@ -77,6 +77,7 @@ axios.interceptors.response.use(response=>{//没有错误数据原封返回
     },
     //如果有返回错误
     error=>{
+      debugger
         if(error.response)
         {
             switch (error.response.status) //判断返回错误类型
@@ -86,6 +87,7 @@ axios.interceptors.response.use(response=>{//没有错误数据原封返回
                   break
                 case 401:
                   ToLogin();
+                  debugger
                   error.message = '未授权，请登录'
                   break
                 case 403:
