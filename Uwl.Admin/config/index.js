@@ -6,21 +6,28 @@ const path = require('path')
 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
-
+    hotOnly: false, 
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5001',//后端接口地址
+        ws:true,
+        changeOrigin: true,//是否允许跨越
+        pathRewrite: {
+            "^/apb": "",//重写,
+        }
+    }
+    },
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: '127.0.0.1', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
-
-    
+    https: false,
     /**
      * Source Maps
      */

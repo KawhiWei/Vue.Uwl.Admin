@@ -2,61 +2,57 @@ import axios from 'axios' //在APi访问接口引入Vuex
 import router from '../router/index'
 import Vue from 'vue';
 import store from '../Vuex/store'
-var baseurl1="https://localhost:5001";//"http://139.199.219.154:8561";//
+var baseurl1="http://localhost:5001";//"http://139.199.219.154:8561";//
 // var baseurl2="http://139.199.219.154:9600";
 
 
 const ApiControllerUrl={
     //登录Url存放位置
     LoginUrl:{
-        GetTokenByUserAndPass:'/Login/TokenAssig',//根据用户名和密码获取Token
+        GetTokenByUserAndPass:'/api/Login/TokenAssig',//根据用户名和密码获取Token
         GetUserByToken:'',//根据Token获取用户个人信息
     },
     //菜单管理Url存放位置
     MenumanagerUrl:{
-      GetTreeMenu:'/GetTree/TreeList',//根据角色获取菜单
-      GetMenuByPage:'/Menus/PageMenu',//菜单列表分页
-      GetAllMenu:'/Menus/MenuList',//获取所有菜单非分页
-      AddMenu:'/Menus/AddMenu',//添加菜单
-      UpdateMenu:'/Menus/MenuUpdate',//修改菜单
-      Delete:'/Menus/MenuDelete',//删除菜单
+      GetTreeMenu:'/api/GetTree/TreeList',//根据角色获取菜单
+      GetMenuByPage:'/api/Menus/PageMenu',//菜单列表分页
+      GetAllMenu:'/api/Menus/MenuList',//获取所有菜单非分页
+      AddMenu:'/api/Menus/AddMenu',//添加菜单
+      UpdateMenu:'/api/Menus/MenuUpdate',//修改菜单
+      Delete:'/api/Menus/MenuDelete',//删除菜单
     },
     //用户管理API接口
     UsermanagerUrl:{
-      GetUserInfo:'/User/UserInfo',//根据ID获取用户信息
-      GetUserByPage:'/User/PageUser',//用户列表分页
-      AddUser:'/User/AddUser',//添加用户
-      UpdateUser:'/User/UpdateUser',//修改用户
-      DeleteUser:'/User/DeleteUser',//删除用户
+      GetUserInfo:'/api/User/UserInfo',//根据ID获取用户信息
+      GetUserByPage:'/api/User/PageUser',//用户列表分页
+      AddUser:'/api/User/AddUser',//添加用户
+      UpdateUser:'/api/User/UpdateUser',//修改用户
+      DeleteUser:'/api/User/DeleteUser',//删除用户
     },
     //用户角色API接口
     UserRolemanagerUrl:{
-      GetUserRoleId:'/UserRoles/UserRoleByUserId',//根据ID获取用户信息
+      GetUserRoleId:'/api/UserRoles/UserRoleByUserId',//根据ID获取用户信息
     },
     //角色管理API接口
     RolemanagerUrl:{
-      GetRoleByPage:'/Roles/PageByRole',//角色列表分页
-      AddRole:'/Roles/AddRole',//添加角色
-      UpdateRole:'/Roles/UpdateRole',//修改角色
-      DeleteRole:'/Roles/DeleteRole',//删除角色
+      GetRoleByPage:'/api/Roles/PageByRole',//角色列表分页
+      AddRole:'/api/Roles/AddRole',//添加角色
+      UpdateRole:'/api/Roles/UpdateRole',//修改角色
+      DeleteRole:'/api/Roles/DeleteRole',//删除角色
     },
     //按钮管理API接口
     ButtonmanagerUrl:{
-      GetButtonByPage:'/Button/PageButton',//按钮分页
-      AddButton:'/Button/AddButton',//添加按钮
-      UpdateButton:'/Button/UpdateButton',//修改按钮
-      DeleteButton:'/Button/DeleteButton',//删除按钮
-      GetButtonByMenuId:'/Button/GetBtnByMenuId',//根据菜单ID获取按钮
-    },
-    //按钮管理API接口
-    MenuButtonUrl:{
-      
+      GetButtonByPage:'/api/Button/PageButton',//按钮分页
+      AddButton:'/api/Button/AddButton',//添加按钮
+      UpdateButton:'/api/Button/UpdateButton',//修改按钮
+      DeleteButton:'/api/Button/DeleteButton',//删除按钮
+      GetButtonByMenuId:'/api/Button/GetBtnByMenuId',//根据菜单ID获取按钮
     },
     //权限分配API接口
     RoleAssigMenuUrl:{ //角色分配权限接口定义
-      GetRoleAssig:'/RoleAssig/GetRoleAssigTree',//根据角色ID获取菜单和按钮列表
-      GetAllRole:'/Roles/GetAllRole',//获取所有的角色列表
-      SaveRoleAssig:'/RoleAssig/SaveRoleAssig',//保存权限
+      GetRoleAssig:'/api/RoleAssig/GetRoleAssigTree',//根据角色ID获取菜单和按钮列表
+      GetAllRole:'/api/Roles/GetAllRole',//获取所有的角色列表
+      SaveRoleAssig:'/api/RoleAssig/SaveRoleAssig',//保存权限
     }
 }
 //http request 拦截器
@@ -77,7 +73,6 @@ axios.interceptors.response.use(response=>{//没有错误数据原封返回
     },
     //如果有返回错误
     error=>{
-      debugger
         if(error.response)
         {
             switch (error.response.status) //判断返回错误类型
