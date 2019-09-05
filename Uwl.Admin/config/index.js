@@ -10,18 +10,18 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     hotOnly: false, 
-    proxy: {
+    proxyTable: {
       '/api': {
-        target: 'http://localhost:5001',//后端接口地址
+        target: 'http://127.0.0.1:5001',//后端接口地址
         ws:true,
         changeOrigin: true,//是否允许跨越
         pathRewrite: {
-            "^/apb": "",//重写,
+            "^/api": "/",//重写,
         }
     }
     },
     // Various Dev Server settings
-    host: '127.0.0.1', // can be overwritten by process.env.HOST
+    host: 'localhost', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,

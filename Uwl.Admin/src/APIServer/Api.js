@@ -3,13 +3,13 @@ import router from '../router/index'
 import Vue from 'vue';
 import store from '../Vuex/store'
 var baseurl1="http://localhost:5001";//"http://139.199.219.154:8561";//
-// var baseurl2="http://139.199.219.154:9600";
+
 
 
 const ApiControllerUrl={
     //登录Url存放位置
     LoginUrl:{
-        GetTokenByUserAndPass:'/api/Login/TokenAssig',//根据用户名和密码获取Token
+        GetTokenByUserAndPass:'/api/Login/TokenThree',//'/api/Login/TokenThree',//根据用户名和密码获取Token
         GetUserByToken:'',//根据Token获取用户个人信息
     },
     //菜单管理Url存放位置
@@ -56,6 +56,8 @@ const ApiControllerUrl={
     }
 }
 //http request 拦截器
+
+// axios.defaults.baseUrl='http://127.0.0.1:5001'
 axios.interceptors.request.use(
     config=>{
         //判断本地缓存是否存在Token,如果存在获取Token
@@ -119,19 +121,6 @@ axios.interceptors.response.use(response=>{//没有错误数据原封返回
         return error // 返回接口返回的错误信息
     },
 )
-/**
- * 接口处理函数基方法
- * method,接口请求类型
- * url,//接口地址
- * params,参数
- * success,//成功返回数据
- * failure
- */
-// function AxiosGet(url,params,success)
-// {
-//   console.log(url);
-//   axios.get(`${baseurl1}`+url,{params:params}).then(function(res){success(res.data)}).catch(function(error){let res=error.response});
-// }
 
 const ToLogin=params=>{
   store.commit("SaveToken","");
@@ -142,9 +131,9 @@ const ToLogin=params=>{
     query:{ReturnUrl:router.currentRoute.fullPath}
   });
 }
-
 //登录获取Token和用户信息
 export const RequestLogin=params=>{
+  console.log(params);
     return axios.post(`${baseurl1}`+ApiControllerUrl.LoginUrl.GetTokenByUserAndPass,params);
 }
 export const RequestUserInfo=params=>{
