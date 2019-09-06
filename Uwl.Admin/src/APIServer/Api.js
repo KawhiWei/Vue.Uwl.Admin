@@ -128,7 +128,7 @@ const ToLogin=params=>{
 }
 //登录获取Token和用户信息
 export const RequestLogin=params=>{
-    return axios.post(`${baseurl1}/api/login/TokenThree`,params);
+    return axios.post(`${baseurl1}`+ApiControllerUrl.LoginUrl.GetTokenByUserAndPass,params);
 }
 export const RequestUserInfo=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.GetUserInfo,{params:params});
