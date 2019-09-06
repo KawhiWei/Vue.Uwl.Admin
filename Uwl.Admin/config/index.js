@@ -10,7 +10,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     hotOnly: false, 
-    proxyTable: {
+    proxy: {
       '/api': {
         target: 'http://127.0.0.1:5001',//后端接口地址
         ws:true,
