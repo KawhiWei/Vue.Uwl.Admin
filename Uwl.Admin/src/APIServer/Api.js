@@ -2,9 +2,7 @@ import axios from 'axios' //在APi访问接口引入Vuex
 import router from '../router/index'
 import Vue from 'vue';
 import store from '../Vuex/store'
-var baseurl1="http://127.0.0.1:5001";//"http://139.199.219.154:8561";//
-
-
+var baseurl1='';//"http://139.199.219.154:8561";//
 
 const ApiControllerUrl={
     //登录Url存放位置
@@ -56,7 +54,6 @@ const ApiControllerUrl={
     }
 }
 //http request 拦截器
-
 // axios.defaults.baseUrl='http://127.0.0.1:5001'
 axios.interceptors.request.use(
     config=>{
@@ -68,8 +65,7 @@ axios.interceptors.request.use(
     },
     error=>{
         return Promises.reject(error);
-    }
-)
+    })
 axios.interceptors.response.use(response=>{//没有错误数据原封返回
     return response;
     },
@@ -121,7 +117,6 @@ axios.interceptors.response.use(response=>{//没有错误数据原封返回
         return error // 返回接口返回的错误信息
     },
 )
-
 const ToLogin=params=>{
   store.commit("SaveToken","");
   window.sessionStorage.setItem('Token',"");
@@ -133,8 +128,7 @@ const ToLogin=params=>{
 }
 //登录获取Token和用户信息
 export const RequestLogin=params=>{
-  console.log(params);
-    return axios.post(`${baseurl1}`+ApiControllerUrl.LoginUrl.GetTokenByUserAndPass,params);
+    return axios.post(`${baseurl1}/api/login/TokenThree`,params);
 }
 export const RequestUserInfo=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.GetUserInfo,{params:params});
