@@ -26,6 +26,7 @@ const ApiControllerUrl={
       AddUser:'/api/User/AddUser',//添加用户
       UpdateUser:'/api/User/UpdateUser',//修改用户
       DeleteUser:'/api/User/DeleteUser',//删除用户
+      UpLoadExcel:'/api/User/UpLoad',//删除用户
     },
     //用户角色API接口
     UserRolemanagerUrl:{
@@ -128,8 +129,23 @@ const ToLogin=params=>{
 }
 //登录获取Token和用户信息
 export const RequestLogin=params=>{
-    return axios.post(`${baseurl1}/api/login/TokenThree`,params);
+    return axios.post(`${baseurl1}`+ApiControllerUrl.LoginUrl.GetTokenByUserAndPass,params);
 }
+
+
+
+//上传文件测试接口
+//登录获取Token和用户信息
+export const ResponseExcel=params=>{
+  return axios.post(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.UpLoadExcel,params);
+}
+
+
+
+
+
+
+
 export const RequestUserInfo=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.GetUserInfo,{params:params});
 }

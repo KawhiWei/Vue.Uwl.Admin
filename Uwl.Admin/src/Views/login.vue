@@ -47,6 +47,7 @@ export default {
         mounted()
         {
         },
+
         methods: {
             handleSubmit() {
                 var _this=this;

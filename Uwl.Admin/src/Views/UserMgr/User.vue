@@ -3,6 +3,7 @@
     <div>
         <div>
             <Row style="margin:10px 0px">
+                <Col span="24">
                 <span>
                     <span>姓名：</span>
                     <Input v-model="Search.name"  style="width:180px;" placeholder="请输入菜单名称"/>
@@ -13,8 +14,17 @@
                 <span>
                     <span>账号状态：</span><Input v-model="Search.AccontState"  style="width:180px;" placeholder="请输入Api路由地址"/>
                 </span>
-                <Button type="info" icon="ios-search" @click="search">查询</Button>
-                <Button type="success"  @click="AddModal" icon="md-add">添加</Button>
+                    <Button type="info" icon="ios-search" @click="search">查询</Button>
+                    <Button type="success"  @click="AddModal" icon="md-add">添加</Button>
+                        <Upload style="display: inline-block;width:150px;height:15px;"  :before-upload="handleUpload" action="/Login/UpLoad"
+                         :format ="['xlsx','xls']" :on-format-error="handleFormatError">
+                            <span style="padding: 20px 0">
+                            <Icon type="ios-cloud-upload" size="20" style="color: #3399ff"></Icon>
+                            <span>选择要上传的文件</span>
+                            </span>
+                        </Upload>
+                    <Button  type="success"  @click="UpLoad" :loading="loadingStatus">{{ loadingStatus ? 'Uploading' : '确认上传' }}</Button>
+                </Col>
             </Row>
             <div>
                  <Table width="100%" border :loading="loading"
@@ -76,7 +86,8 @@
 
 <script>
 import PageView from '@/components/Page.vue'
-import {RequestUserByPage,ResponseUserByAdd,ResponseUserByEdit,RequestGetAllRole,RequestRoleByUserId,ResponseUserByDelete} from '../../APIServer/Api.js';
+import {RequestUserByPage,ResponseUserByAdd,ResponseUserByEdit,RequestGetAllRole,RequestRoleByUserId,
+ResponseUserByDelete,ResponseExcel} from '../../APIServer/Api.js';
 export default {
     name:'User',
     components:{PageView},
@@ -261,6 +272,8 @@ export default {
                     }, '删除')]);}
             }],//列表表头
         UserList:[],//列表存放后台返回的数据
+        file: null,
+        loadingStatus: false,
         }
     },
     mounted:function()
@@ -383,6 +396,30 @@ export default {
             _this.roleArrIds=[];
             RequestRoleByUserId({userId:userId}).then(res=>{
                _this.roleArrIds=res.data.response;
+            })
+        },
+        //检查文件格式
+        handleFormatError(file){
+            this.file = null;
+            //_this.$Message.success(res.data.msg);
+            this.$Notice.warning({
+                title: '文件格式不正确',
+                desc: '文件 ' + file.name + ' 格式不正确，请上传.xls,.xlsx文件。'
+            })
+        },
+        //获取文件
+        handleUpload (file) {
+            this.file = file;
+            return true;
+        },
+        UpLoad()
+        {
+            var formData = new FormData();
+            formData.append("files", this.file);
+            this.loadingStatus = true;
+            //调用后台上传文件的API接口
+            ResponseExcel(formData).then(res=>{
+                console.log(res)
             })
         },
     }
