@@ -16,7 +16,7 @@
                 </span>
                     <Button type="info" icon="ios-search" @click="search">查询</Button>
                     <Button type="success"  @click="AddModal" icon="md-add">添加</Button>
-                        <Upload style="display: inline-block;width:150px;height:15px;"  :before-upload="handleUpload" action="/Login/UpLoad"
+                        <Upload style="display: inline-block;width:150px;height:15px;" :headers="Tokens" :before-upload="handleUpload" action="/api/User/UpLoad"
                          :format ="['xlsx','xls']" :on-format-error="handleFormatError">
                             <span style="padding: 20px 0">
                             <Icon type="ios-cloud-upload" size="20" style="color: #3399ff"></Icon>
@@ -100,6 +100,7 @@ export default {
                 accont:'',
                 AccontState:'',
             },
+            Tokens:{Authorization:"Bearer "+window.sessionStorage.getItem('Token')},
             IsEdit:false,
             sexflag:'',
              //添加字段
@@ -400,20 +401,38 @@ export default {
         },
         //检查文件格式
         handleFormatError(file){
-            this.file = null;
             //_this.$Message.success(res.data.msg);
             this.$Notice.warning({
                 title: '文件格式不正确',
                 desc: '文件 ' + file.name + ' 格式不正确，请上传.xls,.xlsx文件。'
             })
+            this.file = null;
         },
         //获取文件
         handleUpload (file) {
             this.file = file;
-            return true;
+            var uploadfileNmae=this.file.name.substring(this.file.name.lastIndexOf('.')+1);
+            const extension = uploadfileNmae === 'xlsx'  
+            const extension2 = uploadfileNmae === 'xls'  
+            if(!extension && !extension2) {  
+                this.$Notice.warning({
+                title: '文件格式不正确',
+                desc: '文件 ' + file.name + ' 格式不正确，请上传.xls或.xlsx文件。'
+                })
+                this.file =null;
+            }  
+            return false;
         },
         UpLoad()
         {
+            if(this.file==null)
+            {
+                this.$Notice.warning({
+                title: '未选择要上传的文件',
+                desc: '请先选择要上传.xls或.xlsx文件。'
+                })
+                return
+            }
             var formData = new FormData();
             formData.append("files", this.file);
             this.loadingStatus = true;
