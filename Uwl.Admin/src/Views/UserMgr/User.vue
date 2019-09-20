@@ -6,17 +6,23 @@
                 <Col span="24">
                 <span>
                     <span>姓名：</span>
-                    <Input v-model="Search.name"  style="width:180px;" placeholder="请输入菜单名称"/>
+                    <Input v-model="searCh.name" clearable   style="width:180px;" placeholder="请输入姓名"/>
                 </span>
                 <span>
-                    <span>账号：</span><Input v-model="Search.accont"  style="width:180px;" placeholder="请输入前端路由地址"/>
+                    <span>账号：</span><Input v-model="searCh.accont" clearable   style="width:180px;" placeholder="请输入登录账号"/>
                 </span>
                 <span>
-                    <span>账号状态：</span><Input v-model="Search.AccontState"  style="width:180px;" placeholder="请输入Api路由地址"/>
+                    <span>手机号：</span><Input v-model="searCh.mobile" clearable   style="width:180px;" placeholder="请输入手机号"/>
+                </span>
+                <span>
+                    <span>账号状态：</span>
+                    <Select v-model="searCh.AccontState" style="width:200px">
+                        <Option v-for="item in stateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                    </Select>
                 </span>
                     <Button type="info" icon="ios-search" @click="search">查询</Button>
                     <Button type="success"  @click="AddModal" icon="md-add">添加</Button>
-                        <Upload style="display: inline-block;width:150px;height:15px;" :headers="Tokens" :before-upload="handleUpload" action="/api/User/UpLoad"
+                    <Upload style="display: inline-block;width:150px;height:15px;" :headers="Tokens" :before-upload="handleUpload" action="/api/User/UpLoad"
                          :format ="['xlsx','xls']" :on-format-error="handleFormatError">
                             <span style="padding: 20px 0">
                             <Icon type="ios-cloud-upload" size="20" style="color: #3399ff"></Icon>
@@ -95,10 +101,11 @@ export default {
         return {
             info:JSON.parse(window.sessionStorage.userInfo),
             loading:true,
-            Search:{
+            searCh:{
                 name:'',
                 accont:'',
-                AccontState:'',
+                AccontState:-1,
+                mobile:'',
             },
             Tokens:{Authorization:"Bearer "+window.sessionStorage.getItem('Token')},
             IsEdit:false,
@@ -146,7 +153,7 @@ export default {
             FormVisible:false,
             currentRow:'',//存放当前选中行的数据
             columns2: [
-            {type:'selection',minWidth: 60,align:'center',fixed: 'left',},
+            {type:'selection',minWidth: 60,maxWidth: 60,align:'center',fixed: 'left',},
             {title: '姓名',key: 'name',minWidth:100},
             {title: '登录账号',key: 'account',minWidth:120},
             {title: '邮箱',key: 'email',minWidth:120},
@@ -273,6 +280,11 @@ export default {
                     }, '删除')]);}
             }],//列表表头
         UserList:[],//列表存放后台返回的数据
+        stateList:[
+            {value:-1,label:'全部'},
+            {value:0,label:'正常'},
+            {value:1,label:'冻结'},
+        ],
         file: null,
         loadingStatus: false,
         }
@@ -341,11 +353,19 @@ export default {
         },
         GetUser:function()
         {
+            var _this=this;
             var pageIndex=this.$refs.PageArr.pageIndex;//获取子组件中的属性
             var pageSize=this.$refs.PageArr.pagesize;//获取子组件中的属性
-            var _this=this;
+            var param={
+                PageIndex:pageIndex,
+                PageSize:pageSize,
+                Name:_this.searCh.name,
+                Account:_this.searCh.accont,
+                Mobile:_this.searCh.mobile,
+                stateEnum:_this.searCh.AccontState,
+            }
             this.loading=true;
-            RequestUserByPage({PageIndex:pageIndex,PageSize:pageSize}).then(res=>
+            RequestUserByPage(param).then(res=>
             {
                 if(res.status!=200)
                 {

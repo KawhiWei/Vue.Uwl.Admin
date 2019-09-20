@@ -5,15 +5,15 @@
       <Row style="margin:10px 0px">
         <span>
           <span>菜单名称：</span>
-          <Input v-model="Search.Name" style="width:180px;" placeholder="请输入菜单名称" />
+          <Input v-model="searCh.name" style="width:180px;" clearable placeholder="请输入菜单名称" />
         </span>
         <span>
           <span>前端路由地址：</span>
-          <Input v-model="Search.frontRouter" style="width:180px;" placeholder="请输入前端路由地址" />
+          <Input v-model="searCh.frontRouter" style="width:180px;" clearable placeholder="请输入前端路由地址" />
         </span>
         <span>
           <span>Api接口：</span>
-          <Input v-model="Search.apiUrl" style="width:180px;" placeholder="请输入Api路由地址" />
+          <Input v-model="searCh.apiUrl" style="width:180px;" clearable placeholder="请输入Api路由地址" />
         </span>
         <Button type="info" icon="ios-search" @click="search">查询</Button>
         <Button type="success" @click="AddModal" icon="md-add">添加</Button>
@@ -104,7 +104,7 @@ export default {
       columns2: [
         { type: "selection", minWidth: 60, align: "center" },
         { title: "菜单名称", key: "name", minWidth: 100 },
-        { title: "父节点", key: "parentId", minWidth: 120 },
+        { title: "父级菜单", key: "parentId", minWidth: 120 },
         { title: "路由地址", key: "urlAddress", minWidth: 120 },
         { title: "API接口", key: "apiAddress", minWidth: 120 },
         { title: "排序", key: "sort", minWidth: 20 },
@@ -213,9 +213,9 @@ export default {
       currentRow: "", //存放当前选中行的数据
       TreeArr: [], //级联选择器数组
       parentIdarr: [], //父级菜单已选中数组
-      Search: {
+      searCh: {
         ///搜索对象存放
-        Name: "",
+        name: "",
         frontRouter: "",
         apiUrl: ""
       },
@@ -260,7 +260,14 @@ export default {
       var pageSize = this.$refs.PageArr.pagesize; //获取子组件中的属性
       var _this = this;
       this.loading = true;
-      RequestMenuByPage({ PageIndex: pageIndex, PageSize: pageSize }).then(
+      var param={
+                PageIndex:pageIndex,
+                PageSize:pageSize,
+                Name:_this.searCh.name,
+                UrlAddress:_this.searCh.frontRouter,
+                APIAddress:_this.searCh.apiUrl,
+            }
+      RequestMenuByPage(param).then(
         res => {
           if(res.status!=200)
           {

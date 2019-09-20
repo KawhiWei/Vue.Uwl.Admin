@@ -4,19 +4,18 @@
     <div>
         <Row style="margin:10px 0px">
                 <span>
-                    <span>姓名：</span>
-                    <Input  style="width:180px;" placeholder="请输入按钮名称"/>
+                    <span>按钮名称：</span>
+                    <Input v-model="searCh.name" clearable  style="width:180px;" placeholder="请输入按钮名称"/>
                 </span>
                 <span>
-                    <span>账号：</span><Input   style="width:180px;" placeholder="请输入按钮事件"/>
+                    <span>JS事件：</span>
+                    <Input v-model="searCh.jsKeyCode" clearable  style="width:180px;" placeholder="请输入按钮名称"/>
                 </span>
                 <span>
-                    <span>账号状态：</span><Input  style="width:180px;" placeholder="请输入Api路由地址"/>
+                    <span>Api接口：</span>
+                    <Input v-model="searCh.apiAddress" clearable  style="width:180px;" placeholder="请输入Api接口地址"/>
                 </span>
                 <Button type="info" icon="ios-search" @click="Search" >查询</Button>
-                <!-- <Button  type="info" @click="Search" >添加</Button> -->
-
-                <Button v-for="item in btnlist" :key="item.id" :type="item.buttonStyle" @click="Search" >{{item.name }}</Button>
                 <Button type="success"  @click="AddModal" icon="md-add">添加</Button>
         </Row>
     </div>
@@ -83,6 +82,12 @@ export default {
             //添加字段
             FormVisible:false,
             loading:true,
+            searCh:{
+                name:'',
+                State:-1,
+                jsKeyCode:'',
+                apiAddress:'',
+            },
             formValidate: 
             {
                 name: '',//按钮名称
@@ -121,6 +126,7 @@ export default {
             columns2: [
             {type:'selection',minWidth: 60,maxWidth: 60,align:'center',fixed: 'left',},
             {title: '按钮名称',key: 'name',minWidth:100},
+            {title: '所属菜单',key: 'menuName',minWidth:100,maxWidth:150,},
             {title: 'Api路由地址',key: 'apiAddress',minWidth:120},
             {title: '按钮JS事件',key: 'keyCode',minWidth:120},
             {title: '按钮样式',key: 'buttonStyle',minWidth:120},
@@ -136,18 +142,18 @@ export default {
   created:function()
   {
       var menuId=this.$getArrs.getBtnArr(this.$route).id;
-      var _this=this;
-      RequestButtonByMenuId({menuId:menuId}).then((res)=>{
-            if(res.status!=200)
-            {
-                var err=JSON.parse(res.response.data)
-                _this.$Message.error({content:err.Message,duration:3});
-            }
-            else
-            { 
-                _this.btnlist=res.data.response;
-            }
-      })
+      //var _this=this;
+    //   RequestButtonByMenuId({menuId:menuId}).then((res)=>{
+    //         if(res.status!=200)
+    //         {
+    //             var err=JSON.parse(res.response.data)
+    //             _this.$Message.error({content:err.Message,duration:3});
+    //         }
+    //         else
+    //         { 
+    //             _this.btnlist=res.data.response;
+    //         }
+    //   })
   },
   mounted:function()
   {
@@ -174,7 +180,6 @@ export default {
                         {
                             _this.FormVisible=false;
                             _this.$Message.success(res.data.msg);
-                            //debugger
                             _this.GetUser();
                         })
                     }
@@ -205,8 +210,18 @@ export default {
           var pageIndex=this.$refs.PageArr.pageIndex;//获取子组件中的属性
           var pageSize=this.$refs.PageArr.pagesize;//获取子组件中的属性
           var _this=this;
+          var param={
+                PageIndex:pageIndex,
+                PageSize:pageSize,
+                Name:_this.searCh.name,
+                JSKeyCode:_this.searCh.jsKeyCode,
+                APIAddress:_this.searCh.apiAddress,
+            }
+
+
+
         //   this.loading=true;
-          RequestButtonByPage({PageIndex:pageIndex,PageSize:pageSize}).then(res=>
+          RequestButtonByPage(param).then(res=>
           {
               if(res.status!=200)
               {

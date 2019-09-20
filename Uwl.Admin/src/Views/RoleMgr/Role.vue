@@ -5,7 +5,13 @@
             <Row style="margin:10px 0px">
                 <span>
                     <span>角色名称：</span>
-                    <Input v-model="Search.name"  style="width:180px;" placeholder="请输入角色名称"/>
+                    <Input v-model="searCh.name" clearable  style="width:180px;" placeholder="请输入角色名称"/>
+                </span>
+                <span>
+                    <span>角色状态：</span>
+                    <Select v-model="searCh.State" style="width:200px">
+                        <Option v-for="item in stateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                    </Select>
                 </span>
                 <Button type="info" icon="ios-search" @click="search">查询</Button>
                 <Button type="success"  @click="AddModal" icon="md-add">添加</Button>
@@ -59,10 +65,9 @@ export default {
         return {
             info:JSON.parse(window.sessionStorage.userInfo),
             loading:true,
-            Search:{
+            searCh:{
                 name:'',
-                accont:'',
-                AccontState:'',
+                State:-1,
             },
             IsEdit:false,
              //添加字段
@@ -88,6 +93,11 @@ export default {
                     { required: true, message: '请选择角色状态', trigger: 'change' }
                 ],
             },
+            stateList:[
+            {value:-1,label:'全部'},
+            {value:0,label:'正常'},
+            {value:1,label:'冻结'},
+            ],
             title:'',
             FormVisible:false,
             currentRow:'',//存放当前选中行的数据
@@ -193,10 +203,6 @@ export default {
                     }, '删除')]);}
             }],//列表表头
             List:[],//列表存放后台返回的数据
-            stateList:[
-                {label:'激活',value:'0'},
-                {label:'禁用',value:'1'},
-            ],//列表存放后台返回的数据
         }
     },
     mounted:function()
@@ -256,9 +262,16 @@ export default {
         {
             var pageIndex=this.$refs.PageArr.pageIndex;//获取子组件中的属性
             var pageSize=this.$refs.PageArr.pagesize;//获取子组件中的属性
+            
             var _this=this;
+            var param={
+                PageIndex:pageIndex,
+                PageSize:pageSize,
+                Name:_this.searCh.name,
+                stateEnum:_this.searCh.State,
+            }
             this.loading=true;
-            RequestRoleByPage({PageIndex:pageIndex,PageSize:pageSize}).then(res=>
+            RequestRoleByPage(param).then(res=>
             {
                 if(res.status!=200)
                 {

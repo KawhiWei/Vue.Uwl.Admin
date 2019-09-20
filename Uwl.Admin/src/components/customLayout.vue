@@ -35,30 +35,10 @@
               <SidebarMenu v-for="menus in routerMenu" :name="menus.id" :key="menus.id" :item="menus"/>
             </Menu>
             </div>
-              <!---------active-name     当前激活菜单的 name 值  ,:open-names="['2']"    当前打开的第几个菜单    
-              <Menu active-name="3-1" :open-names="['3']">
-                  <MenuItem name="1-1">
-                  <Icon type="md-home" />
-                  个人主页
-                  </MenuItem>
-                <Submenu name="2">
-                  <template slot="title">
-                      <Icon type="ios-filing" />
-                      Navigation Two
-                  </template>
-                  <MenuItem name="2-1">Option 5</MenuItem>
-                  <MenuItem name="2-2">Option 6</MenuItem>
-                  <Submenu name="3">
-                      <template slot="title">Submenu</template>
-                      <MenuItem name="3-1">Option 7</MenuItem>
-                      <MenuItem name="3-2">Option 8</MenuItem>
-                  </Submenu>
-                </Submenu>
-              </Menu>-------------->
             <!----右侧Tabs标签页------>
             <Col span="24" :class="collapsed?'content-collapsed':'content-expanded'">
-              <div style="margin:5px 5px;">
-                <Tag type="dot" color="primary" :key="item.id"  :name="item.path" :closable="item.IsColse"  v-for=" item in TagsList" @on-close="handleCloseTags">
+              <div style="margin:5px 5px; background-color:#6089d4">
+                <Tag style="margin:5px;" type="dot" color="primary" :key="item.id"  :name="item.path" :closable="item.IsColse"  v-for=" item in TagsList" @on-close="handleCloseTags">
                   <router-link :to="item.path" style="color:#000" ><Icon type="md-home" />{{item.lable}}</router-link>
                   </Tag>              
               </div>
