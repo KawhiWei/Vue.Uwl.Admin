@@ -20,16 +20,17 @@
                         <Option v-for="item in stateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
                     </Select>
                 </span>
-                    <Button type="info" icon="ios-search" @click="search">查询</Button>
-                    <Button type="success"  @click="AddModal" icon="md-add">添加</Button>
-                    <Upload style="display: inline-block;width:150px;height:15px;" :headers="Tokens" :before-upload="handleUpload" action="/api/User/UpLoad"
+                    <Button type="info"  icon="ios-search" @click="search">查询</Button>
+                    <Button type="success" ghost @click="AddModal" icon="md-add">添加</Button>
+                    <Upload style="display: inline-block;width:80px;height:15px;" ghost :headers="Tokens" :before-upload="handleUpload" action="/api/User/UpLoad"
                          :format ="['xlsx','xls']" :on-format-error="handleFormatError">
                             <span style="padding: 20px 0">
                             <Icon type="ios-cloud-upload" size="20" style="color: #3399ff"></Icon>
-                            <span>选择要上传的文件</span>
+                            <span>选择文件</span>
                             </span>
                         </Upload>
-                    <Button  type="success"  @click="UpLoad" :loading="loadingStatus">{{ loadingStatus ? 'Uploading' : '确认上传' }}</Button>
+                    <Button v-if="isshow"  type="success" ghost @click="UpLoad"  :loading="loadingStatus">{{ loadingStatus ? 'Uploading' : '确认上传' }}</Button>
+                    <Button  type="info" ghost @click="DownLoad" ><Icon size="20" style="color: #3399ff" type="ios-download" />导出列表</Button>
                 </Col>
             </Row>
             <div>
@@ -93,7 +94,7 @@
 <script>
 import PageView from '@/components/Page.vue'
 import {RequestUserByPage,ResponseUserByAdd,ResponseUserByEdit,RequestGetAllRole,RequestRoleByUserId,
-ResponseUserByDelete,ResponseExcel} from '../../APIServer/Api.js';
+ResponseUserByDelete,ResponseUserExcel,DownLoadUserExcel} from '../../APIServer/Api.js';
 export default {
     name:'User',
     components:{PageView},
@@ -287,6 +288,7 @@ export default {
         ],
         file: null,
         loadingStatus: false,
+        isshow:false,
         }
     },
     mounted:function()
@@ -441,6 +443,10 @@ export default {
                 })
                 this.file =null;
             }  
+            if(this.file!=null)
+            {
+                this.isshow=true;
+            }
             return false;
         },
         UpLoad()
@@ -457,10 +463,31 @@ export default {
             formData.append("files", this.file);
             this.loadingStatus = true;
             //调用后台上传文件的API接口
-            ResponseExcel(formData).then(res=>{
+            ResponseUserExcel(formData).then(res=>{
                 console.log(res)
             })
         },
+        DownLoad()
+        {
+            var _this=this;
+            var pageIndex=this.$refs.PageArr.pageIndex;//获取子组件中的属性
+            var pageSize=this.$refs.PageArr.pagesize;//获取子组件中的属性
+            var param={
+                PageIndex:pageIndex,
+                PageSize:pageSize,
+                Name:_this.searCh.name,
+                Account:_this.searCh.accont,
+                Mobile:_this.searCh.mobile,
+                stateEnum:_this.searCh.AccontState,
+            }
+            DownLoadUserExcel(param).then(res=>
+            {
+                console.log(res.data)
+                var blob=new Blob([res.data],{type:'application/vnd.ms-excel;charset=utf-8'})
+                var obj= URL.createObjectURL(blob); //创建下载的链接
+                window.location.href=obj;
+            });
+        }
     }
 }
 </script>

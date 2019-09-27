@@ -27,6 +27,7 @@ const ApiControllerUrl={
       UpdateUser:'/api/User/UpdateUser',//修改用户
       DeleteUser:'/api/User/DeleteUser',//删除用户
       UpLoadExcel:'/api/User/UpLoad',//删除用户
+      DownLoadExcel:'/api/User/DownLoad',//删除用户
     },
     //用户角色API接口
     UserRolemanagerUrl:{
@@ -81,7 +82,6 @@ axios.interceptors.response.use(response=>{//没有错误数据原封返回
                   break
                 case 401:
                   ToLogin();
-                  debugger
                   error.message = '未授权，请登录'
                   break
                 case 403:
@@ -134,17 +134,6 @@ export const RequestLogin=params=>{
 
 
 
-//上传文件测试接口
-//登录获取Token和用户信息
-export const ResponseExcel=params=>{
-  return axios.post(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.UpLoadExcel,params);
-}
-
-
-
-
-
-
 
 export const RequestUserInfo=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.GetUserInfo,{params:params});
@@ -194,7 +183,15 @@ export const ResponseUserByEdit=params=>{
 export const ResponseUserByDelete=params=>{
   return axios.delete(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.DeleteUser,{params:params});
 }
-
+//用户信息批量导入
+export const ResponseUserExcel=params=>{
+  return axios.post(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.UpLoadExcel,params);
+}
+//用户信息批量导出
+export const DownLoadUserExcel=params=>{
+  return axios.get(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.DownLoadExcel,{params:params},
+  {responseType: 'blob'});
+}
 
 
 
