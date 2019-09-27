@@ -16,6 +16,8 @@
         </FormItem>
         <FormItem>
             <Button type="primary" style="width:100%;" @click="handleSubmit()">Login</Button>
+
+            <Button type="primary" style="width:100%;" @click="SenMsg()">发送消息</Button>
         </FormItem>
         </Form>
     </div>
@@ -25,7 +27,7 @@
 import {RequestLogin,RequestUserInfo,RequestMenuTree} from '../APIServer/Api.js';
 import router from '../router'
 import {filterAsyncRouterMap} from '../router/index.js';
-
+import *as singnalR from "@aspnet/signalr";
 export default {
         data () {
             return {
@@ -33,6 +35,7 @@ export default {
                     user: 'uwl',
                     password: '123456'
                 },
+                connection:'',
                 ruleInline: {
                     user: [
                         { required: true, message: 'Please fill in the user name', trigger: 'blur' }
@@ -44,8 +47,25 @@ export default {
                 }
             }
         },
+        created()
+        {
+            var _that=this;
+            _that.connection=new singnalR.HubConnectionBuilder()
+            .withUrl('/api/chatHub')//配置路由通道
+            .configureLogging(singnalR.LogLevel.Information)//接受的消息
+            .build();//创建
+            _that.connection.on('ReceiveMessage',function(user,message){
+                _that.$Message.error({content:message+user,duration:3});
+            });
+
+            _that.connection.on('ReceiveUpdate',function(update){
+                _that.$Message.error({content:update,duration:3});
+                window.clearInterval(this.t)
+            })
+        },
         mounted()
         {
+            this.getMsg();
         },
 
         methods: {
@@ -91,6 +111,24 @@ export default {
                     //_this.$router.push('/')
                 })
             },
+            SenMsg()
+            {
+                var msg='我给你发送消息了！！！！';
+                var username='uwl';
+                this.connection.invoke('SendMessage',username,msg).catch(function(err){
+                    return console.error(err);
+                })
+            },
+            getMsg()
+            {
+                var _that=this;
+                _that.connection.start().then(()=>{
+                    _that.connection.invoke('GetLatestCount',1).catch(function(err){
+                        return console.error(err);
+                    })
+                });
+
+            }
             //根据用户ID获取他的菜单
             // GetMenu(userId)
             // {

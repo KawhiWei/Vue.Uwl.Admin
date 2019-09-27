@@ -10,6 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@aspnet/signalr": "^1.1.4",
     "axios": "^0.18.0",
     "echarts": "^4.2.1",
     "iview": "^3.4.0",
