@@ -8,6 +8,7 @@ import iview from 'iview' //引入Iview前端js框架
 import 'iview/dist/styles/iview.css' //引入Iview的CSS文件
 import Echarts from 'echarts'
 import getArr from './Public/getArr.js'
+import Axios from 'axios'
 
 Vue.config.productionTip = false
 Vue.use(iview) //挂载iview框架
@@ -15,8 +16,13 @@ Vue.use(iview) //挂载iview框架
 Vue.prototype.echarts=Echarts
 Vue.use(Echarts)
 
+Vue.prototype.$http=Axios;
+
+
 /*挂载公共js*/
 Vue.prototype.$getArrs=getArr;
+
+
 
 
 /* eslint-disable no-new */

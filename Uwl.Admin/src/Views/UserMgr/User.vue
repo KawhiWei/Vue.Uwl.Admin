@@ -95,6 +95,8 @@
 import PageView from '@/components/Page.vue'
 import {RequestUserByPage,ResponseUserByAdd,ResponseUserByEdit,RequestGetAllRole,RequestRoleByUserId,
 ResponseUserByDelete,ResponseUserExcel,DownLoadUserExcel} from '../../APIServer/Api.js';
+import download from '../../APIServer/DownLoad.js'
+import axios from 'axios'
 export default {
     name:'User',
     components:{PageView},
@@ -480,13 +482,34 @@ export default {
                 Mobile:_this.searCh.mobile,
                 stateEnum:_this.searCh.AccontState,
             }
-            DownLoadUserExcel(param).then(res=>
+            download.DownLoadToExcel('GET','/api/User/DownLoad',param)
             {
-                console.log(res.data)
-                var blob=new Blob([res.data],{type:'application/vnd.ms-excel;charset=utf-8'})
-                var obj= URL.createObjectURL(blob); //创建下载的链接
-                window.location.href=obj;
-            });
+                // axios({
+                //     method:'GET',
+                //     url:'/api/User/DownLoad',
+                //     responseType:'blob',
+                //     params:param,
+                //     headers:{
+                //         Authorization:`Bearer ${this.$store.state.token}`
+                //     }
+                // }).then(res=>{
+                //     let fileName = res.headers['content-disposition'].split('=')[1]
+                //     const blob=new Blob([res.data],{type:'application/vnd.ms-excel'});
+                //     const a=document.createElement('a');
+                //     document.body.appendChild(a);
+                //     const url=window.URL.createObjectURL(blob);
+                //     a.href=url;
+                //     a.download=fileName;
+                //     a.click();
+                //     a.remove();
+                //     window.URL.revokeObjectURL(url);
+                // }).catch(err=>{
+                //     console.log(err)
+                // })
+                // DownLoadUserExcel(param);
+            }
+            
+            
         }
     }
 }
