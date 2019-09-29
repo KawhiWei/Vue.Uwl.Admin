@@ -127,12 +127,12 @@ export default {
             {type:'selection',minWidth: 60,maxWidth: 60,align:'center',fixed: 'left',},
             {title: '按钮名称',key: 'name',minWidth:100},
             {title: '所属菜单',key: 'menuName',minWidth:100,maxWidth:150,},
-            {title: 'Api路由地址',key: 'apiAddress',minWidth:120},
-            {title: '按钮JS事件',key: 'keyCode',minWidth:120},
+            {title: 'Api接口地址',key: 'apiAddress',minWidth:120},
+            {title: 'JS事件',key: 'keyCode',minWidth:120},
             {title: '按钮样式',key: 'buttonStyle',minWidth:120},
             {title: '备注',key: 'memo',minWidth:120},
             {title: '创建人',key: 'createdName',minWidth:80,align:'center'},
-            {title: '创建事件',key: 'createAts',minWidth:80,align:'center'}
+            {title: '创建日期',key: 'createAts',minWidth:80,align:'center'}
             ],
             list:[],
             btnlist:[],
@@ -142,18 +142,19 @@ export default {
   created:function()
   {
       var menuId=this.$getArrs.getBtnArr(this.$route).id;
+      debugger
       //var _this=this;
-    //   RequestButtonByMenuId({menuId:menuId}).then((res)=>{
-    //         if(res.status!=200)
-    //         {
-    //             var err=JSON.parse(res.response.data)
-    //             _this.$Message.error({content:err.Message,duration:3});
-    //         }
-    //         else
-    //         { 
-    //             _this.btnlist=res.data.response;
-    //         }
-    //   })
+      RequestButtonByMenuId({menuId:menuId}).then((res)=>{
+            if(res.status!=200)
+            {
+                var err=JSON.parse(res.response.data)
+                _this.$Message.error({content:err.Message,duration:3});
+            }
+            else
+            { 
+                _this.btnlist=res.data.response;
+            }
+      })
   },
   mounted:function()
   {
@@ -217,10 +218,6 @@ export default {
                 JSKeyCode:_this.searCh.jsKeyCode,
                 APIAddress:_this.searCh.apiAddress,
             }
-
-
-
-        //   this.loading=true;
           RequestButtonByPage(param).then(res=>
           {
               if(res.status!=200)
@@ -233,6 +230,11 @@ export default {
               { 
                    _this.loading=false;
                    _this.list=res.data.response.data;
+                   console.log(_this.list)
+                //    for (let index = 0; index < _this.list.length; index++) {
+                //        var ss='<Button'' type="primary" @click="handleSubmit('formValidate')">';
+                       
+                //    }
                    _this.$refs.PageArr.Total=res.data.response.totalCount;
               }
           })

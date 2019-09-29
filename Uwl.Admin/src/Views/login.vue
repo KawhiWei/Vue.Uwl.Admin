@@ -72,7 +72,6 @@ export default {
             handleSubmit() {
                 var _this=this;
                 var param={user:_this.formInline.user,password:_this.formInline.password};
-                console.log(param)
                 RequestLogin(param).then(res=>{
                     if(res.data.success)
                     {

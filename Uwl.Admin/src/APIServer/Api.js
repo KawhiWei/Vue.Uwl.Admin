@@ -187,11 +187,6 @@ export const ResponseUserByDelete=params=>{
 export const ResponseUserExcel=params=>{
   return axios.post(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.UpLoadExcel,params);
 }
-//用户信息批量导出
-export const DownLoadUserExcel=params=>{
-  return axios.get(`${baseurl1}`+ApiControllerUrl.UsermanagerUrl.DownLoadExcel,{params:params},
-  {responseType: 'blob'});
-}
 
 
 

@@ -88,7 +88,6 @@ import {
   RequestMenuTree,
   ResponseMenuByEdit,
   ResponseMenuByDelete,
-  RequestButtonByMenuId
 } from "../../APIServer/Api.js";
 export default {
   components: { PageView },
@@ -104,12 +103,12 @@ export default {
       columns2: [
         { type: "selection", minWidth: 60, align: "center" },
         { title: "菜单名称", key: "name", minWidth: 100 },
-        { title: "父级菜单", key: "parentId", minWidth: 120 },
+        { title: "父级菜单", key: "parentName", minWidth: 120 },
         { title: "路由地址", key: "urlAddress", minWidth: 120 },
         { title: "API接口", key: "apiAddress", minWidth: 120 },
         { title: "排序", key: "sort", minWidth: 20 },
         { title: "创建时间", key: "createAts", minWidth: 80 },
-        { title: "创建人", key: "createdName", minWidth: 60 },
+        { title: "备注", key: "memo", minWidth: 60 },
         {
           title: "操作",
           key: "action",
@@ -152,10 +151,6 @@ export default {
                           _this.tree(res.data.response);
                         }
                       );
-                      _this.buttonIdarrChecked = [];
-                      RequestButtonByMenuId({menuId:this.id}).then(res=>{
-                        _this.buttonIdarrChecked=res.data.response;
-                      })
                       this.FormVisible = true;
                     }
                   }
@@ -279,6 +274,7 @@ export default {
           {
             _this.loading = false;
             _this.MenuList = res.data.response.data;
+            console.log(_this.MenuList);
             _this.$refs.PageArr.Total = res.data.response.totalCount;
           }
           
