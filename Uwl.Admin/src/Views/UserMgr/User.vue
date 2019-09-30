@@ -371,16 +371,16 @@ export default {
             this.loading=true;
             RequestUserByPage(param).then(res=>
             {
-                if(res.status!=200)
+                if(res.data.success)
                 {
-                    var err=JSON.parse(res.response.data)
-                    this.$Message.error({content:err.Message,duration:3});
-                    _this.loading=false;
-                }
-                else{
-                    _this.loading=false;
+                     _this.loading=false;
                     _this.UserList=res.data.response.data;
                     _this.$refs.PageArr.Total=res.data.response.totalCount;
+                    
+                }
+                else{
+                    this.$Message.error({content:res.data.msg,duration:3});
+                    _this.loading=false;
                 }
             });
         },
@@ -482,33 +482,7 @@ export default {
                 Mobile:_this.searCh.mobile,
                 stateEnum:_this.searCh.AccontState,
             }
-            download.DownLoadToExcel('GET','/api/User/DownLoad',param)
-            {
-                // axios({
-                //     method:'GET',
-                //     url:'/api/User/DownLoad',
-                //     responseType:'blob',
-                //     params:param,
-                //     headers:{
-                //         Authorization:`Bearer ${this.$store.state.token}`
-                //     }
-                // }).then(res=>{
-                //     let fileName = res.headers['content-disposition'].split('=')[1]
-                //     const blob=new Blob([res.data],{type:'application/vnd.ms-excel'});
-                //     const a=document.createElement('a');
-                //     document.body.appendChild(a);
-                //     const url=window.URL.createObjectURL(blob);
-                //     a.href=url;
-                //     a.download=fileName;
-                //     a.click();
-                //     a.remove();
-                //     window.URL.revokeObjectURL(url);
-                // }).catch(err=>{
-                //     console.log(err)
-                // })
-            }
-            
-            
+            download.DownLoadToExcel('GET','/api/User/DownLoad',param);     
         }
     }
 }

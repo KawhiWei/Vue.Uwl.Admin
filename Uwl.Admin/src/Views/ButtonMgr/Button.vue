@@ -3,6 +3,7 @@
 <div>
     <div>
         <Row style="margin:10px 0px">
+            <div style="float:left;">
                 <span>
                     <span>按钮名称：</span>
                     <Input v-model="searCh.name" clearable  style="width:180px;" placeholder="请输入按钮名称"/>
@@ -15,16 +16,12 @@
                     <span>Api接口：</span>
                     <Input v-model="searCh.apiAddress" clearable  style="width:180px;" placeholder="请输入Api接口地址"/>
                 </span>
-                <Button type="info" icon="ios-search" @click="Search" >查询</Button>
-                <Button type="success"  @click="AddModal" icon="md-add">添加</Button>
+            </div>
+                <Buttonbar v-on:keyFun="callFn"/>
         </Row>
     </div>
     <div>
-        <Table width="100%" border :loading="loading"
-                show-header
-                highlight-row
-                @on-current-change="CurrentRow"
-                :columns="columns2" :data="list"></Table>
+        <Table width="100%" border :loading="loading" show-header highlight-row @on-current-change="CurrentRow" :columns="columns2" :data="list"></Table>
     </div>
     <div style="padding:5px;">
         <PageView v-on:pageref="Search" ref="PageArr"/>
@@ -72,9 +69,10 @@
 </template>
 <script>
 import PageView from '@/components/Page.vue'
-import {RequestButtonByPage,ResponsebuttonByAdd,RequestButtonByMenuId,RequestAllMenu} from '../../APIServer/Api.js';
+import {RequestButtonByPage,ResponsebuttonByAdd,RequestAllMenu} from '../../APIServer/Api.js';
+import Buttonbar from '@/components/ButtonBar/ButtonBar.vue'
 export default {
-  components:{PageView},
+  components:{PageView,Buttonbar},
   name: 'Buttons',
   data () {
     return {
@@ -135,39 +133,32 @@ export default {
             {title: '创建日期',key: 'createAts',minWidth:80,align:'center'}
             ],
             list:[],
-            btnlist:[],
+            btnlist:[
+                {name: '李寻欢',kungFu: '小李飞刀', method: "foo('林诗音')"}, 
+                {name: '楚留香',kungFu: '踏雪无痕',method: "foo1('夜姬')"}, 
+                {name: '陆小凤',kungFu: '灵犀一指',method: "foo2('花满楼')"}
+            ],
             MenuList:[],
     }
   },
   created:function()
   {
-      var menuId=this.$getArrs.getBtnArr(this.$route).id;
-      debugger
-      //var _this=this;
-      RequestButtonByMenuId({menuId:menuId}).then((res)=>{
-            if(res.status!=200)
-            {
-                var err=JSON.parse(res.response.data)
-                _this.$Message.error({content:err.Message,duration:3});
-            }
-            else
-            { 
-                _this.btnlist=res.data.response;
-            }
-      })
   },
   mounted:function()
   {
       this.Search();
   },
   methods:{
-      Search()
-      {
-          this.Get();
-      },
-      handleSubmit()
-      {
-          this.$refs.formValidate.validate((valid)=>{
+        callFn(item){
+            this[item].apply(this)
+        },
+        Search()
+        {
+            this.Get();
+        },
+        handleSubmit()
+        {
+            this.$refs.formValidate.validate((valid)=>{
                 if(valid)
                 {
                     var _this=this;
@@ -205,9 +196,9 @@ export default {
                     this.$Message.error({content:'参数有误，请重新填写',duration:3});
                 }
             })
-      },
-      Get()
-      {
+        },
+        Get()
+        {
           var pageIndex=this.$refs.PageArr.pageIndex;//获取子组件中的属性
           var pageSize=this.$refs.PageArr.pagesize;//获取子组件中的属性
           var _this=this;
@@ -220,36 +211,26 @@ export default {
             }
           RequestButtonByPage(param).then(res=>
           {
-              if(res.status!=200)
+              if(res.data.success)
               {
-                   var err=JSON.parse(res.response.data)
-                   this.$Message.error({content:err.Message,duration:3});
-                   _this.loading=false;
+                  _this.loading=false;
+                   _this.list=res.data.response.data;
+                   console.log(_this.list)
+                   _this.$refs.PageArr.Total=res.data.response.totalCount;
+                  
               }
               else
               { 
+                   this.$Message.error({content:res.data.msg,duration:3});
                    _this.loading=false;
-                   _this.list=res.data.response.data;
-                   console.log(_this.list)
-                //    for (let index = 0; index < _this.list.length; index++) {
-                //        var ss='<Button'' type="primary" @click="handleSubmit('formValidate')">';
-                       
-                //    }
-                   _this.$refs.PageArr.Total=res.data.response.totalCount;
               }
           })
-      },
-      GetMenuList()
-      {
+        },
+        GetMenuList()
+        {
           var _this=this;
           RequestAllMenu({}).then(res=>{
-            if(res.status!=200)
-            {
-                var err=JSON.parse(res.response.data)
-                _this.$Message.error({content:err.Message,duration:3});
-            }
-            else
-            {   if(res.data.success)
+               if(res.data.success)
                 {
                     _this.MenuList=res.data.response;    
                 }
@@ -257,10 +238,9 @@ export default {
                 {
                     _this.$Message.error({content:res.data.msg,duration:3});
                 }
-            }
           })
-      },
-      AddModal:function() {
+        },
+        addModal:function() {
             this.title="添加用户";
             this.sexflag='';
             this.formValidate=
@@ -277,13 +257,21 @@ export default {
             },
             this.GetMenuList();
             this.FormVisible=true;
-      },
+        },
       //单击表格选中的数据时
         CurrentRow:function(val)
         {
             //   this.currentRow=val;
             //   console.log(this.currentRow);
         },
+        del()
+        {
+            console.log("点击了删除")
+        },
+        edit()
+        {
+            console.log("点击了修改")
+        }
   }
 }
 </script>

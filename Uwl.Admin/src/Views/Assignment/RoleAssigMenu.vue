@@ -165,13 +165,6 @@ export default {
            var menus=JSON.stringify(this.$refs.mm.getCheckedAndIndeterminateNodes());
            var param={RoleId:this.roleRow.id,menuIds:menus,BtnIds:btn,CreatedId:this.info.id,CreatedName:this.info.name};
                 ResponseRoleAssigBySave(param).then(res=>{
-                    if(res.status!=200)
-                    {
-                        var err=JSON.parse(res.response.data)
-                        this.$Message.error({content:err.Message,duration:3});
-                    }
-                    else
-                    {
                         if(res.data.success)
                         {
                             this.$Message.success({content:res.data.msg,duration:3});
@@ -180,7 +173,6 @@ export default {
                         {
                             this.$Message.error({content:res.data.msg,duration:3});
                         }
-                    }
                 })
        }
        

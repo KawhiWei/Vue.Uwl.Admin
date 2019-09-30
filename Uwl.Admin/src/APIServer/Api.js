@@ -73,49 +73,39 @@ axios.interceptors.response.use(response=>{//没有错误数据原封返回
     },
     //如果有返回错误
     error=>{
+      // 超时请求处理
+      var originalRequest = error.config;
+      if(error.code == 'ECONNABORTED' && error.message.indexOf('timeout')!=-1 && !originalRequest._retry){
+
+          // Vue.prototype.$message({
+          //     message: '请求超时！',
+          //     type: 'error'
+          // });
+          // originalRequest._retry = true
+          // return null;
+      }
         if(error.response)
         {
-            switch (error.response.status) //判断返回错误类型
-            {
-                case 400:
-                  error.message = '请求错误'
-                  break
-                case 401:
-                  ToLogin();
-                  error.message = '未授权，请登录'
-                  break
-                case 403:
-                  error.status=error.response.status
-                  error.message = error.response.data.Message;
-                  break
-                case 404:
-                  error.message = `请求地址出错: ${error.response.config.url}`
-                  break
-                case 408:
-                  error.message = '请求超时'
-                  break
-                case 500:
-                  error.message = '服务器内部错误'
-                  break
-                case 501:
-                  error.message = '服务未实现'
-                  break
-                case 502:
-                  error.message = '网关错误'
-                  break
-                case 503:
-                  error.message = '服务不可用'
-                  break
-                case 504:
-                  error.message = '网关超时'
-                  break
-                case 505:
-                  error.message = 'HTTP版本不受支持'
-                  break
-                default:
-            }
+          if(error.response.status===401)
+          {
+            debugger
+            Vue.prototype.$message({
+              message: '很抱歉，登录超时!请重新登录',
+              type: 'error',duration:5
+              
+            });
+            //ToLogin();
+          }
+          if(error.response.status===403)
+          {
+            Vue.prototype.$message({
+              message: '失败！该操作无权限',
+              type: 'error',duration:5
+            });
+            return null;
+          }
         }
-        return error // 返回接口返回的错误信息
+        return "" // 返回接口返回的错误信息
     },
 )
 const ToLogin=params=>{

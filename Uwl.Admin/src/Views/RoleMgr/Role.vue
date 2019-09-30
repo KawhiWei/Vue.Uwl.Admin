@@ -273,16 +273,16 @@ export default {
             this.loading=true;
             RequestRoleByPage(param).then(res=>
             {
-                if(res.status!=200)
+                if(res.data.success)
                 {
-                    var err=JSON.parse(res.response.data)
-                    this.$Message.error({content:err.Message,duration:3});
-                    _this.loading=false;
-                }
-                else{
                     _this.loading=false;
                     _this.List=res.data.response.data;
                     _this.$refs.PageArr.Total=res.data.response.totalCount;
+                    
+                }
+                else{
+                    _this.loading=false;
+                    this.$Message.error({content:res.data.msg,duration:3});
                 }
                 
             });

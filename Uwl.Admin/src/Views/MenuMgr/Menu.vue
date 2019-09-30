@@ -177,7 +177,6 @@ export default {
                       console.log(str);
                       debugger;
                       ResponseMenuByDelete({ Ids: str }).then(res => {
-                        if (res.status == 200) {
                           if (res.data.success) {
                             _this.$Message.success(res.data.msg);
                             _this.GetMenu();
@@ -187,12 +186,7 @@ export default {
                               duration: 3
                             });
                           }
-                        } else {
-                          _this.$Message.error({
-                            content: "参数有误，请重试!",
-                            duration: 3
-                          });
-                        }
+                        
                       });
                     }
                   }
@@ -264,18 +258,17 @@ export default {
             }
       RequestMenuByPage(param).then(
         res => {
-          if(res.status!=200)
+          if(res.data.success)
           {
-            var err=JSON.parse(res.response.data)
-            this.$Message.error({content:err.Message,duration:3});
-            _this.loading=false;
-          }
-          else
-          {
-            _this.loading = false;
             _this.MenuList = res.data.response.data;
             console.log(_this.MenuList);
             _this.$refs.PageArr.Total = res.data.response.totalCount;
+            _this.loading = false;
+          }
+          else
+          {
+            this.$Message.error({content:res.data.msg,duration:3});
+            _this.loading=false;
           }
           
         }

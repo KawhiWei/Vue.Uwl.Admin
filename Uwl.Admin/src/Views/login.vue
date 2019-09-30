@@ -55,11 +55,10 @@ export default {
             .configureLogging(singnalR.LogLevel.Information)//接受的消息
             .build();//创建
             _that.connection.on('ReceiveMessage',function(user,message){
-                _that.$Message.error({content:message+user,duration:3});
+                _that.$Message.error({content:message+user,duration:1});
             });
-
             _that.connection.on('ReceiveUpdate',function(update){
-                _that.$Message.error({content:update,duration:3});
+                _that.$Message.error({content:update,duration:1});
                 window.clearInterval(this.t)
             })
         },
