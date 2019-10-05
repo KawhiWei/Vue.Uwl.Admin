@@ -1,9 +1,9 @@
 import axios from 'axios' //在APi访问接口引入Vuex
-import router from '../router/index'
 import Vue from 'vue';
+import router from '../router/index'
+import { Message } from 'iview'
 import store from '../Vuex/store'
 var baseurl1='';//"http://139.199.219.154:8561";//
-
 const ApiControllerUrl={
     //登录Url存放位置
     LoginUrl:{
@@ -53,6 +53,12 @@ const ApiControllerUrl={
       GetRoleAssig:'/api/RoleAssig/GetRoleAssigTree',//根据角色ID获取菜单和按钮列表
       GetAllRole:'/api/Roles/GetAllRole',//获取所有的角色列表
       SaveRoleAssig:'/api/RoleAssig/SaveRoleAssig',//保存权限
+    },
+    //权限分配API接口
+    OrganizeUrl:{ //角色分配权限接口定义
+      GetOrganizeByPage:'/api/Organize/GetOrganizePage',//根据角色ID获取菜单和按钮列表
+      AddOrganize:'/api/Organize/AddOrganize',//获取所有的角色列表
+      UpdateOrganize:'/api/Organize/UpdateOrganize',//保存权限
     }
 }
 //http request 拦截器
@@ -77,31 +83,33 @@ axios.interceptors.response.use(response=>{//没有错误数据原封返回
       var originalRequest = error.config;
       if(error.code == 'ECONNABORTED' && error.message.indexOf('timeout')!=-1 && !originalRequest._retry){
 
-          // Vue.prototype.$message({
-          //     message: '请求超时！',
-          //     type: 'error'
-          // });
-          // originalRequest._retry = true
-          // return null;
+          Vue.prototype.$message({
+              message: '请求超时！',
+              type: 'error'
+          });
+          originalRequest._retry = true
+          return null;
       }
         if(error.response)
         {
           if(error.response.status===401)
           {
-            debugger
-            Vue.prototype.$message({
-              message: '很抱歉，登录超时!请重新登录',
-              type: 'error',duration:5
+            Message.error('很抱歉，登录超时!请重新登录');
+            // Message.info({
+            //   message: '很抱歉，登录超时!请重新登录',
+            //   type: 'error',duration:5
               
-            });
-            //ToLogin();
+            // });
+            ToLogin();
           }
           if(error.response.status===403)
           {
-            Vue.prototype.$message({
-              message: '失败！该操作无权限',
-              type: 'error',duration:5
-            });
+            Message.error('失败！该操作无权限');
+            //console.log(Vue)
+            // Vue.prototype.$Message({
+            //   message: '失败！该操作无权限',
+            //   type: 'error',duration:5
+            // });
             return null;
           }
         }
@@ -213,6 +221,14 @@ export const RequestButtonByPage=params=>{
 export const ResponsebuttonByAdd=params=>{
   return axios.post(`${baseurl1}`+ApiControllerUrl.ButtonmanagerUrl.AddButton,params);
 }
+//修改按钮信息
+export const ResponseButtonByEdit=params=>{
+  return axios.put(`${baseurl1}`+ApiControllerUrl.ButtonmanagerUrl.UpdateButton,params);
+}
+//删除按钮
+export const ResponseButtonByDelete=params=>{
+  return axios.delete(`${baseurl1}`+ApiControllerUrl.ButtonmanagerUrl.DeleteButton,{params:params});
+}
 
 //根据菜单ID获取改菜单下的按钮
 export const RequestButtonByMenuId=params=>{
@@ -233,3 +249,11 @@ export const RoleAssigGetAllRole=params=>{
 export const ResponseRoleAssigBySave=params=>{
   return axios.post(`${baseurl1}`+ApiControllerUrl.RoleAssigMenuUrl.SaveRoleAssig,params);
 }
+
+/////////////////////组织机构接口
+ 
+export const RequestOrganizeByPage=params=>{
+  return axios.get(`${baseurl1}`+ApiControllerUrl.OrganizeUrl.GetOrganizeByPage);
+}
+
+//

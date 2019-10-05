@@ -24,7 +24,6 @@ export default {
             if(res.data.success)
             {
                 _this.btnlist=res.data.response;
-                console.log(_this.btnlist)
             }
             else
             {    
@@ -37,7 +36,6 @@ export default {
       //点击翻页时调用主组件方法
       callFn(item)
       {
-          debugger
         this.$emit('keyFun',item.keyCode);
       },
   },

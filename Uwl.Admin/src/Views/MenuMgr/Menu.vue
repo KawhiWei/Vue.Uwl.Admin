@@ -9,14 +9,19 @@
         </span>
         <span>
           <span>前端路由地址：</span>
-          <Input v-model="searCh.frontRouter" style="width:180px;" clearable placeholder="请输入前端路由地址" />
+          <Input
+            v-model="searCh.frontRouter"
+            style="width:180px;"
+            clearable
+            placeholder="请输入前端路由地址"
+          />
         </span>
         <span>
           <span>Api接口：</span>
           <Input v-model="searCh.apiUrl" style="width:180px;" clearable placeholder="请输入Api路由地址" />
         </span>
         <Button type="info" icon="ios-search" @click="search">查询</Button>
-        <Button type="success" @click="AddModal" icon="md-add">添加</Button>
+        <Buttonbar v-on:keyFun="callFn" />
       </Row>
       <div>
         <Table
@@ -26,6 +31,7 @@
           show-header
           highlight-row
           @on-current-change="CurrentRow"
+          @on-select="getRow"
           :columns="columns2"
           :data="MenuList"
         ></Table>
@@ -45,33 +51,33 @@
         :mask-closable="false"
         @on-ok="handleSubmit('formValidate')"
       >
-      <!---菜单基本信息--->
-            <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
-              <FormItem label="菜单名称" prop="name">
-                <Input v-model="formValidate.name" placeholder="请输入菜单名称" />
-              </FormItem>
-              <FormItem label="路由地址" prop="urlAddress">
-                <Input v-model="formValidate.urlAddress" placeholder="请输入前端路由地址" />
-              </FormItem>
-              <FormItem label="API接口地址" prop="aPIAddress">
-                <Input v-model="formValidate.aPIAddress" placeholder="请输入API接口地址" />
-              </FormItem>
-              <FormItem label="父级菜单" prop="parentIdarr">
-                <Cascader
-                  v-bind:data="TreeArr"
-                  @on-change="SelectParent"
-                  change-on-select
-                  v-model="parentIdarr"
-                  placeholder="请选择父级菜单"
-                ></Cascader>
-              </FormItem>
-              <FormItem label="排序" prop="sort">
-                <InputNumber v-model="formValidate.sort" placeholder="请输入排序" />
-              </FormItem>
-              <FormItem label="备注" prop="memo">
-                <Input v-model="formValidate.memo" placeholder="请输入备注" />
-              </FormItem>
-            </Form>
+        <!---菜单基本信息--->
+        <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
+          <FormItem label="菜单名称" prop="name">
+            <Input v-model="formValidate.name" placeholder="请输入菜单名称" />
+          </FormItem>
+          <FormItem label="路由地址" prop="urlAddress">
+            <Input v-model="formValidate.urlAddress" placeholder="请输入前端路由地址" />
+          </FormItem>
+          <FormItem label="API接口地址" prop="aPIAddress">
+            <Input v-model="formValidate.aPIAddress" placeholder="请输入API接口地址" />
+          </FormItem>
+          <FormItem label="父级菜单" prop="parentIdarr">
+            <Cascader
+              v-bind:data="TreeArr"
+              @on-change="SelectParent"
+              change-on-select
+              v-model="formValidate.parentIdarr"
+              placeholder="请选择父级菜单"
+            ></Cascader>
+          </FormItem>
+          <FormItem label="排序" prop="sort">
+            <InputNumber v-model="formValidate.sort" placeholder="请输入排序" />
+          </FormItem>
+          <FormItem label="备注" prop="memo">
+            <Input v-model="formValidate.memo" placeholder="请输入备注" />
+          </FormItem>
+        </Form>
         <div slot="footer">
           <Button type="primary" @click="handleSubmit('formValidate')">提交</Button>
           <Button @click="FormVisible = false" style="margin-left: 8px">取消</Button>
@@ -82,15 +88,16 @@
 </template>
 <script>
 import PageView from "@/components/Page.vue";
+import Buttonbar from "@/components/ButtonBar/ButtonBar.vue";
 import {
   RequestMenuByPage,
   ResponseMenuByAdd,
   RequestMenuTree,
   ResponseMenuByEdit,
-  ResponseMenuByDelete,
+  ResponseMenuByDelete
 } from "../../APIServer/Api.js";
 export default {
-  components: { PageView },
+  components: { PageView, Buttonbar },
   name: "HelloWorld",
   data() {
     return {
@@ -99,7 +106,6 @@ export default {
       title: "添加菜单",
       loading: true,
       IsEdit: false, //是编辑还是新增菜单
-      panelName:'name1',
       columns2: [
         { type: "selection", minWidth: 60, align: "center" },
         { title: "菜单名称", key: "name", minWidth: 100 },
@@ -108,100 +114,12 @@ export default {
         { title: "API接口", key: "apiAddress", minWidth: 120 },
         { title: "排序", key: "sort", minWidth: 20 },
         { title: "创建时间", key: "createAts", minWidth: 80 },
-        { title: "备注", key: "memo", minWidth: 60 },
-        {
-          title: "操作",
-          key: "action",
-          minWidth: 110,
-          render: (h, params) => {
-            return h("div", [
-              h(
-                "Button",
-                {
-                  props: {
-                    type: "warning",
-                    size: "small"
-                  },
-                  style: {
-                    margin: "5px"
-                  },
-                  on: {
-                    click: () => {
-                      var _this = this;
-                      this.formValidate = {
-                        name: params.row.name, //菜单名称
-                        urlAddress: params.row.urlAddress, //前端配置的路由
-                        aPIAddress: params.row.apiAddress, //API接口
-                        parentId: params.row.parentId, //父级菜单
-                        sort: 0, //排序字段
-                        icon: params.row.icon, //菜单图标
-                        memo: params.row.memo, //备注
-                        createdId: params.row.createdId,
-                        createdName: params.row.createdName,
-                        isDrop: params.row.isDrop
-                      };
-                      this.id = params.row.id;
-                      this.title = "编辑";
-                      this.IsEdit = true;
-                      this.TreeArr = [];
-                      this.panelName='name1',
-                      RequestMenuTree({ userid: _this.info.id }).then(
-                        //编辑时调用后台请求数据方法
-                        res => {
-                          _this.tree(res.data.response);
-                        }
-                      );
-                      this.FormVisible = true;
-                    }
-                  }
-                },
-                "修改"
-              ),
-              h(
-                "Button",
-                {
-                  props: {
-                    type: "error",
-                    size: "small"
-                  },
-                  style: {
-                    margin: "5px"
-                  },
-                  on: {
-                    click: () => {
-                      var _this = this;
-                      var arr = [params.row.id];
-                      //var arr={Ids:params.row.id};
-                      //var arr=['2893214a-bebc-4766-ba54-3820bed1e88d','2893214a-bebc-4766-ba54-3820bed1e88d'];
-                      var str = JSON.stringify(arr);
-                      console.log(str);
-                      debugger;
-                      ResponseMenuByDelete({ Ids: str }).then(res => {
-                          if (res.data.success) {
-                            _this.$Message.success(res.data.msg);
-                            _this.GetMenu();
-                          } else {
-                            _this.$Message.error({
-                              content: res.data.msg,
-                              duration: 3
-                            });
-                          }
-                        
-                      });
-                    }
-                  }
-                },
-                "删除"
-              )
-            ]);
-          }
-        }
+        { title: "备注", key: "memo", minWidth: 60 }
       ], //列表表头
       MenuList: [], //列表存放后台返回的数据
       buttonList: [], //列表存放后台返回的数据
-      currentRow: "", //存放当前选中行的数据
+      currentRow: null, //存放当前选中行的数据
       TreeArr: [], //级联选择器数组
-      parentIdarr: [], //父级菜单已选中数组
       searCh: {
         ///搜索对象存放
         name: "",
@@ -221,8 +139,9 @@ export default {
         createdId: "",
         createdName: "",
         isDrop: false,
-        buttonIds: '',
+        parentIdarr: []
       },
+      delrow: [],
       buttonIdarrChecked: [],
       //添加是字段校验
       ruleValidate: {
@@ -240,53 +159,44 @@ export default {
     this.GetMenu();
   },
   methods: {
-    Names:function(name)
-    {
-      console.log(name)
+    callFn(item) {
+      this[item].apply(this);
     },
     GetMenu: function() {
       var pageIndex = this.$refs.PageArr.pageIndex; //获取子组件中的属性
       var pageSize = this.$refs.PageArr.pagesize; //获取子组件中的属性
       var _this = this;
       this.loading = true;
-      var param={
-                PageIndex:pageIndex,
-                PageSize:pageSize,
-                Name:_this.searCh.name,
-                UrlAddress:_this.searCh.frontRouter,
-                APIAddress:_this.searCh.apiUrl,
-            }
-      RequestMenuByPage(param).then(
-        res => {
-          if(res.data.success)
-          {
-            _this.MenuList = res.data.response.data;
-            console.log(_this.MenuList);
-            _this.$refs.PageArr.Total = res.data.response.totalCount;
-            _this.loading = false;
-          }
-          else
-          {
-            this.$Message.error({content:res.data.msg,duration:3});
-            _this.loading=false;
-          }
-          
+      var param = {
+        PageIndex: pageIndex,
+        PageSize: pageSize,
+        Name: _this.searCh.name,
+        UrlAddress: _this.searCh.frontRouter,
+        APIAddress: _this.searCh.apiUrl
+      };
+      RequestMenuByPage(param).then(res => {
+        if (res.data.success) {
+          _this.MenuList = res.data.response.data;
+          _this.$refs.PageArr.Total = res.data.response.totalCount;
+          _this.loading = false;
+        } else {
+          this.$Message.error({ content: res.data.msg, duration: 3 });
+          _this.loading = false;
         }
-      );
-    },
-    checkAllGroupChange(item) {
-      console.log(item);
+      });
     },
     //选择级联时获取value
     SelectParent(value, selectedData) {
-      this.parentIdarr = selectedData;
+      this.formValidate.parentIdarr = JSON.stringify(value);
       this.formValidate.parentId = value.pop();
-      console.log(this.formValidate.parentId);
     },
     //单击表格选中的数据时
     CurrentRow: function(val) {
-      //   this.currentRow=val;
-      //   console.log(this.currentRow);
+      this.currentRow = val;
+    },
+    //多选删除
+    getRow(selection, row) {
+      this.delrow = selection;
     },
     search: function() {
       this.GetMenu();
@@ -309,11 +219,12 @@ export default {
         isDrop: false,
         buttonIdarrChecked: []
       }),
-        RequestMenuTree({
-          userid: "ad73d0f6-33c9-40e3-8c56-f0ec8e35315f"
-        }).then(res => {
-          _this.tree(res.data.response);
-        });
+        (this.IsEdit = false);
+      RequestMenuTree({
+        userid: "ad73d0f6-33c9-40e3-8c56-f0ec8e35315f"
+      }).then(res => {
+        _this.tree(res.data.response);
+      });
       _this.buttonList = [];
       this.FormVisible = true;
     },
@@ -321,9 +232,10 @@ export default {
       this.$refs.formValidate.validate(valid => {
         if (valid) {
           var _this = this;
-          this.formValidate.buttonIds = JSON.stringify(this.buttonIdarrChecked);
+          this.formValidate.parentIdarr = JSON.stringify(
+            this.formValidate.parentIdarr
+          );
           let params = Object.assign({}, this.formValidate);
-          console.log(this.formValidate);
           if (this.IsEdit) {
             //true代表是编辑进来
             params.id = this.id;
@@ -350,15 +262,12 @@ export default {
     Message: function(res) {
       var _this = this;
       if (res.status == 200) {
-        if (res.data.success) 
-        {
+        if (res.data.success) {
           _this.$Message.success(res.data.msg);
           _this.buttonIds = [];
           _this.FormVisible = false;
           _this.GetMenu();
-        }
-        else
-        {
+        } else {
           _this.$Message.error(res.data.msg);
         }
       } else {
@@ -385,6 +294,62 @@ export default {
         test(crr);
       }
       this.TreeArr.push(obj);
+    },
+    edit() {
+      var _this = this;
+      if (this.currentRow == null) {
+        this.$Message.warning({ content: "请选择要修改的菜单", duration: 3 });
+        return;
+      }
+      this.formValidate.parentIdarr = "";
+      this.formValidate = {
+        name: this.currentRow.name, //菜单名称
+        urlAddress: this.currentRow.urlAddress, //前端配置的路由
+        aPIAddress: this.currentRow.apiAddress, //API接口
+        parentId: this.currentRow.parentId, //父级菜单
+        sort: 0, //排序字段
+        icon: this.currentRow.icon, //菜单图标
+        memo: this.currentRow.memo, //备注
+        createdId: this.info.id,
+        createdName: this.info.name,
+        isDrop: this.currentRow.isDrop,
+        parentIdarr: JSON.parse(this.currentRow.parentIdArr)
+      };
+      this.id = this.currentRow.id;
+      this.title = "编辑";
+      this.IsEdit = true;
+      this.TreeArr = [];
+      RequestMenuTree({ userid: _this.info.id }).then(
+        //编辑时调用后台请求数据方法
+        res => {
+          _this.tree(res.data.response);
+        }
+      );
+      this.FormVisible = true;
+    },
+    del() {
+      var _this = this;
+      if (this.delrow.length <= 0) {
+        this.$Message.warning({ content: "请选择要删除的菜单", duration: 3 });
+        return;
+      }
+      var arr = [];
+      this.delrow.forEach(x => {
+        arr.push(x.id);
+      });
+      var str = JSON.stringify(arr);
+      console.log(str);
+      ResponseMenuByDelete({ Ids: str }).then(res => {
+        if (res.data.success) {
+          _this.$Message.success(res.data.msg);
+          _this.GetMenu();
+        } else {
+          _this.$Message.error({
+            content: res.data.msg,
+            duration: 3
+          });
+        }
+      });
     }
   }
 };

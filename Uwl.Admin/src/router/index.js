@@ -1,13 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import login from '@/Views/login.vue'
-import Menu from '@/Views/MenuMgr/Menu.vue'
-import User from '@/Views/UserMgr/User.vue'
-import Role from '@/Views/RoleMgr/Role.vue'
-import Assignment from '@/Views/Assignment/RoleAssigMenu.vue' //角色分配菜单组件注入
-import Button from '@/Views/ButtonMgr/Button.vue' //角色分配菜单组件注入
-import test2 from '@/Views/test2.vue'
-// import Layout from '@/Views/Layout.vue'
 import PlatformHome from '@/Views/PlatformHome.vue'
 import customLayout from '@/components/customLayout.vue'
 import store from '../Vuex/store'

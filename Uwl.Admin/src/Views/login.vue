@@ -32,8 +32,8 @@ export default {
         data () {
             return {
                 formInline: {
-                    user: 'uwl',
-                    password: '123456'
+                    user: 'test',
+                    password: 'test'
                 },
                 connection:'',
                 ruleInline: {
