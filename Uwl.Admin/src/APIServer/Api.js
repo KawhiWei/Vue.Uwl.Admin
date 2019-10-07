@@ -54,11 +54,11 @@ const ApiControllerUrl={
       GetAllRole:'/api/Roles/GetAllRole',//获取所有的角色列表
       SaveRoleAssig:'/api/RoleAssig/SaveRoleAssig',//保存权限
     },
-    //权限分配API接口
-    OrganizeUrl:{ //角色分配权限接口定义
-      GetOrganizeByPage:'/api/Organize/GetOrganizePage',//根据角色ID获取菜单和按钮列表
-      AddOrganize:'/api/Organize/AddOrganize',//获取所有的角色列表
-      UpdateOrganize:'/api/Organize/UpdateOrganize',//保存权限
+    //组织机构API接口
+    OrganizeUrl:{ //组织机构API接口定义
+      GetOrganizeByPage:'/api/Organize/OrganizeTree',//获取组织机构
+      AddOrganize:'/api/Organize/AddOrganize',//添加组织机构
+      UpdateOrganize:'/api/Organize/UpdateOrganize',//修改组织机构
     }
 }
 //http request 拦截器
