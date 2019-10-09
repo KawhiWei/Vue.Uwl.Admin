@@ -6,7 +6,6 @@
     </div>
 </template>
 <script>
-import {RequestButtonByMenuId} from '../../APIServer/Api.js';
 export default {
   name: 'buttonbar',
   props:{
@@ -18,19 +17,8 @@ export default {
   },
   created:function()
   {
-      var menuId=this.$getArrs.getBtnArr(this.$route).id;
       var _this=this;
-      RequestButtonByMenuId({menuId:menuId}).then((res)=>{
-            if(res.data.success)
-            {
-                _this.btnlist=res.data.response;
-            }
-            else
-            {    
-                var err=JSON.parse(res.response.data)
-                console.log(res.data.msg);
-            }
-      })
+      _this.btnlist=this.$getArrs.getBtnArr(this.$route).btnIsDisplayViews;
   },
   methods:{
       //点击翻页时调用主组件方法

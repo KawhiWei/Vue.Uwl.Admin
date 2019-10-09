@@ -228,7 +228,6 @@ export default {
         if (res.data.success) {
           _this.loading = false;
           _this.list = res.data.response.data;
-          console.log(_this.list);
           _this.$refs.PageArr.Total = res.data.response.totalCount;
         } else {
           this.$Message.error({ content: res.data.msg, duration: 3 });

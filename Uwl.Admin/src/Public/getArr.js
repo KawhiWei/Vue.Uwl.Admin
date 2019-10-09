@@ -1,4 +1,3 @@
-
 export default {
     //根据路由获取到菜单id
     getBtnArr:function(route) {

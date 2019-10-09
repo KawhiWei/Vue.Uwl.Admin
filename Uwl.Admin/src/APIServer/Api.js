@@ -46,7 +46,6 @@ const ApiControllerUrl={
       AddButton:'/api/Button/AddButton',//添加按钮
       UpdateButton:'/api/Button/UpdateButton',//修改按钮
       DeleteButton:'/api/Button/DeleteButton',//删除按钮
-      GetButtonByMenuId:'/api/Button/GetBtnByMenuId',//根据菜单ID获取按钮
     },
     //权限分配API接口
     RoleAssigMenuUrl:{ //角色分配权限接口定义
@@ -229,12 +228,6 @@ export const ResponseButtonByEdit=params=>{
 export const ResponseButtonByDelete=params=>{
   return axios.delete(`${baseurl1}`+ApiControllerUrl.ButtonmanagerUrl.DeleteButton,{params:params});
 }
-
-//根据菜单ID获取改菜单下的按钮
-export const RequestButtonByMenuId=params=>{
-  return axios.get(`${baseurl1}`+ApiControllerUrl.ButtonmanagerUrl.GetButtonByMenuId,{params:params});
-}
-
 
 ///////////////////角色权限分配接口
 //获取所有的角色列表
