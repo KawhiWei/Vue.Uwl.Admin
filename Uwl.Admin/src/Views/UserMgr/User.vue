@@ -275,6 +275,7 @@ export default {
           if (_this.sexflag == "woman") {
             var sexflag = false;
           }
+          debugger
           this.formValidate.sex = sexflag;
           let params = Object.assign({}, this.formValidate);
           if (this.IsEdit) {
