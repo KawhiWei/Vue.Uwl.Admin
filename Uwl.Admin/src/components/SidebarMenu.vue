@@ -4,6 +4,7 @@
         <template v-if="item.children.length>0">
             <Submenu :name="item.id" :key="item.id" >
                 <template slot="title">
+                    <Icon :type="item.iconCls" />
                     {{item.name}}
                 </template>
                 <!-- 在这里实现地柜组件，判断children是否为null -->
@@ -19,8 +20,8 @@
             </Submenu>
         </template>
         <template v-else>
-            <MenuItem :name="item.id">
-                <Icon type="md-home" />
+            <MenuItem :name="item.path">
+                <Icon :type="item.iconCls" />
                     <span>{{item.name}}</span>
             </MenuItem>
         </template>

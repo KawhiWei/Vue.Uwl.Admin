@@ -9,7 +9,7 @@ const _import =require('@/router/_import_'+process.env.NODE_ENV)//获取组件�
 
 Vue.use(Router)
 let addRouFlag = false
-
+var getRouter
 //定义并 New 一个Vue路由对象
 const createRouters=()=>new Router(
   {
@@ -61,13 +61,17 @@ router.beforeEach((to,from,next)=>{
     }
     else
     {
-      arr=filterAsyncRouterMap(arr)//动态添加组件
-      router.addRoutes(arr)//添加动态路由
-      if(!addRouFlag)//动态加载路由时需要添加一个变量避免陷入死循环
+      if(!getRouter)
       {
-        addRouFlag=true;
-        //跳转动态路由时不可直接next(),  需要用此写法next({ ...to, replace: true })
-        next({ ...to, replace: true });
+        arr=filterAsyncRouterMap(arr)//动态添加组件
+        router.addRoutes(arr)//添加动态路由
+        getRouter=arr;
+        if(!addRouFlag)//动态加载路由时需要添加一个变量避免陷入死循环
+        {
+          addRouFlag=true;
+          //跳转动态路由时不可直接next(),  需要用此写法next({ ...to, replace: true })
+          next({ ...to, replace: true });
+        }
       }
     }
   }
