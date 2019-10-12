@@ -41,7 +41,7 @@ export default {
     return {
       formInline: {
         user: "test",
-        password: "test"
+        password: "123456"
       },
       loading: false,
       LoadingTitle: "登录",
