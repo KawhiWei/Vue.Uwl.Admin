@@ -119,6 +119,7 @@ export default {
             "userInfo",
             JSON.stringify(res.data.response)
           ); //将用户信息写入到session缓存中
+          _this.$store.commit("SaveUser", res.data.response);
           _this.LoadingTitle = "正在获取左侧菜单";
           RequestMenuTree({ userid: res.data.response.id }).then(res => {
               if(res.data.success)
