@@ -37,8 +37,10 @@
             </div>
             <!----右侧Tabs标签页------>
             <Col span="24" :class="collapsed?'content-collapsed':'content-expanded'">
-              <div style="margin:5px 5px; background-color:#6089d4">
-                <Tag style="margin:5px;" type="dot" color="primary" :key="item.id"  :name="item.path" :closable="item.IsColse"  v-for=" item in TagsList" @on-close="handleCloseTags">
+              <div style="margin:5px 5px;  background-color:#6089d4;">
+                <!-- -->
+                <Tag style="margin:5px;" type="dot" :color="item.path==$route.path?'primary':'default'" :key="item.id"  :name="item.path" 
+                :closable="item.IsColse"  v-for=" item in TagsList" @on-close="handleCloseTags">
                   <router-link :to="item.path" style="color:#000" ><Icon type="md-home" />{{item.lable}}</router-link>
                   </Tag>              
               </div>
