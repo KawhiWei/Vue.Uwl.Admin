@@ -1,23 +1,25 @@
 <template>
   <div v-cloak>
     <Card class="infocard" >
-      <div>
+      <div class="Infobox">
         <Card style="width:350px;">
-          <img class="header" src="https://i.loli.net/2017/08/21/599a521472424.jpg" shape="circle"/>
-          <Button type="primary" @click="UpdataHeadImg()">更换头像</Button>
-          <div>
+          <div class="headpic">
+            <img class="header" src="https://i.loli.net/2017/08/21/599a521472424.jpg" shape="circle"/>
+          </div>
+          <Button type="primary" @click="UpdataHeadImg()" class="changehead">更换头像</Button>
+          <div class="Binding">
             手机:
             <span v-if="user.mobile">{{user.mobile}}</span>
             <span v-else>未绑定</span>
             <Button style="float:right;" type="info" size="small">修改手机</Button>
           </div>
-          <div>
+          <div class="Binding">
             邮箱:
             <span v-if="user.email">{{user.email}}</span>
             <span v-else>未绑定</span>
             <Button style="float:right;" type="info" size="small">修改邮箱</Button>
           </div>
-          <div>
+          <div class="Binding">
             微信:
             <span v-if="user.weChat">{{user.weChat}}</span>
             <span v-else>未绑定</span>
@@ -26,25 +28,25 @@
           <Button type="error">修改密码</Button>
           </Card>
       </div>
-      <div>
+      <div class="Infobox">
         <Card style="width:350px">
           <p slot="title">个人信息</p>
-          <div>
+          <div class="SelfMsg">
             <span>
               用户名:
               <span v-if="user.account">{{user.account}}</span>
               <span v-else>未绑定</span>
             </span>
           </div>
-          <div>
+          <div class="SelfMsg">
             角色:
             <span v-if="user.email">{{user.email}}</span>
               <span v-else>未绑定</span>
           </div>
-          <div>
+          <div class="SelfMsg">
             性别:<Input v-model="user.name" placeholder="Enter something..." style="width: 300px" />
           </div>
-          <div>
+          <div class="SelfMsg">
             真实姓名:<Input v-model="user.name" placeholder="Enter something..." style="width: 300px" />
           </div>
           </Card>
@@ -159,8 +161,8 @@ export default {
   right: 0;
   margin: 0 auto;
   left: 0;
-  height: 550px;
   box-shadow: 0 4px 21px #d6d6d6;
+  overflow: hidden;
 }
 .infocard .header{
   height: 150px;
@@ -170,5 +172,28 @@ margin-right: 0;
 top: 4px;
 position: relative;
 border: 3px solid #dfdfdf;
+}
+.headpic{
+  text-align: center;
+}
+.changehead{
+  display: block;
+  margin: 0 auto;
+}
+.Binding{
+  overflow: hidden;
+  margin: 10px 0;
+}
+.SelfMsg{
+  margin-bottom: 10px ;
+}
+.Infobox{
+  float: left;
+}
+.Infobox:nth-child(2){
+  margin-left: 10px;
+}
+.ivu-card-body{
+  overflow: hidden;
 }
 </style>
