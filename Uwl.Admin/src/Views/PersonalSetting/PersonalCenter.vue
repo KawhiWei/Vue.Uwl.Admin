@@ -4,6 +4,7 @@
       <div>
         <Card style="width:350px;">
           <img class="header" src="https://i.loli.net/2017/08/21/599a521472424.jpg" shape="circle"/>
+          <Button type="primary" @click="UpdataHeadImg()">更换头像</Button>
           <div>
             手机:
             <span v-if="user.mobile">{{user.mobile}}</span>
@@ -44,12 +45,36 @@
             性别:<Input v-model="user.name" placeholder="Enter something..." style="width: 300px" />
           </div>
           <div>
-            真实姓名:<Input v-model="user.sex" placeholder="Enter something..." style="width: 300px" />
+            真实姓名:<Input v-model="user.name" placeholder="Enter something..." style="width: 300px" />
           </div>
           </Card>
       </div>
     </Card>
+    <div>
+      <Modal
+        v-model="modalUpdataHeadImg" :closable="false" :mask-closable="false">
+        <Upload
+        :headers="Tokens"
+        :before-upload="handleUpload"
+        :show-upload-list="false"
+        :on-success="uploadSuccess"
+        :on-format-error="handleFormatError"
+        :on-error="handleError"
+        :format="['jpg','png','gif']"
+        type="drag"
+        action="/api/User/UpLoad">
+        <div style="padding: 20px 0">
+            <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+            <p>点击，或拖动图片至此处</p>
+        </div>
+    </Upload>
+     <div slot="footer">
+          <Button @click="modalUpdataHeadImg = false" style="margin-left: 8px">取消</Button>
+        </div>
+    </Modal>
+    </div>
   </div>
+  
 </template>
 <script>
 export default {
@@ -58,11 +83,68 @@ export default {
   data () {
     return {
       user:this.$store.state.User,
+      file:[],//上传的图片
+      modalUpdataHeadImg:false,//更换头像弹出框
+      Tokens: {
+        Authorization: "Bearer " + window.sessionStorage.getItem("Token")
+      },
     }
   },
   created()
   {
     console.log(this.user)
+  },
+  methods:{
+    UpdataHeadImg()
+    {
+      if(this.modalUpdataHeadImg)
+      {
+        this.modalUpdataHeadImg=false;
+      }
+      else(!this.modalUpdataHeadImg)
+      {
+        this.modalUpdataHeadImg=true;
+      }
+    },
+    handleUpload(file)
+    {
+      this.file = file;//获取文件
+    },
+    //检查文件格式
+    handleFormatError(file) {
+      //_this.$Message.success(res.data.msg);
+      this.$Notice.warning({
+        title: "文件格式不正确",
+        desc: "文件 " + file.name + " 格式不正确，请上传.jpg,.png,gif文件。"
+      });
+      this.file = null;
+    },
+    uploadSuccess(res, file,fileList)
+    {
+      if(res.success)
+      {
+        this.$Notice.success({
+        title: "上传头像",
+        desc: "头像更换成功",
+        });
+        this.file = null;
+        this.UpdataHeadImg=false;
+      }
+      else{
+        this.$Notice.warning({
+        title: "上传头像",
+        desc: "头像更换失败"+res.msg,
+        });
+      }
+    },
+    handleError(error,file)
+    {
+      this.$Notice.error({
+        title: "上传头像",
+        desc: "上传头像文件失败",
+      });
+      this.file = null;
+    }
   }
 }
 </script>
