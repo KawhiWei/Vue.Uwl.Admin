@@ -113,7 +113,6 @@ created() {
     GetUserInfo(tokens) {
       var _this = this;
       _this.LoadingTitle = "正在获取用户信息";
-
       RequestUserInfo({ token: tokens }).then(res => {
         if (res.data.success) {
           _this.$Notice.success({ title: "获取用户信息成功" });
