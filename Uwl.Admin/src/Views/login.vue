@@ -33,9 +33,10 @@ import {
   RequestUserInfo,
   RequestMenuTree
 } from "../APIServer/Api.js";
+import axios from 'axios' //在APi访问接口引入Vuex
 import router from "../router";
 import { filterAsyncRouterMap } from "../router/index.js";
-import * as singnalR from "@aspnet/signalr";
+
 export default {
   data() {
     return {
@@ -45,7 +46,6 @@ export default {
       },
       loading: false,
       LoadingTitle: "登录",
-      connection: "",
       ruleInline: {
         user: [
           {
@@ -70,24 +70,26 @@ export default {
       }
     };
   },
-  created() {
-    var _that = this;
-    _that.connection = new singnalR.HubConnectionBuilder()
-      .withUrl("/api/chatHub") //配置路由通道
-      .configureLogging(singnalR.LogLevel.Information) //接受的消息
-      .build(); //创建
-    _that.connection.on("ReceiveMessage", function(user, message) {
-      _that.$Message.error({ content: message + user, duration: 1 });
-    });
-    _that.connection.on("ReceiveUpdate", function(update) {
-      _that.$Message.error({ content: update, duration: 1 });
-      window.clearInterval(this.t);
-    });
-  },
+  
   mounted() {
-    this.getMsg();
+     
   },
+created() {
+    // var _that = this;
+    // _that.connection = new singnalR.HubConnectionBuilder()
+    //   .withUrl("/api/chatHub") //配置路由通道
+    //   .configureLogging(singnalR.LogLevel.Information) //接受的消息
+    //   .build(); //创建
 
+    // _that.connection.on("ReceiveMessage", function(user, message) {
+    //   _that.$Message.error({ content: message + user, duration: 1 });
+    // });
+    // 接收服务端主动向客户端发起数据
+    // _that.connection.on("ReceiveUpdate", function(update) {
+    //   _that.$Message.error({ content: update, duration: 1 });
+    //   window.clearInterval(this.t);
+    // });
+  },
   methods: {
     handleSubmit() {
       var _this = this;
@@ -99,7 +101,7 @@ export default {
         _this.loading = true;
         if (res.data.success) {
           _this.$Notice.success({ title: "获取通行证成功" });
-          _this.$store.commit("SaveToken", res.data.response.token);
+          _this.$store.commit("SaveToken", res.data.response.token);      
           _this.GetUserInfo(res.data.response.token);
         } else {
           _this.loading = false;
@@ -111,16 +113,19 @@ export default {
     GetUserInfo(tokens) {
       var _this = this;
       _this.LoadingTitle = "正在获取用户信息";
-      // debugger
+
       RequestUserInfo({ token: tokens }).then(res => {
         if (res.data.success) {
           _this.$Notice.success({ title: "获取用户信息成功" });
           window.sessionStorage.setItem(
             "userInfo",
             JSON.stringify(res.data.response)
-          ); //将用户信息写入到session缓存中
+          ); 
+          
+          //将用户信息写入到session缓存中
           _this.$store.commit("SaveUser", res.data.response);
           _this.LoadingTitle = "正在获取左侧菜单";
+
           RequestMenuTree({ userid: res.data.response.id }).then(res => {
               if(res.data.success)
               {
@@ -142,30 +147,10 @@ export default {
         else{
             _this.$Notice.error({ title: "获取用户信息失败" });
         }
-
         //_this.$router.push('/')
       });
     },
-    SenMsg() {
-      var msg = "我给你发送消息了！！！！";
-      var username = "uwl";
-      this.connection.invoke("SendMessage", username, msg).catch(function(err) {
-        return console.error(err);
-      });
-    },
-    getMsg() {
-      var _that = this;
-      _that.connection.start().then(() => {
-        _that.connection.invoke("GetLatestCount", 1).catch(function(err) {
-          return console.error(err);
-        });
-      });
-    }
-    //根据用户ID获取他的菜单
-    // GetMenu(userId)
-    // {
-    //     _this.$router.replace(_this.$route.query.ReturnUrl?_this.$route.query.ReturnUrl:'/')
-    // }
+    
   }
 };
 </script>

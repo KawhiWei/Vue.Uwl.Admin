@@ -58,6 +58,7 @@
 <script>
 import {RequestMenuTree} from '../APIServer/Api.js';
 import SidebarMenu from '@/components/SidebarMenu.vue'
+import * as singnalR from "@aspnet/signalr";
 export default {
   components:{SidebarMenu},
   name: 'customLayout',
@@ -66,10 +67,13 @@ export default {
       info:JSON.parse(window.sessionStorage.userInfo),
       routerMenu:[],
       collapsed: false,
+      token:window.sessionStorage.getItem('Token')?window.sessionStorage.getItem('Token'):'',
+      connection: "",
     }
   },
   mounted()
   {
+    var _this=this;
       this.$store.commit("SaveTags","");
       this.$store.commit("SaveTags",{id:'1',lable:'个人主页',path:'/PlatformHome',IsColse:false});
       var _this=this;
@@ -101,7 +105,9 @@ export default {
       else
       {
         this.turnToRoute('/login')
-      }
+      };
+      _this.CreateSignalRConnection();//创建SignalR连接
+      _this.StartSignalR();//开始连接SignalR
   },
   methods:{
       logOut()
@@ -172,7 +178,30 @@ export default {
       turnToRoute(path)
       {
         this.$router.push({path:path});
-      }
+      },
+      CreateSignalRConnection()
+      {
+        var _that=this;
+        _that.connection = new singnalR.HubConnectionBuilder()
+          .withUrl("/api/chatHub",{ accessTokenFactory: () => _that.token }) //配置路由通道
+          .configureLogging(singnalR.LogLevel.Information) //接受的消息
+          .build(); //创建
+      },
+      StartSignalR() {
+        var _that = this;
+        _that.connection.start().then(() => {
+          _that.connection.invoke("GetLatestCount", 1).catch(function(err) {
+            return console.error(err);
+          });
+        });
+      },
+      SenMsg() {
+      var msg = "我给你发送消息了！！！！";
+      var username = "uwl";
+      this.connection.invoke("SendMessage", username, msg).catch(function(err) {
+        return console.error(err);
+      });
+    },
   },
   watch:{
 
