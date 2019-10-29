@@ -35,6 +35,7 @@ import {
 } from "../APIServer/Api.js";
 import axios from 'axios' //在APi访问接口引入Vuex
 import router from "../router";
+import * as singnalR from "@aspnet/signalr";
 import { filterAsyncRouterMap } from "../router/index.js";
 
 export default {
@@ -67,7 +68,8 @@ export default {
             trigger: "blur"
           }
         ]
-      }
+      },
+      connection: "",
     };
   },
   
@@ -75,17 +77,20 @@ export default {
      
   },
 created() {
-    // var _that = this;
+    var _that = this;
+    // debugger
     // _that.connection = new singnalR.HubConnectionBuilder()
     //   .withUrl("/api/chatHub") //配置路由通道
     //   .configureLogging(singnalR.LogLevel.Information) //接受的消息
     //   .build(); //创建
-
+    // this.StartSignalR();
+    // //接收别人发过来的消息
     // _that.connection.on("ReceiveMessage", function(user, message) {
     //   _that.$Message.error({ content: message + user, duration: 1 });
     // });
-    // 接收服务端主动向客户端发起数据
+    // //接收服务端主动向客户端发起数据
     // _that.connection.on("ReceiveUpdate", function(update) {
+    //   debugger
     //   _that.$Message.error({ content: update, duration: 1 });
     //   window.clearInterval(this.t);
     // });
@@ -97,12 +102,15 @@ created() {
         user: _this.formInline.user,
         password: _this.formInline.password
       };
+      _this.$Notice.success({ title: "正在获取通行证" });
       RequestLogin(param).then(res => {
         _this.loading = true;
         if (res.data.success) {
           _this.$Notice.success({ title: "获取通行证成功" });
-          _this.$store.commit("SaveToken", res.data.response.token);      
-          _this.GetUserInfo(res.data.response.token);
+          _this.$store.commit("SaveToken", res.data.response.token);    
+          _this.GetUserInfo(res.data.response.token); 
+          _this.CreateSignalRConnection(res.data.response.token);//创建SignalR连接
+          _this.StartSignalR();//开始连接SignalR
         } else {
           _this.loading = false;
           _this.$Notice.error({ title: "获取通行证失败" });
@@ -120,11 +128,9 @@ created() {
             "userInfo",
             JSON.stringify(res.data.response)
           ); 
-          
-          //将用户信息写入到session缓存中
+          //将用户信息写入到Vuex缓存中
           _this.$store.commit("SaveUser", res.data.response);
           _this.LoadingTitle = "正在获取左侧菜单";
-
           RequestMenuTree({ userid: res.data.response.id }).then(res => {
               if(res.data.success)
               {
@@ -148,6 +154,40 @@ created() {
         }
         //_this.$router.push('/')
       });
+    },
+    
+    SenMsg() {
+      var msg = "我给你发送消息了！！！！";
+      var username = "uwl";
+      this.connection.invoke("SendMessage", username, msg,"121545","1212112").catch(function(err) {
+        return console.error(err);
+      });
+    },
+    getMsg() {
+      var _that = this;
+      _that.connection.start().then(() => {
+        _that.connection.invoke("GetLatestCount", 1).catch(function(err) {
+          return console.error(err);
+        });
+      });
+    },
+
+    CreateSignalRConnection(token)
+    {
+        var _that=this;
+        _that.connection = new singnalR.HubConnectionBuilder()
+          .withUrl("/api/chatHub",{ accessTokenFactory: () => token }) //配置路由通道
+          .configureLogging(singnalR.LogLevel.Information) //接受的消息
+          .build(); //创建
+    },
+    StartSignalR() {
+        var _that = this;
+        _that.connection.start().then(() => {
+          _that.connection.invoke("GetLatestCount", 1).catch(function(err) {
+            return console.error(err);
+          });
+        });
+        _that.$store.commit("SaveSignalRconnection", _that.connection);
     },
     
   }

@@ -10,7 +10,8 @@ const state={
     User:[],//存放后台返回的用户信息
     TagList:[
         {id:'1',lable:'个人主页',path:'/PlatformHome',IsColse:false},
-    ]
+    ],
+    SignalRconnection:"",
 }
 
 //添加一个写入数据的方法
@@ -48,6 +49,11 @@ const mutations={
     SaveUser(state,data)
     {
         state.User=data;
+    },
+    //存储SignalRconnection链接对象
+    SaveSignalRconnection(state,data)
+    {
+        state.SignalRconnection=data;
     }
 }
 

@@ -19,6 +19,10 @@
             </Card>
         </Col>
     </Row>
+        <Button type="info" size="small" @click="SenMsg()">发送消息</Button>
+        <Input v-model="message" >
+          </Input>
+        
     </div>
 </template>
 <style scoped>
@@ -41,6 +45,8 @@ export default {
               {Id:8,name: 'Jon Snow',age: 26,address: 'Ottawa No. 2 Lake Park',date: '2016-10-04'},
               {Id:8,name: 'Jon Snow',age: 26,address: 'Ottawa No. 2 Lake Park',date: '2016-10-04'},
             ],
+        connection: "",
+        message:"",
       }
     },
     mounted:function()
@@ -75,7 +81,7 @@ export default {
           ],
           
         }]
-      });  
+        });  
       var option = {
     title: {
         text: '堆叠区域图'
@@ -156,7 +162,26 @@ export default {
     var dom = document.getElementById('chart-panel')
         var quyu = this.echarts.init(dom)
         quyu.setOption(option);   
-
-    },  
+        var _this  =this;
+    _this.connection=this.$store.state.SignalRconnection;
+        // //接收别人发过来的消息
+    _this.connection.on("ReceiveMessage", function(user, message) {
+        console.log(user,message)
+        _this.$Message.info({ content: message + user, duration: 1 });
+        });
+    }, 
+    methods:{
+        SenMsg() {
+        var msg = this.message;
+        var SenderName="uwladmin";
+        var SenderId="";
+        var ReceiverId="ad73d0f6-33c9-40e3-8c56-f0ec8e35315f";
+        this.connection.invoke("SendMessage", SenderName,SenderId, ReceiverId,msg).catch(function(err) {
+            return console.error(err);
+        });
+        },
+    }
+    
+    
 }
 </script>
