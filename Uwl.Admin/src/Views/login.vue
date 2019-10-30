@@ -103,8 +103,8 @@ created() {
         password: _this.formInline.password
       };
       _this.$Notice.success({ title: "正在获取通行证" });
+      _this.loading = true;
       RequestLogin(param).then(res => {
-        _this.loading = true;
         if (res.data.success) {
           _this.$Notice.success({ title: "获取通行证成功" });
           _this.$store.commit("SaveToken", res.data.response.token);    

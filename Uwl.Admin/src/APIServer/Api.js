@@ -244,9 +244,12 @@ export const ResponseRoleAssigBySave=params=>{
 }
 
 /////////////////////组织机构接口
- 
 export const RequestOrganizeByPage=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.OrganizeUrl.GetOrganizeByPage);
+}
+//添加组织机构方法
+export const ResponseOrganizeByAdd=params=>{
+  return axios.post(`${baseurl1}`+ApiControllerUrl.OrganizeUrl.AddOrganize,params);
 }
 
 //

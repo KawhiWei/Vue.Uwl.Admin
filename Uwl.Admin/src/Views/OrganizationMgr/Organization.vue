@@ -2,24 +2,23 @@
 <template>
   <div>
     <Row :gutter="16">
-      <Col span="4" style="border:1px solid red;">
-        <Tree :data="treearr" @on-select-change="getjiedian"></Tree>
+      <Col span="4">
+        <Tree :data="treearr" @on-select-change="getNodeCurrent"></Tree>
       </Col>
       <Col span="20">
-        <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
+        <Form v-if="formIsShow" ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="120">
           <FormItem label="名称" prop="name">
             <Input v-model="formValidate.name" placeholder="请输入名称"></Input>
           </FormItem>
-           <FormItem label="状态" prop="city" >
-            <Select v-model="formValidate.organizeState" placeholder="请选择状态">
+          <FormItem label="状态" prop="organizeState" >
+            <Select v-model="formValidate.organizeState" placeholder="请选择部门状态">
                 <Option v-for="item in stateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
             </Select>
-        </FormItem>
-          <FormItem label="类型" prop="gender">
-            <RadioGroup v-model="formValidate.gender">
-              <Radio label="Company">单位</Radio>
-              <Radio label="DepartMent">部门</Radio>
-            </RadioGroup>
+          </FormItem>
+          <FormItem label="组织机构类型" prop="organizeType">
+             <Select v-model="formValidate.organizeType" placeholder="请选择组织机构类型">
+                <Option v-for="item in typeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            </Select>
           </FormItem>
           <FormItem label="排序" prop="sort">
             <Input
@@ -30,6 +29,7 @@
           </FormItem>
           <FormItem>
             <Button type="primary" @click="handleSubmit('formValidate')">保存</Button>
+            <Button type="primary" v-if="isshow" @click="AddchildLevel" >添加子级</Button>
             <Button @click="handleReset('formValidate')" style="margin-left: 8px">Reset</Button>
           </FormItem>
         </Form>
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { RequestOrganizeByPage } from "../../APIServer/Api.js";
+import { RequestOrganizeByPage,ResponseOrganizeByAdd } from "../../APIServer/Api.js";
 import download from "../../APIServer/DownLoad.js";
 import axios from "axios";
 export default {
@@ -53,80 +53,43 @@ export default {
         Authorization: "Bearer " + window.sessionStorage.getItem("Token")
       },
       formValidate: {
-        name: "",
+        name: '',
         organizeType: 0,
-        gender: "",
-        parentArr: [],
+        parentArr: '',
         parentId: '',
-        Depth: 0,
+        depth: 0,
         sort:0,
         organizeState:0,
       },
+      oldformValidate:{},//点击添加子项时保存老的数据清空formValidate中的数据
       IsEdit: false,
       id: "", //修改用户的Id
+      oldid:'',
       //添加是字段校验
       ruleValidate: {
         name: [
           {
             required: true,
-            message: "The name cannot be empty",
+            message: "请输入名称",
             trigger: "blur"
           }
         ],
-        gender: [
-          { required: true, message: "Please select gender", trigger: "change" }
-        ],
-        interest: [
-          {
-            required: true,
-            type: "array",
-            min: 1,
-            message: "Choose at least one hobby",
-            trigger: "change"
-          },
-          {
-            type: "array",
-            max: 2,
-            message: "Choose two hobbies at best",
-            trigger: "change"
-          }
-        ],
-        date: [
-          {
-            required: true,
-            type: "date",
-            message: "Please select the date",
-            trigger: "change"
-          }
-        ],
-        time: [
-          {
-            required: true,
-            type: "string",
-            message: "Please select time",
-            trigger: "change"
-          }
-        ],
-        desc: [
-          {
-            required: true,
-            message: "Please enter a personal introduction",
-            trigger: "blur"
-          },
-          {
-            type: "string",
-            message: "Introduce no less than 20 words",
-            trigger: "blur"
-          }
-        ]
+        // organizeType: [
+        //     { required: true, message: '请选择组织机构类型', trigger: 'change' }
+        // ],
       },
       stateList: [
         { value: 0, label: "正常" },
         { value: 1, label: "冻结" }
       ],
+      typeList:[
+        { value: 1, label: "单位" },
+        { value: 2, label: "部门" }
+      ],
       file: null,
       loadingStatus: false,
-      isshow: false
+      isshow: false,
+      formIsShow:false,
     };
   },
   mounted: function() {
@@ -134,29 +97,28 @@ export default {
   },
   methods: {
     //提交按钮事件
+    
     handleSubmit(name) {
+      var _this = this;
       this.$refs.formValidate.validate(valid => {
         if (valid) {
-          console.log(this.formValidate)
-          this.formValidate.sex = sexflag;
           let params = Object.assign({}, this.formValidate);
+          debugger
           if (this.IsEdit) {
-            console.log("点击了修改保存");
             params.id = this.id;
             params.updateName = this.info.name;
             params.updateId = this.info.id;
-            params.roleIds = JSON.stringify(this.roleArrIds);
             ResponseUserByEdit(params).then(res => {
               _this.$Message.success(res.data.msg);
-              _this.GetUser();
+              _this.GetOrgtree();
             });
-          } else {
+          } else 
+          {
             params.createdId = this.info.id;
             params.createdName = this.info.name;
-            params.roleIds = JSON.stringify(this.roleArrIds);
             console.log(params);
-            ResponseUserByAdd(params).then(res => {
-              _this.GetUser();
+            ResponseOrganizeByAdd(params).then(res => {
+              _this.GetOrgtree();
             });
           }
         } else {
@@ -169,15 +131,46 @@ export default {
       var _that = this;
       _that.treearr = [];
       RequestOrganizeByPage({}).then(res => {
-        console.log(res.data.response)
         if (res.data.success) {
-          _that.treearr.push(res.data.response);
-          console.log(_that.treearr);
+          console.log(res.data.response)
+          _that.treearr=res.data.response.children;
         }
       });
     },
-    getjiedian(arr, current) {
-      console.log(arr, current);
+    getNodeCurrent(arr, current) {
+      this.IsEdit=false;
+      this.isshow=false;
+      this.oldformValidate={};
+      this.id=current.id;
+      this.oldid=current.id;
+      this.formValidate.name=current.title;
+      this.formValidate.organizeType=current.organizeType;
+      this.formValidate.parentArr=current.parentArr;
+      this.formValidate.parentId=current.parentId;
+      this.formValidate.depth=current.depth;
+      this.formValidate.sort=current.sort;
+      this.formValidate.organizeState=current.organizeState;
+      this.IsEdit=true;
+      this.isshow=true;
+      this.formIsShow=true;
+    },
+    ///添加子级事件
+    AddchildLevel()
+    {
+      this.oldformValidate=this.formValidate;//将选中的老数据放到新数组里面添加保存的时候用
+      console.log(this.oldformValidate)
+      var arr=JSON.parse(this.oldformValidate.parentArr)
+      arr.push(this.oldid);
+      this.formValidate.name='';
+      this.formValidate.organizeType='';
+      this.formValidate.parentArr=JSON.stringify(arr);
+      this.formValidate.parentId=this.oldid;
+      this.formValidate.depth=arr.length;
+      this.formValidate.sort=0;
+      this.formValidate.organizeState='';
+      this.IsEdit=false;
+      this.isshow=false;
+      this.id='';
     }
   }
 };

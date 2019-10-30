@@ -166,8 +166,8 @@ export default {
     _this.connection=this.$store.state.SignalRconnection;
         // //接收别人发过来的消息
     _this.connection.on("ReceiveMessage", function(user, message) {
-        console.log(user,message)
-        _this.$Message.info({ content: message + user, duration: 1 });
+        // _this.$Notice.info({ content: , duration: 1 });
+        _this.$Notice.success({ title: message + user});
         });
     }, 
     methods:{
