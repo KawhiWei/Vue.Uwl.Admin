@@ -1,6 +1,6 @@
 <!--按钮管理组件-->
 <template>
-  <div>
+  <Scroll :height="Maxheight">
     <div>
       <Row style="margin:10px 0px">
         <div style="float:left;">
@@ -91,7 +91,7 @@
         </div>
       </Modal>
     </div>
-  </div>
+  </Scroll>
 </template>
 <script>
 import PageView from "@/components/Page.vue";
@@ -132,6 +132,7 @@ export default {
         isShow: false,
         menuId: ""
       },
+      Maxheight:500,
       currentRow: null,
       IsEdit: false,
       title: "",
@@ -174,6 +175,9 @@ export default {
   created: function() {},
   mounted: function() {
     this.Search();
+    var h=window.innerHeight-150;
+    this.Maxheight=h;
+    console.log(h)
   },
   methods: {
     callFn(item) {
