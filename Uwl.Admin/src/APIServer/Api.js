@@ -252,4 +252,9 @@ export const ResponseOrganizeByAdd=params=>{
   return axios.post(`${baseurl1}`+ApiControllerUrl.OrganizeUrl.AddOrganize,params);
 }
 
+//修改组织机构方法
+export const ResponseOrganizeByEdit=params=>{
+  return axios.put(`${baseurl1}`+ApiControllerUrl.OrganizeUrl.UpdateOrganize,params);
+}
+
 //

@@ -39,7 +39,9 @@
 </template>
 
 <script>
-import { RequestOrganizeByPage,ResponseOrganizeByAdd } from "../../APIServer/Api.js";
+import { RequestOrganizeByPage,ResponseOrganizeByAdd,
+         ResponseOrganizeByEdit
+} from "../../APIServer/Api.js";
 import download from "../../APIServer/DownLoad.js";
 import axios from "axios";
 export default {
@@ -97,18 +99,16 @@ export default {
   },
   methods: {
     //提交按钮事件
-    
     handleSubmit(name) {
       var _this = this;
       this.$refs.formValidate.validate(valid => {
         if (valid) {
           let params = Object.assign({}, this.formValidate);
-          debugger
           if (this.IsEdit) {
             params.id = this.id;
             params.updateName = this.info.name;
             params.updateId = this.info.id;
-            ResponseUserByEdit(params).then(res => {
+            ResponseOrganizeByEdit(params).then(res => {
               _this.$Message.success(res.data.msg);
               _this.GetOrgtree();
             });

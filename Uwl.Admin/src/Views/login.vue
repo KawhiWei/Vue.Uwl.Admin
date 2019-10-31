@@ -72,15 +72,15 @@ export default {
       connection: "",
     };
   },
-  
+
   mounted() {
-     
+
   },
 created() {
     var _that = this;
     // debugger
     // _that.connection = new singnalR.HubConnectionBuilder()
-    //   .withUrl("/api/chatHub") //配置路由通道
+    //   .withUrl("https://www.baiclouds.top/signalr") //配置路由通道
     //   .configureLogging(singnalR.LogLevel.Information) //接受的消息
     //   .build(); //创建
     // this.StartSignalR();
@@ -107,8 +107,8 @@ created() {
       RequestLogin(param).then(res => {
         if (res.data.success) {
           _this.$Notice.success({ title: "获取通行证成功" });
-          _this.$store.commit("SaveToken", res.data.response.token);    
-          _this.GetUserInfo(res.data.response.token); 
+          _this.$store.commit("SaveToken", res.data.response.token);
+          _this.GetUserInfo(res.data.response.token);
           _this.CreateSignalRConnection(res.data.response.token);//创建SignalR连接
           _this.StartSignalR();//开始连接SignalR
         } else {
@@ -127,7 +127,7 @@ created() {
           window.sessionStorage.setItem(
             "userInfo",
             JSON.stringify(res.data.response)
-          ); 
+          );
           //将用户信息写入到Vuex缓存中
           _this.$store.commit("SaveUser", res.data.response);
           _this.LoadingTitle = "正在获取左侧菜单";
@@ -141,7 +141,7 @@ created() {
                   router.addRoutes(routeArr);
                   if (_this.$route.query.ReturnUrl) {
                     _this.$router.push(_this.$route.query.ReturnUrl);
-                  } 
+                  }
                   else
                   {
                     _this.$router.push("/");
@@ -155,7 +155,7 @@ created() {
         //_this.$router.push('/')
       });
     },
-    
+
     SenMsg() {
       var msg = "我给你发送消息了！！！！";
       var username = "uwl";
@@ -171,12 +171,13 @@ created() {
         });
       });
     },
-
     CreateSignalRConnection(token)
     {
+        console.log(process.env.NODE_ENV)
+        var url = process.env.NODE_ENV === 'production' ? '/api2/chatHub' :'/api2/chatHub';
         var _that=this;
         _that.connection = new singnalR.HubConnectionBuilder()
-          .withUrl("/api/chatHub",{ accessTokenFactory: () => token }) //配置路由通道
+          .withUrl(url,{ accessTokenFactory: () => token }) //配置路由通道
           .configureLogging(singnalR.LogLevel.Information) //接受的消息
           .build(); //创建
     },
@@ -189,7 +190,7 @@ created() {
         });
         _that.$store.commit("SaveSignalRconnection", _that.connection);
     },
-    
+
   }
 };
 </script>
