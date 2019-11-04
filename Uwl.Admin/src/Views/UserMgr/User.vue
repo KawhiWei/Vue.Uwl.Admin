@@ -55,20 +55,22 @@
           </Button> -->
         </Col>
       </Row>
-      <div>
-        <Table
-          width="100%"
-          border
-          :loading="loading"
-          show-header
-          highlight-row
-          @on-current-change="CurrentRow"
-          @on-select="getRow"
-          :columns="columns2"
-          :data="UserList"
-        ></Table>
-        <!--<Spin size="large"> 加载中</Spin> -->
-      </div>
+       <Scroll :height="Maxheight">
+        <div>
+          <Table
+            width="100%"
+            border
+            :loading="loading"
+            show-header
+            highlight-row
+            @on-current-change="CurrentRow"
+            @on-select="getRow"
+            :columns="columns2"
+            :data="UserList"
+          ></Table>
+          <!--<Spin size="large"> 加载中</Spin> -->
+        </div>
+       </Scroll>
       <div style="padding:5px;">
         <PageView v-on:pageref="GetUser" ref="PageArr" />
       </div>
@@ -170,6 +172,7 @@ export default {
   components: { PageView ,Buttonbar},
   data() {
     return {
+      Maxheight:500,
       info: JSON.parse(window.sessionStorage.userInfo),
       loading: true,
       searCh: {
@@ -289,6 +292,8 @@ export default {
   },
   methods: {
     search: function() {
+      var h=window.innerHeight-280;
+      this.Maxheight=h;
       this.GetUser();
     },
     callFn(item) {

@@ -23,6 +23,7 @@
         <Button type="info" icon="ios-search" @click="search">查询</Button>
         <Buttonbar v-on:keyFun="callFn" />
       </Row>
+      <Scroll :height="Maxheight">
       <div>
         <Table
           width="100%"
@@ -37,6 +38,7 @@
         ></Table>
         <!-- <Spin size="large"> 加载中</Spin> -->
       </div>
+      </Scroll>
       <div style="padding:5px;">
         <PageView v-on:pageref="GetMenu" ref="PageArr" />
       </div>
@@ -101,6 +103,7 @@ export default {
   name: "HelloWorld",
   data() {
     return {
+      Maxheight:500,
       info: JSON.parse(window.sessionStorage.userInfo),
       FormVisible: false, //Modal弹出框
       title: "添加菜单",
@@ -157,6 +160,8 @@ export default {
   },
   mounted: function() {
     this.GetMenu();
+    var h=window.innerHeight-280;
+    this.Maxheight=h;
   },
   methods: {
     callFn(item) {

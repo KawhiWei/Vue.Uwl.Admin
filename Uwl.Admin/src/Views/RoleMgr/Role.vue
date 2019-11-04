@@ -16,20 +16,22 @@
         <Button type="info" icon="ios-search" @click="search">查询</Button>
         <Buttonbar v-on:keyFun="callFn" />
       </Row>
-      <div>
-        <Table
-          width="100%"
-          border
-          :loading="loading"
-          show-header
-          highlight-row
-          @on-current-change="CurrentRow"
-          @on-select="getRow"
-          :columns="columns2"
-          :data="List"
-        ></Table>
-        <!--<Spin size="large"> 加载中</Spin> -->
-      </div>
+      <Scroll :height="Maxheight">
+        <div>
+          <Table
+            width="100%"
+            border
+            :loading="loading"
+            show-header
+            highlight-row
+            @on-current-change="CurrentRow"
+            @on-select="getRow"
+            :columns="columns2"
+            :data="List"
+          ></Table>
+          <!--<Spin size="large"> 加载中</Spin> -->
+        </div>
+      </Scroll>
       <div style="padding:5px;">
         <PageView v-on:pageref="GetRole" ref="PageArr" />
       </div>
@@ -86,6 +88,7 @@ export default {
   components: { PageView ,Buttonbar},
   data() {
     return {
+      Maxheight:500,
       info: JSON.parse(window.sessionStorage.userInfo),
       loading: true,
       searCh: {
@@ -145,6 +148,8 @@ export default {
   },
   mounted: function() {
     this.search();
+    var h=window.innerHeight-280;
+    this.Maxheight=h;
   },
   methods: {
     search: function() {

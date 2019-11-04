@@ -1,6 +1,5 @@
 <!--按钮管理组件-->
 <template>
-  <Scroll :height="Maxheight">
     <div>
       <Row style="margin:10px 0px">
         <div style="float:left;">
@@ -29,8 +28,8 @@
         </div>
         <Buttonbar v-on:keyFun="callFn" />
       </Row>
-    </div>
     <div>
+      <Scroll :height="Maxheight">
       <Table
         width="100%"
         border
@@ -41,6 +40,7 @@
         :columns="columns2"
         :data="list"
       ></Table>
+      </Scroll>
     </div>
     <div style="padding:5px;">
       <PageView v-on:pageref="Search" ref="PageArr" />
@@ -91,7 +91,7 @@
         </div>
       </Modal>
     </div>
-  </Scroll>
+  </div>
 </template>
 <script>
 import PageView from "@/components/Page.vue";
@@ -108,6 +108,7 @@ export default {
   name: "Buttons",
   data() {
     return {
+      Maxheight:500,
       info: JSON.parse(window.sessionStorage.userInfo),
       //添加字段
       FormVisible: false,
@@ -132,7 +133,6 @@ export default {
         isShow: false,
         menuId: ""
       },
-      Maxheight:500,
       currentRow: null,
       IsEdit: false,
       title: "",
@@ -175,9 +175,8 @@ export default {
   created: function() {},
   mounted: function() {
     this.Search();
-    var h=window.innerHeight-150;
+    var h=window.innerHeight-240;
     this.Maxheight=h;
-    console.log(h)
   },
   methods: {
     callFn(item) {
@@ -288,7 +287,7 @@ export default {
                               duration: 3
                             });
                           }
-                        
+
                       });
     },
     edit() {

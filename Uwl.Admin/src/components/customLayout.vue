@@ -39,10 +39,10 @@
             <Col span="24" :class="collapsed?'content-collapsed':'content-expanded'">
               <div style="margin:5px 5px;  background-color:#6089d4;">
                 <!-- -->
-                <Tag style="margin:5px;" type="dot" :color="item.path==$route.path?'primary':'default'" :key="item.id"  :name="item.path" 
+                <Tag style="margin:5px;" type="dot" :color="item.path==$route.path?'primary':'default'" :key="item.id"  :name="item.path"
                 :closable="item.IsColse"  v-for=" item in TagsList" @on-close="handleCloseTags">
                   <router-link :to="item.path" style="color:#000" ><Icon type="md-home" />{{item.lable}}</router-link>
-                  </Tag>              
+                  </Tag>
               </div>
               <div style="margin:10px;">
                 <router-view></router-view>
@@ -63,6 +63,7 @@ export default {
   name: 'customLayout',
   data () {
     return {
+      Maxheight:500,
       info:JSON.parse(window.sessionStorage.userInfo),
       routerMenu:[],
       collapsed: false,
@@ -72,7 +73,9 @@ export default {
   },
   mounted()
   {
-    var _this=this;
+      var _this=this;
+      var h=window.innerHeight-150;
+      this.Maxheight=h;
       this.$store.commit("SaveTags","");
       this.$store.commit("SaveTags",{id:'1',lable:'个人主页',path:'/PlatformHome',IsColse:false});
       var _this=this;
@@ -94,7 +97,7 @@ export default {
       }
       if(window.localStorage.router)
       {
-        
+
         var arr=JSON.parse(window.localStorage.router);
         if(arr.length>=0)
         {
@@ -152,7 +155,7 @@ export default {
                     continue;
                   }
                 }
-                
+
               }
             }
           }
@@ -169,7 +172,7 @@ export default {
           {
             this.$store.state.TagList.splice(i,1);
             this.turnToRoute(this.$store.state.TagList[i-1].path);//路由跳转
-          }         
+          }
         }
       },
       turnToRoute(path)
