@@ -32,6 +32,7 @@ const ApiControllerUrl={
     //用户角色API接口
     UserRolemanagerUrl:{
       GetUserRoleId:'/api/UserRoles/UserRoleByUserId',//根据ID获取用户信息
+      SaveUserRole:'/api/UserRoles/SaveUserRole',//保存用户角色
     },
     //角色管理API接口
     RolemanagerUrl:{
@@ -97,7 +98,7 @@ axios.interceptors.response.use(response=>{//没有错误数据原封返回
             // Message.info({
             //   message: '很抱歉，登录超时!请重新登录',
             //   type: 'error',duration:5
-              
+
             // });
             ToLogin();
           }
@@ -204,9 +205,13 @@ export const ResponseRoleByEdit=params=>{
 export const ResponseRoleByDelete=params=>{
   return axios.delete(`${baseurl1}`+ApiControllerUrl.RolemanagerUrl.DeleteRole,{params:params});
 }
-//根据用户Id获取已选的角色
+//根据用户Id获取已分配的角色
 export const RequestRoleByUserId=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.UserRolemanagerUrl.GetUserRoleId,{params:params});
+}
+//保存用户分配的角色
+export const ResponseUserRole=params=>{
+  return axios.post(`${baseurl1}`+ApiControllerUrl.UserRolemanagerUrl.SaveUserRole,params);
 }
 
 

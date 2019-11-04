@@ -26,6 +26,7 @@
               >{{ item.label }}</Option>
             </Select>
           </span>
+          <!-- <Button type="success" @click="AssignRoles">分配角色</Button> -->
           <Button type="info" icon="ios-search" @click="search">查询</Button>
           <Buttonbar v-on:keyFun="callFn" />
           <!-- <Upload
@@ -73,15 +74,14 @@
       </div>
     </div>
     <div>
-      <!-- 添加菜单弹出框 -->
+      <!-- 添加用户弹出框 -->
       <Modal
         v-model="FormVisible"
         :title="title"
         width="60%"
         height="99%"
         :mask-closable="false"
-        @on-ok="handleSubmit('formValidate')"
-      >
+        @on-ok="handleSubmit('formValidate')">
         <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
           <FormItem label="姓名" prop="name">
             <Input v-model="formValidate.name" placeholder="请输入姓名" />
@@ -96,7 +96,7 @@
             <Input v-model="formValidate.mobile" placeholder="请输入手机号" />
           </FormItem>
           <FormItem label="角色" prop="jobName">
-            <Select v-model="roleArrIds" multiple style="width:260px">
+            <Select v-model="targetroleIds" multiple style="width:260px">
               <Option v-for="item in roleArr" :value="item.id" :key="item.id">{{ item.name }}</Option>
             </Select>
           </FormItem>
@@ -121,12 +121,36 @@
           <Button @click="FormVisible = false" style="margin-left: 8px">取消</Button>
         </div>
       </Modal>
+      <!-- 分配角色 -->
+      <Modal
+        v-model="RoleFormVisible"
+        title="用户分配角色"
+        width="60%"
+        height="99%"
+        :mask-closable="false">
+        <Transfer
+        :data="roleArr"
+        :target-keys="targetroleIds"
+        :list-style="listStyle"
+        :render-format="Transferrender"
+        :operations="['删除角色','添加角色']"
+        filterable
+        @on-change="selectRole"
+        >
+        </Transfer>
+        <div slot="footer">
+          <Button type="primary" @click="SaveSaveUserRole">保存分配</Button>
+          <Button @click="FormVisible = false" style="margin-left: 8px">取消</Button>
+        </div>
+      </Modal>
+
     </div>
   </div>
 </template>
 
 <script>
 import PageView from "@/components/Page.vue";
+import Buttonbar from "@/components/ButtonBar/ButtonBar.vue";
 import {
   RequestUserByPage,
   ResponseUserByAdd,
@@ -135,13 +159,14 @@ import {
   RequestRoleByUserId,
   ResponseUserByDelete,
   ResponseUserExcel,
-  DownLoadUserExcel
+  DownLoadUserExcel,
+  ResponseUserRole
 } from "../../APIServer/Api.js";
 import download from "../../APIServer/DownLoad.js";
-import Buttonbar from "@/components/ButtonBar/ButtonBar.vue";
+
 import axios from "axios";
 export default {
-  name: "User",
+  name: "Users",
   components: { PageView ,Buttonbar},
   data() {
     return {
@@ -174,10 +199,16 @@ export default {
         createdName: "", //创建人
         isDrop: false, //是否删除
         accountState: 0,
-        roleIds: ""
       },
+
+      //转移框
       roleArr: [],
-      roleArrIds: [],
+      targetroleIds: [],
+      listStyle:
+      {
+        width: '250px',
+        height: '300px'
+      },
       id: "", //修改用户的Id
       //添加是字段校验
       ruleValidate: {
@@ -192,6 +223,7 @@ export default {
       },
       title: "",
       FormVisible: false,
+      RoleFormVisible:false,
       currentRow: null, //存放当前选中行的数据
       columns2: [
         {
@@ -249,6 +281,7 @@ export default {
       loadingStatus: false,
       isshow: false,
       delrow:[],
+
     };
   },
   mounted: function() {
@@ -264,7 +297,6 @@ export default {
     //单击表格选中的数据时
     CurrentRow: function(val) {
       this.currentRow = val;
-      console.log(this.currentRow);
     },
     //提交按钮事件
     handleSubmit(name) {
@@ -275,7 +307,6 @@ export default {
           if (_this.sexflag == "woman") {
             var sexflag = false;
           }
-          debugger
           this.formValidate.sex = sexflag;
           let params = Object.assign({}, this.formValidate);
           if (this.IsEdit) {
@@ -283,7 +314,6 @@ export default {
             params.id = this.id;
             params.updateName = this.info.name;
             params.updateId = this.info.id;
-            params.roleIds = JSON.stringify(this.roleArrIds);
             ResponseUserByEdit(params).then(res => {
               _this.FormVisible = false;
               _this.$Message.success(res.data.msg);
@@ -292,8 +322,6 @@ export default {
           } else {
             params.createdId = this.info.id;
             params.createdName = this.info.name;
-            params.roleIds = JSON.stringify(this.roleArrIds);
-            console.log(params);
             ResponseUserByAdd(params).then(res => {
               _this.FormVisible = false;
               _this.GetUser();
@@ -379,13 +407,9 @@ export default {
       } else {
         this.sexflag = "woman";
       }
-      //this.GetRoleIdlist(this.id);
       this.title = "编辑";
       this.FormVisible = true;
       this.IsEdit = true;
-      this.roleArr = [];
-      this.model10 = [];
-      this.GetAllRole();
     },
     //多选删除
     getRow(selection, row) {
@@ -420,13 +444,22 @@ export default {
       var _this = this;
       RequestGetAllRole({}).then(res => {
         _this.roleArr = res.data.response.data;
+        _this.roleArr.forEach(x=>{
+          x.key=x.id;
+        })
       });
     },
-    GetRoleIdlist: function(userId) {
+    //根据用户获取用户现有角色
+    GetRoleIdlistByUserId: function() {
+      if (this.currentRow == null) {
+        this.$Message.warning({ content: "请选择要分配角色的用户", duration: 3 });
+        return;
+      }
       var _this = this;
-      _this.roleArrIds = [];
-      RequestRoleByUserId({ userId: userId }).then(res => {
-        _this.roleArrIds = res.data.response;
+      _this.targetroleIds = [];
+      RequestRoleByUserId({ userId: this.currentRow.id }).then(res => {
+        _this.targetroleIds = res.data.response;
+        _this.RoleFormVisible=true;
       });
     },
     //检查文件格式
@@ -487,6 +520,43 @@ export default {
         stateEnum: _this.searCh.AccontState
       };
       download.DownLoadToExcel("GET", "/api/User/DownLoad", param);
+    },
+    //分配角色弹框
+    AssignRoles(){
+      if (this.currentRow == null) {
+        this.$Message.warning({ content: "请选择要分配角色的用户", duration: 3 });
+        return;
+      }
+      this.GetAllRole();
+      this.GetRoleIdlistByUserId();
+    },
+    //穿梭框render函数
+    Transferrender(item)
+    {
+      return item.name;
+    },
+    selectRole(newTargetKeys)
+    {
+      this.targetroleIds=newTargetKeys;
+    },
+    SaveSaveUserRole()
+    {
+      var _that=this;
+      if(this.targetroleIds.length<=0)
+      {
+        this.$Message.warning({ content: "请先选择角色", duration: 5 });
+        return;
+      }
+      var params={
+        RoleIds:JSON.stringify(this.targetroleIds),
+        userId:this.currentRow.id,
+        CreateId:this.info.id,
+        CreateName:this.info.name,
+      }
+      ResponseUserRole(params).then(res => {
+        _that.RoleFormVisible = false;
+        _that.$Message.success(res.data.msg);
+      })
     }
   }
 };

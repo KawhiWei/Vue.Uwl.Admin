@@ -5,7 +5,7 @@
             <div id="echarts"  :style="{width: '300px', height: '300px'}"></div>
         </Col>
         <Col span="8" style="background:#eee;" >
-           <div id="chart-panel"   :style="{width: '500px  !important', height: '100%  !important',position: 'absolute',padding:'5px'}">  
+           <div id="chart-panel"   :style="{width: '500px  !important', height: '100%  !important',position: 'absolute',padding:'5px'}">
 
            </div>
         </Col>
@@ -22,7 +22,7 @@
         <Button type="info" size="small" @click="SenMsg()">发送消息</Button>
         <Input v-model="message" >
           </Input>
-        
+
     </div>
 </template>
 <style scoped>
@@ -41,9 +41,9 @@ export default {
               {Id:6,name: 'Jim Green',age: 24,address: 'London No. 1 Lake Park',date: '2016-10-01'},
               {Id:7,name: 'Joe Black',age: 30,address: 'Sydney No. 1 Lake Park',date: '2016-10-02'},
               {Id:8,name: 'Jon Snow',age: 26,address: 'Ottawa No. 2 Lake Park',date: '2016-10-04'},
-              {Id:8,name: 'Jon Snow',age: 26,address: 'Ottawa No. 2 Lake Park',date: '2016-10-04'},
-              {Id:8,name: 'Jon Snow',age: 26,address: 'Ottawa No. 2 Lake Park',date: '2016-10-04'},
-              {Id:8,name: 'Jon Snow',age: 26,address: 'Ottawa No. 2 Lake Park',date: '2016-10-04'},
+              {Id:9,name: 'Jon Snow',age: 26,address: 'Ottawa No. 2 Lake Park',date: '2016-10-04'},
+              {Id:10,name: 'Jon Snow',age: 26,address: 'Ottawa No. 2 Lake Park',date: '2016-10-04'},
+              {Id:11,name: 'Jon Snow',age: 26,address: 'Ottawa No. 2 Lake Park',date: '2016-10-04'},
             ],
         connection: "",
         message:"",
@@ -79,9 +79,9 @@ export default {
               name: '搜索引擎'
             }
           ],
-          
+
         }]
-        });  
+        });
       var option = {
     title: {
         text: '堆叠区域图'
@@ -122,7 +122,7 @@ export default {
         }
     ],
     series : [
-        
+
         {
             name:'联盟广告',
             type:'line',
@@ -158,10 +158,10 @@ export default {
             data:[820, 932, 901, 934, 1290, 1330, 1320]
         }
     ]
-    }  
+    }
     var dom = document.getElementById('chart-panel')
         var quyu = this.echarts.init(dom)
-        quyu.setOption(option);   
+        quyu.setOption(option);
         var _this  =this;
     _this.connection=this.$store.state.SignalRconnection;
         // //接收别人发过来的消息
@@ -169,7 +169,7 @@ export default {
         // _this.$Notice.info({ content: , duration: 1 });
         _this.$Notice.success({ title: message + user});
         });
-    }, 
+    },
     methods:{
         SenMsg() {
         var msg = this.message;
@@ -181,7 +181,7 @@ export default {
         });
         },
     }
-    
-    
+
+
 }
 </script>
