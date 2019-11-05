@@ -1,23 +1,28 @@
 # Uwl.Admin
 
 #### 介绍
-前后分离后台管理前端项目
+一个基于 Vue.js 的后台管理系统项目，目前是1.0版本，主要是权限管理系统，以后会增加更多功能，持续开发中...。
+这里仅仅是vue项目，api接口工程。
+
+后台项目请查看[Uwl.Admin.Core](https://github.com/GeorGeWzw/Uwl.Admin.Core)
+
+
+给个星星! ⭐️
+如果你喜欢这个项目或者它帮助你, 请给 Star~（辛苦星咯）
 
 #### 软件架构
-软件架构说明
+1.基于Vue.js he Iview后台组件化开发框架的开源后台管理项目
+Iview官网 [iviewui.com](https://www.iviewui.com/)
 
 
 #### 安装教程
 
-1. xxxx
-2. xxxx
-3. xxxx
+1. 项目下载后，首先安装依赖包    npm install
+2. 安装成功后，运行  npm run dev   即可 // 本项目是vue cli2.0版本
 
 #### 使用说明
 
-1. xxxx
-2. xxxx
-3. xxxx
+1. 如果要部署，先执行bulid     npm run build     
 
 #### 参与贡献
 
@@ -30,8 +35,8 @@
 #### 码云特技
 
 1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. 码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5. 码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+2. xxxx
+3. xxxx
+4. xxxx
+5. xxxx
+6. xxxx

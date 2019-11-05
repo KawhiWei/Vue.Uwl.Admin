@@ -1,36 +1,42 @@
 # Uwl.Admin
 
-#### Description
-前后分离后台管理前端项目
+#### 介绍
+一个基于 Vue.js 的后台管理系统项目，目前是1.0版本，主要是权限管理系统，以后会增加更多功能，持续开发中...。
+这里仅仅是vue项目，api接口工程。
 
-#### Software Architecture
-Software architecture description
+后台项目请查看[Uwl.Admin.Core](https://github.com/GeorGeWzw/Uwl.Admin.Core)
 
-#### Installation
 
-1. xxxx
+给个星星! ⭐️
+如果你喜欢这个项目或者它帮助你, 请给 Star~（辛苦星咯）
+
+#### 软件架构
+1.基于Vue.js he Iview后台组件化开发框架的开源后台管理项目
+Iview官网 [iviewui.com](https://www.iviewui.com/)
+
+
+#### 安装教程
+
+1. 项目下载后，首先安装依赖包    npm install
+2. 安装成功后，运行  npm run dev   即可 // 本项目是vue cli2.0版本
+
+#### 使用说明
+
+1. 如果要部署，先执行bulid     npm run build     
+
+#### 参与贡献
+
+1. Fork 本仓库
+2. 新建 Feat_xxx 分支
+3. 提交代码
+4. 新建 Pull Request
+
+
+#### 
+
+1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
 2. xxxx
 3. xxxx
-
-#### Instructions
-
-1. xxxx
-2. xxxx
-3. xxxx
-
-#### Contribution
-
-1. Fork the repository
-2. Create Feat_xxx branch
-3. Commit your code
-4. Create Pull Request
-
-
-#### Gitee Feature
-
-1. You can use Readme\_XXX.md to support different languages, such as Readme\_en.md, Readme\_zh.md
-2. Gitee blog [blog.gitee.com](https://blog.gitee.com)
-3. Explore open source project [https://gitee.com/explore](https://gitee.com/explore)
-4. The most valuable open source project [GVP](https://gitee.com/gvp)
-5. The manual of Gitee [https://gitee.com/help](https://gitee.com/help)
-6. The most popular members  [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+4. xxxx
+5. xxxx
+6. xxxx
