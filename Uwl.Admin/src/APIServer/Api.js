@@ -59,6 +59,12 @@ const ApiControllerUrl={
       GetOrganizeByPage:'/api/Organize/OrganizeTree',//获取组织机构
       AddOrganize:'/api/Organize/AddOrganize',//添加组织机构
       UpdateOrganize:'/api/Organize/UpdateOrganize',//修改组织机构
+    },
+    //计划任务API接口
+    ScheduleUrl:{ //计划任务API接口定义
+      GetScheduleByPage:'/api/Schedule/PageJob',//分页获取计划任务列表
+      StartScheduleJob:'/api/Schedule/StartJob',//启动一个任务
+      StopScheduleJob:'/api/Schedule/StopJob',//暂停一个任务
     }
 }
 //http request 拦截器
@@ -262,4 +268,21 @@ export const ResponseOrganizeByEdit=params=>{
   return axios.put(`${baseurl1}`+ApiControllerUrl.OrganizeUrl.UpdateOrganize,params);
 }
 
-//
+
+
+
+
+//获取计划任务列表
+export const RequestSchedulePage=params=>{
+  return axios.get(`${baseurl1}`+ApiControllerUrl.ScheduleUrl.GetScheduleByPage,{params:params});
+}
+//启动一个任务
+export const ResponseStartJob=params=>{
+  return axios.get(`${baseurl1}`+ApiControllerUrl.ScheduleUrl.StartScheduleJob,{params:params});
+}
+//启动一个任务
+export const ResponseStopJob=params=>{
+  return axios.get(`${baseurl1}`+ApiControllerUrl.ScheduleUrl.StopScheduleJob,{params:params});
+}
+
+

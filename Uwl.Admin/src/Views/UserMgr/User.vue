@@ -432,7 +432,6 @@ export default {
         arr.push(x.id);
       });
       var str = JSON.stringify(arr);
-      console.log(str);
       ResponseUserByDelete({ Ids: str }).then(res => {
         if (res.data.success) {
           _this.$Message.success(res.data.msg);
