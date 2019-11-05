@@ -45,7 +45,7 @@
 </div>
 </template>
 <script>
-import {RequestSchedulePage,ResponseStartJob,ResponseStopJob} from '../../APIServer/Api.js';
+import {RequestSchedulePage,ResponseStartJob,ResponseStopJob,ResponseReCoveryJob} from '../../APIServer/Api.js';
 
 import PageView from "@/components/Page.vue";
 import Buttonbar from "@/components/ButtonBar/ButtonBar.vue";
@@ -157,7 +157,7 @@ export default {
       ResponseStopJob({JobId:this.currentRow.id}).then(res=>{
         if (res.data.success) {
           _this.$Message.success(res.data.msg);
-          // _this.Get();
+          _this.Get();
         } else {
           _this.$Message.warning({
             content: res.data.msg,
@@ -166,6 +166,29 @@ export default {
         }
       });
     },
+    ReCovery()
+    {
+      var _this = this;
+      if(this.currentRow==null)
+      {
+        this.$Message.warning({ content: "请选择要暂停的任务", duration: 5 });
+        return;
+      }
+      var param={
+        jobId:this.currentRow.id,
+      }
+      ResponseReCoveryJob({JobId:this.currentRow.id}).then(res=>{
+        if (res.data.success) {
+          _this.$Message.success(res.data.msg);
+          _this.Get();
+        } else {
+          _this.$Message.warning({
+            content: res.data.msg,
+            duration: 5
+          });
+        }
+      });
+    }
   }
 }
 </script>

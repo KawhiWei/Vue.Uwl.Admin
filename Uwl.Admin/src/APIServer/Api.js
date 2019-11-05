@@ -65,6 +65,7 @@ const ApiControllerUrl={
       GetScheduleByPage:'/api/Schedule/PageJob',//分页获取计划任务列表
       StartScheduleJob:'/api/Schedule/StartJob',//启动一个任务
       StopScheduleJob:'/api/Schedule/StopJob',//暂停一个任务
+      ReCoveryScheduleJob:'/api/Schedule/ReCovery',
     }
 }
 //http request 拦截器
@@ -280,9 +281,12 @@ export const RequestSchedulePage=params=>{
 export const ResponseStartJob=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.ScheduleUrl.StartScheduleJob,{params:params});
 }
-//启动一个任务
+//暂停一个任务
 export const ResponseStopJob=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.ScheduleUrl.StopScheduleJob,{params:params});
 }
-
+//恢复运行一个任务
+export const ResponseReCoveryJob=params=>{
+  return axios.get(`${baseurl1}`+ApiControllerUrl.ScheduleUrl.ReCoveryScheduleJob,{params:params});
+}
 
