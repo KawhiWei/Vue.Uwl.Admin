@@ -16,7 +16,7 @@
                 </span>
                 <DropdownMenu slot="list">
                   <DropdownItem @click.native="PersonalSetting">个人资料</DropdownItem>
-                  <DropdownItem >修改密码</DropdownItem>
+                  <DropdownItem @click.native="goGithub">Github源码</DropdownItem>
                   <DropdownItem @click.native="logOut">登出</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
@@ -123,6 +123,11 @@ export default {
       {
         var _this=this;
         _this.OpenTags('/PersonalSetting/PersonalCenter')
+      },
+      //Github主页
+      goGithub()
+      {
+        window.open("https://github.com/GeorGeWzw")
       },
       //点击菜单添加Tags标签页
       OpenTags(e)
