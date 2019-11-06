@@ -4,10 +4,10 @@
       <template>
         <div>
           <Row>
-            <Col span="23" style="height:80px;">
+            <Col span="22" style="height:80px;">
             <img src="../assets/Logos.png" alt="">
             </Col>
-            <Col span="1">
+            <Col span="2">
               <Dropdown placement="bottom-start">
                 <span>
                   <div class="demo-avatar">
@@ -15,8 +15,8 @@
                   </div>
                 </span>
                 <DropdownMenu slot="list">
-                  <DropdownItem>个人资料</DropdownItem>
-                  <DropdownItem>修改密码</DropdownItem>
+                  <DropdownItem @click.native="PersonalSetting">个人资料</DropdownItem>
+                  <DropdownItem >修改密码</DropdownItem>
                   <DropdownItem @click.native="logOut">登出</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
@@ -117,6 +117,12 @@ export default {
         window.localStorage.setItem('router',"");
         this.$store.commit("SaveTags","")
         this.$router.push('/login');
+      },
+      //跳转的个人信息界面
+      PersonalSetting()
+      {
+        var _this=this;
+        _this.OpenTags('/PersonalSetting/PersonalCenter')
       },
       //点击菜单添加Tags标签页
       OpenTags(e)

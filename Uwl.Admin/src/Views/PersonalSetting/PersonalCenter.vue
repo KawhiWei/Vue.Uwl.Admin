@@ -11,20 +11,18 @@
             手机:
             <span v-if="user.mobile">{{user.mobile}}</span>
             <span v-else>未绑定</span>
-            <Button style="float:right;" type="info" size="small">修改手机</Button>
           </div>
           <div class="Binding">
             邮箱:
             <span v-if="user.email">{{user.email}}</span>
             <span v-else>未绑定</span>
-            <Button style="float:right;" type="info" size="small">修改邮箱</Button>
           </div>
           <div class="Binding">
             微信:
             <span v-if="user.weChat">{{user.weChat}}</span>
             <span v-else>未绑定</span>
-            <Button style="float:right;" type="info" size="small">修改微信</Button>
           </div>
+          <Button type="info">修改信息</Button>
           <Button type="error">修改密码</Button>
           </Card>
       </div>
@@ -44,17 +42,16 @@
               <span v-else>未绑定</span>
           </div>
           <div class="SelfMsg">
-            性别:<Input v-model="user.name" placeholder="Enter something..." style="width: 300px" />
+            性别:<Icon v-if="user.sex"  type="md-man" size="32" color="#1E90FF"/> <Icon size="32" color="#EE82EE" v-else type="md-woman" />
           </div>
           <div class="SelfMsg">
-            真实姓名:<Input v-model="user.name" placeholder="Enter something..." style="width: 300px" />
+            姓名:<span >{{user.name}}</span>
           </div>
           </Card>
       </div>
     </Card>
     <div>
-      <Modal
-        v-model="modalUpdataHeadImg" :closable="false" :mask-closable="false">
+      <Modal v-model="modalUpdataHeadImg" :closable="false" :mask-closable="false">
         <Upload
         :headers="Tokens"
         :before-upload="handleUpload"
@@ -69,14 +66,22 @@
             <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
             <p>点击，或拖动图片至此处</p>
         </div>
-    </Upload>
-     <div slot="footer">
+        </Upload>
+        <div slot="footer">
           <Button @click="modalUpdataHeadImg = false" style="margin-left: 8px">取消</Button>
         </div>
     </Modal>
     </div>
+    <!-- 修改密码弹出框 -->
+    <div>
+
+    </div>
+    <!-- 修改其他资料弹出框 -->
+    <div>
+
+    </div>
   </div>
-  
+
 </template>
 <script>
 export default {
@@ -87,6 +92,8 @@ export default {
       user:this.$store.state.User,
       file:[],//上传的图片
       modalUpdataHeadImg:false,//更换头像弹出框
+      modalUpdatapwd:false,//修改密码弹出框
+      modalUpdatadata:false,//修改其他资料弹出框
       Tokens: {
         Authorization: "Bearer " + window.sessionStorage.getItem("Token")
       },
@@ -94,7 +101,6 @@ export default {
   },
   created()
   {
-    console.log(this.user)
   },
   methods:{
     UpdataHeadImg()
