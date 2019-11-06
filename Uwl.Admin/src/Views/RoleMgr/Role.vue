@@ -44,7 +44,6 @@
         width="50%"
         height="80%"
         :mask-closable="false"
-        @on-ok="handleSubmit('formValidate')"
       >
         <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
           <FormItem label="角色名称" prop="name">

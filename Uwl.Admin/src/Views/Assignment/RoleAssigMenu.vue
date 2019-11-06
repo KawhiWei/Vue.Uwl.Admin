@@ -4,10 +4,10 @@
         <Row>
         <Col span="6" >
             <Card>
-                <span slot="title" style="font-weight:bold;"> 
-                    <span >角色列表</span>      
+                <span slot="title" style="font-weight:bold;">
+                    <span >角色列表</span>
                     <span style="float:right">当前选中:
-                        <span style="color:red;">{{roleRow.name}}</span> 
+                        <span style="color:red;">{{roleRow.name}}</span>
                     </span>
                 </span>
                 <div @click="RoleAssig(index,role)" :key="role.id" v-for="(role,index) in RoleList" class="Man" :class="{Manbgcol:changebgcol == index }">
@@ -43,7 +43,7 @@ export default {
     mounted:function()
     {
         this.GetRoleList();
-    },  
+    },
     methods:
     {
        //获取所有的角色
@@ -58,7 +58,7 @@ export default {
                 _this.loading=false;
               }
               else
-              { 
+              {
                 _this.RoleList=res.data.response.data;
               }
            })
@@ -69,7 +69,6 @@ export default {
             RoleAssigGetAllRole({roleId:item.id}).then(res=>{
               if(res.status!=200)
               {
-                  
                 var err=JSON.parse(res.response.data)
                 this.$Message.error({content:err.Message,duration:3});
               }
@@ -114,7 +113,7 @@ export default {
                                 )})//渲染出复选框数组下面的所有子级
                             )
                         ]
-                    
+
                     )
                 ]
             );
@@ -124,7 +123,8 @@ export default {
        {
            var _this=this;
            _this.randomMovieList=[];
-           var crr=obj; 
+           _this.selectlist=[];
+           var crr=obj;
            function tree(crr) {
                crr.forEach(element => {
                    if(element.buttonsList.length>0)
@@ -153,7 +153,7 @@ export default {
                    {
                        tree(arr);
                    }
-               }); 
+               });
            }
            tree(crr)
            _this.randomMovieList=obj;
@@ -175,7 +175,7 @@ export default {
                         }
                 })
        }
-       
+
     }
 }
 </script>

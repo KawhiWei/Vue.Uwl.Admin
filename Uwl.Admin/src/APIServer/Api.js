@@ -66,6 +66,11 @@ const ApiControllerUrl={
       StartScheduleJob:'/api/Schedule/StartJob',//启动一个任务
       StopScheduleJob:'/api/Schedule/StopJob',//暂停一个任务
       ReCoveryScheduleJob:'/api/Schedule/ReCovery',
+    },
+    //修改个人资料和登录密码接口
+    ChangePersonalUrl:{ //计划任务API接口定义
+      ChangePassword:'/api/Personal/ChangePassword',//修改密码
+      ChangeData:'/api/Personal/ChangeDatas',//修改个人资料
     }
 }
 //http request 拦截器
@@ -290,3 +295,11 @@ export const ResponseReCoveryJob=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.ScheduleUrl.ReCoveryScheduleJob,{params:params});
 }
 
+//个人修改密码
+export const ResponseChangePassword=params=>{
+  return axios.post(`${baseurl1}`+ApiControllerUrl.ChangePersonalUrl.ChangePassword,params);
+}
+//个人资料修改
+export const ResponseChangeData=params=>{
+  return axios.post(`${baseurl1}`+ApiControllerUrl.ChangePersonalUrl.ChangeData,params);
+}
