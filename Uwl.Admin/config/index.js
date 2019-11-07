@@ -11,7 +11,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://localhost:5001',//本地开发环境接口地址
+         target: 'http://localhost:5001',//本地开发环境接口地址
         // target: 'http://139.199.219.154:8561',//生产接口地址
         ws:true,
         changeOrigin: true,//是否允许跨越
