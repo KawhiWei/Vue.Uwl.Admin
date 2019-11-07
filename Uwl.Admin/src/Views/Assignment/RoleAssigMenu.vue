@@ -82,7 +82,7 @@ export default {
        },
        SelectChecked(item)
        {
-           console.log(item);
+          //  console.log(item);
        },
        //tree组件渲染自定义视图
        renderContent(h, { root, node, data })

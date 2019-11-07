@@ -30,7 +30,6 @@
           <FormItem>
             <Button type="primary" @click="handleSubmit('formValidate')">保存</Button>
             <Button type="primary" v-if="isshow" @click="AddchildLevel" >添加子级</Button>
-            <Button @click="handleReset('formValidate')" style="margin-left: 8px">Reset</Button>
           </FormItem>
         </Form>
       </Col>
@@ -112,7 +111,7 @@ export default {
               _this.$Message.success(res.data.msg);
               _this.GetOrgtree();
             });
-          } else 
+          } else
           {
             params.createdId = this.info.id;
             params.createdName = this.info.name;

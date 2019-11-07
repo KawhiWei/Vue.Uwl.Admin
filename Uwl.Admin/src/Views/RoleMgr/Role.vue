@@ -240,7 +240,7 @@ export default {
     del() {
       var _this = this;
       if (this.delrow.length <= 0) {
-        this.$Message.warning({ content: "请选择要删除的菜单", duration: 3 });
+        this.$Message.warning({ content: "请选择要删除的角色", duration: 3 });
         return;
       }
       var arr = [];
@@ -248,7 +248,6 @@ export default {
         arr.push(x.id);
       });
       var str = JSON.stringify(arr);
-      console.log(str);
       ResponseRoleByDelete({ Ids: str }).then(res => {
         if (res.data.success) {
           _this.$Message.success(res.data.msg);

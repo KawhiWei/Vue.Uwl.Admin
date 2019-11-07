@@ -267,7 +267,7 @@ export default {
     //单击表格选中的数据时
     CurrentRow: function(val) {
       this.currentRow = val;
-      console.log(this.currentRow)
+      // console.log(this.currentRow)
     },
     del() {
       var _this=this;

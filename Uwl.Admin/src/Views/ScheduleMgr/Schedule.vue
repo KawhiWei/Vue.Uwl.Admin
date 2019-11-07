@@ -171,7 +171,7 @@ export default {
       var _this = this;
       if(this.currentRow==null)
       {
-        this.$Message.warning({ content: "请选择要暂停的任务", duration: 5 });
+        this.$Message.warning({ content: "请选择要重新启动的任务", duration: 5 });
         return;
       }
       var param={

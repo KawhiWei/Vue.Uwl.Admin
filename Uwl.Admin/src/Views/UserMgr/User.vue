@@ -97,16 +97,8 @@
           <FormItem label="手机号" prop="mobile">
             <Input v-model="formValidate.mobile" placeholder="请输入手机号" />
           </FormItem>
-          <FormItem label="角色" prop="jobName">
-            <Select v-model="targetroleIds" multiple style="width:260px">
-              <Option v-for="item in roleArr" :value="item.id" :key="item.id">{{ item.name }}</Option>
-            </Select>
-          </FormItem>
           <FormItem label="微信" prop="weChat">
             <Input v-model="formValidate.weChat" placeholder="请输入微信号" />
-          </FormItem>
-          <FormItem label="员工类型" prop="empliyeeType">
-            <Input v-model="formValidate.empliyeeType" placeholder="请选择员工类型" />
           </FormItem>
           <FormItem label="性别" prop="sexflag">
             <RadioGroup v-model="sexflag">
@@ -315,7 +307,6 @@ export default {
           this.formValidate.sex = sexflag;
           let params = Object.assign({}, this.formValidate);
           if (this.IsEdit) {
-            console.log("点击了修改保存");
             params.id = this.id;
             params.updateName = this.info.name;
             params.updateId = this.info.id;
@@ -379,7 +370,7 @@ export default {
         isDrop: false, //是否删除
         roleIds: ""
       }),
-        (this.roleArr = []);
+      this.roleArr = [];
       this.roleArrIds = [];
       this.GetAllRole();
       this.FormVisible = true;

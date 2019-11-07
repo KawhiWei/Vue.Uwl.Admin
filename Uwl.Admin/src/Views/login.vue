@@ -173,7 +173,7 @@ created() {
     },
     CreateSignalRConnection(token)
     {
-        console.log(process.env.NODE_ENV)
+        // console.log(process.env.NODE_ENV)
         var url = process.env.NODE_ENV === 'production' ? '/api2/chatHub' :'/api2/chatHub';
         var _that=this;
         _that.connection = new singnalR.HubConnectionBuilder()
