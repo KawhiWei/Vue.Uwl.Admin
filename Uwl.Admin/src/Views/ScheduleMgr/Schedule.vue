@@ -1,48 +1,64 @@
 <template>
-<div>
-<div>
-      <Row style="margin:10px 0px">
-        <span>
-          <span>菜单名称：</span>
-          <Input v-model="searCh.name" style="width:180px;" clearable placeholder="请输入菜单名称" />
-        </span>
-        <span>
-          <span>前端路由地址：</span>
-          <Input
-            v-model="searCh.frontRouter"
-            style="width:180px;"
-            clearable
-            placeholder="请输入前端路由地址"
-          />
-        </span>
-        <span>
-          <span>Api接口：</span>
-          <Input v-model="searCh.apiUrl" style="width:180px;" clearable placeholder="请输入Api路由地址" />
-        </span>
-        <Button type="info" icon="ios-search" @click="search">查询</Button>
-        <Buttonbar v-on:keyFun="callFn" />
-      </Row>
-      <Scroll :height="Maxheight">
-      <div>
-        <Table
-          width="100%"
-          border
-          :loading="loading"
-          show-header
-          highlight-row
-          @on-current-change="CurrentRow"
-          @on-select="getRow"
-          :columns="columns2"
-          :data="list"
-        ></Table>
-        <!-- <Spin size="large"> 加载中</Spin> -->
-      </div>
-      </Scroll>
-      <div style="padding:5px;">
-        <PageView v-on:pageref="Get" ref="PageArr" />
-      </div>
+  <div>
+    <div>
+        <Row style="margin:10px 0px">
+          <span>
+            <span>任务名称：</span>
+            <Input v-model="searCh.name" style="width:180px;" clearable placeholder="请输入任务名称" />
+          </span>
+          <span>
+            <span>程序集名称：</span>
+            <Input
+              v-model="searCh.assemblyName"
+              style="width:180px;"
+              clearable
+              placeholder="请输入程序集名称"
+            />
+          </span>
+          <span>
+            <span>触发器类型：</span>
+              <Select v-model="searCh.triggerType" style="width:200px">
+                <Option
+                  v-for="item in triggerTypeList"
+                  :value="item.value"
+                  :key="item.value"
+                >{{ item.label }}</Option>
+              </Select>
+            </span>
+          <Button type="info" icon="ios-search" @click="search">查询</Button>
+          <Button type="info" icon="ios-search" @click="addJob">添加任务</Button>
+          <Buttonbar v-on:keyFun="callFn" />
+        </Row>
+        <Scroll :height="Maxheight">
+        <div>
+          <Table
+            width="100%"
+            border
+            :loading="loading"
+            show-header
+            highlight-row
+            @on-current-change="CurrentRow"
+            @on-select="getRow"
+            :columns="columns2"
+            :data="list"
+          ></Table>
+          <!-- <Spin size="large"> 加载中</Spin> -->
+        </div>
+        </Scroll>
+        <div style="padding:5px;">
+          <PageView v-on:pageref="Get" ref="PageArr" />
+        </div>
     </div>
-</div>
+
+    <!-- 添加计划任务  -->
+    <div>
+      <Modal v-model="modaldate" :title="title" width="50%" height="80%" :mask-closable="false">
+        <span> 我打开了</span>
+      </Modal>
+    </div>
+
+  </div>
+
 </template>
 <script>
 import {RequestSchedulePage,ResponseStartJob,ResponseStopJob,ResponseReCoveryJob} from '../../APIServer/Api.js';
@@ -57,10 +73,17 @@ export default {
       Maxheight:500,
       searCh: {
         ///搜索对象存放
-        name: "",
-        frontRouter: "",
-        apiUrl: ""
+        name: '',
+        assemblyName: '',
+        apiUrl: '',
+        isStart:'',
+        triggerType:-1,
       },
+      triggerTypeList: [
+        { value: -1, label: "全部" },
+        { value: 0, label: "simple" },
+        { value: 1, label: "cron" }
+      ],
       loading: true,
       columns2: [
         { type: "selection", minWidth: 60, align: "center" },
@@ -72,6 +95,8 @@ export default {
         { title: "执行次数", key: "runTimes", minWidth: 80 },
         { title: "执行类型", key: "triggerType", minWidth: 60 }
       ], //列表表头
+      title:'添加任务',//Modal弹出框标题
+      modaldate:false,//Modal弹出框是否显示
       list:[],
       currentRow: null, //存放当前选中行的数据
     }
@@ -188,6 +213,10 @@ export default {
           });
         }
       });
+    },
+    addJob()
+    {
+      this.modaldate=true;
     }
   }
 }
