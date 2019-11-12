@@ -36,7 +36,8 @@
         :loading="loading"
         show-header
         highlight-row
-        @on-current-change="CurrentRow"
+        @on-row-dblclick="CurrentRow"
+        @on-row-click="clickbox"
         :columns="columns2"
         :data="list"
       ></Table>
@@ -175,7 +176,7 @@ export default {
   created: function() {},
   mounted: function() {
     this.Search();
-    var h=window.innerHeight-240;
+    var h=window.innerHeight-300;
     this.Maxheight=h;
   },
   methods: {
@@ -267,7 +268,19 @@ export default {
     //单击表格选中的数据时
     CurrentRow: function(val) {
       this.currentRow = val;
-      // console.log(this.currentRow)
+    },
+    //单击选中删除
+    clickbox(row,index)
+    {
+      if(this.list[index]._checked)
+      {
+        this.$set(this.list[index],'_checked',false);
+      }
+      else
+      {
+        this.$set(this.list[index],'_checked',true);
+      }
+
     },
     del() {
       var _this=this;

@@ -66,6 +66,7 @@ const ApiControllerUrl={
       StartScheduleJob:'/api/Schedule/StartJob',//启动一个任务
       StopScheduleJob:'/api/Schedule/StopJob',//暂停一个任务
       ReCoveryScheduleJob:'/api/Schedule/ReCovery',
+      AddScheduleJob:'/api/Schedule/AddSchedule',
     },
     //修改个人资料和登录密码接口
     ChangePersonalUrl:{ //计划任务API接口定义

@@ -26,7 +26,7 @@
               </Select>
             </span>
           <Button type="info" icon="ios-search" @click="search">查询</Button>
-          <Button type="info" icon="ios-search" @click="addJob">添加任务</Button>
+          <!-- <Button type="info" icon="ios-search" @click="addJob">添加任务</Button> -->
           <Buttonbar v-on:keyFun="callFn" />
         </Row>
         <Scroll :height="Maxheight">
@@ -37,8 +37,10 @@
             :loading="loading"
             show-header
             highlight-row
-            @on-current-change="CurrentRow"
+            ref="multipleTable"
+            @on-row-dblclick="CurrentRow"
             @on-select="getRow"
+            @on-row-click="clickbox"
             :columns="columns2"
             :data="list"
           ></Table>
@@ -53,7 +55,46 @@
     <!-- 添加计划任务  -->
     <div>
       <Modal v-model="modaldate" :title="title" width="50%" height="80%" :mask-closable="false">
-        <span> 我打开了</span>
+        <Form ref="formCustomdata" :model="formCustomdata" :rules="ruleValidate" :label-width="120">
+          <FormItem label="任务名称" prop="name">
+            <Input type="text" v-model="formCustomdata.name"></Input>
+          </FormItem>
+          <FormItem label="手机号：" prop="jobGroup">
+            <Input type="text" v-model="formCustomdata.jobGroup"></Input>
+          </FormItem>
+          <FormItem label="DLL程序集" prop="assemblyName">
+            <Input type="text" v-model="formCustomdata.assemblyName"></Input>
+          </FormItem>
+          <FormItem label="任务所在类" prop="className">
+            <Input type="text" v-model="formCustomdata.className"></Input>
+          </FormItem>
+          <FormItem label="触发类型" prop="triggerType">
+            <Select v-model="formCustomdata.triggerType" style="width:200px">
+                <Option
+                  v-for="item in AddtriggerTypeList"
+                  :value="item.value"
+                  :key="item.value"
+                >{{ item.label }}</Option>
+              </Select>
+          </FormItem>
+          <FormItem label="cron表达式" v-if="formCustomdata.triggerType==1" prop="cron" @change="clear">
+            <Input type="text" v-model="formCustomdata.cron"></Input>
+          </FormItem>
+          <FormItem label="请输入执行间隔(秒)" v-if="formCustomdata.triggerType==0" prop="cron">
+            <Input type="text" v-model="formCustomdata.intervalSecond"></Input>
+          </FormItem>
+           <FormItem label="请输入执行次数" v-if="formCustomdata.triggerType==0" prop="cron">
+            <Input type="text" v-model="formCustomdata.runTimes"></Input>
+          </FormItem>
+          <FormItem label="执行时间">
+            <DatePicker type="datetime" v-model="formCustomdata.beginTime" format="yyyy-MM-dd HH:mm:ss" placeholder="请选择开始时间" style="width: 200px"></DatePicker>——
+            <DatePicker type="datetime" v-model="formCustomdata.endTime" format="yyyy-MM-dd HH:mm:ss"  placeholder="请选择结束时间" style="width: 200px"></DatePicker>
+          </FormItem>
+        </Form>
+        <div slot="footer">
+          <Button type="primary" @click="datahandleSubmit('formCustomdata')">提交</Button>
+          <Button @click="modaldate = false" style="margin-left: 8px">取消</Button>
+        </div>
       </Modal>
     </div>
 
@@ -84,6 +125,38 @@ export default {
         { value: 0, label: "simple" },
         { value: 1, label: "cron" }
       ],
+      AddtriggerTypeList: [
+        { value: 0, label: "simple" },
+        { value: 1, label: "cron" }
+      ],
+      formCustomdata: {
+        name: '',//任务名称
+        jobGroup: '',//任务分组
+        cron: '',//任务运行时间表达式
+        assemblyName: '',//任务所在DLL对应的程序集名称
+        className: '',//任务所在类
+        remark: '',//任务描述
+        runTimes: 0,//执行次数
+        beginTime: '',//开始时间
+        endTime: '',//结束时间
+        triggerType: 0,//触发器类型
+        intervalSecond: 0,//执行间隔时间, 秒为单位
+        isStart: false,//是否启动
+      },
+      ruleValidate: {
+        name: [
+          { required: true, message: "邮箱不可为空", trigger: "blur" },
+        ],
+        jobGroup: [
+          { required: true, message: "邮箱不可为空", trigger: "blur" },
+        ],
+        assemblyName: [
+          { required: true, message: "任务所在DLL对应的程序集名称不可为空", trigger: "blur" },
+        ],
+        className: [
+          { required: true, message: "任务所在类不可为空", trigger: "blur" },
+        ],
+      },
       loading: true,
       columns2: [
         { type: "selection", minWidth: 60, align: "center" },
@@ -114,13 +187,18 @@ export default {
     search: function() {
       this.Get();
     },
-    //单击表格选中的数据时
+    //双击表格选择要编辑的数据
     CurrentRow: function(val) {
       this.currentRow = val;
     },
     //多选删除
     getRow(selection, row) {
       this.delrow = selection;
+    },
+    //单击选中删除
+    clickbox(row,index)
+    {
+      this.$set(this.list[index],'_checked',true);
     },
     //获取分页数据
     Get()
@@ -216,7 +294,31 @@ export default {
     },
     addJob()
     {
-      this.modaldate=true;
+        this.formCustomdata. name= '',//任务名称
+        this.formCustomdata.jobGroup= '',//任务分组
+        this.formCustomdata.cron= '',//任务运行时间表达式
+        this.formCustomdata.assemblyName= '',//任务所在DLL对应的程序集名称
+        this.formCustomdata.className= '',//任务所在类
+        this.formCustomdata.remark= '',//任务描述
+        this.formCustomdata.runTimes= 0,//执行次数
+        this.formCustomdata.beginTime= '',//开始时间
+        this.formCustomdata.endTime= '',//结束时间
+        this.formCustomdata.triggerType= 0,//触发器类型
+        this.formCustomdata.intervalSecond= 0,//执行间隔时间, 秒为单位
+        this.formCustomdata.isStart= false,//是否启动
+        this.modaldate=true;
+    },
+    clear()
+    {
+      if(this.formCustomdata.triggerType==0)
+      {
+        this.formCustomdata.cron='';
+      }
+      if(this.formCustomdata.triggerType==1)
+      {
+        this.formCustomdata.runTimes=0;
+        this.formCustomdata.intervalSecond=0;
+      }
     }
   }
 }
