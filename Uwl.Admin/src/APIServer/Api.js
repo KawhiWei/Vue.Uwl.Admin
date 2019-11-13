@@ -295,6 +295,10 @@ export const ResponseStopJob=params=>{
 export const ResponseReCoveryJob=params=>{
   return axios.get(`${baseurl1}`+ApiControllerUrl.ScheduleUrl.ReCoveryScheduleJob,{params:params});
 }
+//添加一个任务
+export const ResponseScheduleJobByAdd=params=>{
+  return axios.post(`${baseurl1}`+ApiControllerUrl.ScheduleUrl.AddScheduleJob,params);
+}
 
 //个人修改密码
 export const ResponseChangePassword=params=>{

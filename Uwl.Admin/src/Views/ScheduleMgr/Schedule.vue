@@ -81,10 +81,10 @@
             <Input type="text" v-model="formCustomdata.cron"></Input>
           </FormItem>
           <FormItem label="请输入执行间隔(秒)" v-if="formCustomdata.triggerType==0" prop="cron">
-            <Input type="text" v-model="formCustomdata.intervalSecond"></Input>
+            <InputNumber  :min="0" v-model="formCustomdata.intervalSecond"></InputNumber>
           </FormItem>
            <FormItem label="请输入执行次数" v-if="formCustomdata.triggerType==0" prop="cron">
-            <Input type="text" v-model="formCustomdata.runTimes"></Input>
+            <InputNumber type="text" v-model="formCustomdata.runTimes"></InputNumber>
           </FormItem>
           <FormItem label="执行时间">
             <DatePicker type="datetime" v-model="formCustomdata.beginTime" format="yyyy-MM-dd HH:mm:ss" placeholder="请选择开始时间" style="width: 200px"></DatePicker>——
@@ -92,7 +92,7 @@
           </FormItem>
         </Form>
         <div slot="footer">
-          <Button type="primary" @click="datahandleSubmit('formCustomdata')">提交</Button>
+          <Button type="primary" @click="AddScheduleJobSubmit('formCustomdata')">提交</Button>
           <Button @click="modaldate = false" style="margin-left: 8px">取消</Button>
         </div>
       </Modal>
@@ -102,7 +102,9 @@
 
 </template>
 <script>
-import {RequestSchedulePage,ResponseStartJob,ResponseStopJob,ResponseReCoveryJob} from '../../APIServer/Api.js';
+import {RequestSchedulePage,ResponseStartJob,ResponseStopJob,ResponseReCoveryJob,
+        ResponseScheduleJobByAdd
+} from '../../APIServer/Api.js';
 
 import PageView from "@/components/Page.vue";
 import Buttonbar from "@/components/ButtonBar/ButtonBar.vue";
@@ -120,6 +122,7 @@ export default {
         isStart:'',
         triggerType:-1,
       },
+      info: JSON.parse(window.sessionStorage.userInfo),
       triggerTypeList: [
         { value: -1, label: "全部" },
         { value: 0, label: "simple" },
@@ -319,7 +322,53 @@ export default {
         this.formCustomdata.runTimes=0;
         this.formCustomdata.intervalSecond=0;
       }
+    },
+    AddScheduleJobSubmit(name)
+    {
+      debugger
+      this.$refs.formCustomdata.validate(valid => {
+        if (valid) {
+          debugger
+          var _this = this;
+          let params = Object.assign({}, this.formCustomdata);
+          if (this.IsEdit) {
+            params.id = this.id;
+            params.updateName = this.info.name;
+            params.updateId = this.info.id;
+            ResponseRoleByEdit(params).then(res => {
+              if (res != "") {
+                _this.FormVisible = false;
+                _this.GetRole();
+              }
+            });
+          }
+          else {
+            debugger
+            params.createdId = this.info.id;
+            params.createdName = this.info.name;
+            ResponseScheduleJobByAdd(params).then(res => {
+              if (res.data.success) {
+              _this.$Message.success(res.data.msg);
+              _this.modaldate = false;
+              _this.Get();
+              }
+              else {
+              _this.$Message.error({
+                content: res.data.msg,
+                duration: 3});
+              }
+            });
+          }
+        }
+        else {
+          this.$Message.error({
+            content: "有必填项未填写，请确认",
+            duration: 3
+          });
+        }
+      });
     }
+
   }
 }
 </script>
