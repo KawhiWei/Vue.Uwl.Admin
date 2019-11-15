@@ -110,7 +110,6 @@ created() {
           _this.$store.commit("SaveToken", res.data.response.token);
           _this.GetUserInfo(res.data.response.token);
           _this.CreateSignalRConnection(res.data.response.token);//创建SignalR连接
-          _this.StartSignalR();//开始连接SignalR
         } else {
           _this.loading = false;
           _this.$Notice.error({ title: "获取通行证失败" });
@@ -180,6 +179,7 @@ created() {
           .withUrl(url,{ accessTokenFactory: () => token }) //配置路由通道
           .configureLogging(singnalR.LogLevel.Information) //接受的消息
           .build(); //创建
+        _that.StartSignalR();//开始连接SignalR
     },
     StartSignalR() {
         var _that = this;
