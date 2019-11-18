@@ -9,6 +9,7 @@ import 'iview/dist/styles/iview.css' //引入Iview的CSS文件
 import Echarts from 'echarts'
 import getArr from './Public/getArr.js'
 import Axios from 'axios'
+import 'babel-polyfill'
 import iview from 'iview' //引入Iview前端js框架
 //import {$Message} from "iview" //引入Iview前端js框架
 
