@@ -173,7 +173,7 @@ created() {
     CreateSignalRConnection(token)
     {
         // console.log(process.env.NODE_ENV)
-        var url = process.env.NODE_ENV === 'production' ? 'http://139.199.219.154:5000/api2/chatHub' :'http://139.199.219.154:5000/api2/chatHub';
+        var url = process.env.NODE_ENV === 'production' ? '/api2/chatHub' :'/api2/chatHub';
         var _that=this;
         _that.connection = new singnalR.HubConnectionBuilder()
           .withUrl(url,{ accessTokenFactory: () => token }) //配置路由通道
