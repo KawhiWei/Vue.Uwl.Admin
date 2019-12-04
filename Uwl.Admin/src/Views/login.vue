@@ -111,7 +111,7 @@ created() {
           _this.GetUserInfo(res.data.response.token);
         } else {
           _this.loading = false;
-          _this.$Notice.error({ title: "获取通行证失败" });
+          _this.$Notice.error({ title: res.data.msg});
         }
       });
     },
