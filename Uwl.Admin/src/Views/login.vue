@@ -109,7 +109,6 @@ created() {
           _this.$Notice.success({ title: "获取通行证成功" });
           _this.$store.commit("SaveToken", res.data.response.token);
           _this.GetUserInfo(res.data.response.token);
-          _this.CreateSignalRConnection(res.data.response.token);//创建SignalR连接
         } else {
           _this.loading = false;
           _this.$Notice.error({ title: "获取通行证失败" });
@@ -133,11 +132,13 @@ created() {
           RequestMenuTree({ userid: res.data.response.id }).then(res => {
               if(res.data.success)
               {
+                  _this.CreateSignalRConnection(tokens);//创建SignalR连接
                   _this.$Notice.success({ title: "获取用户菜单成功，自动跳转至首页" });
                   var routeArr = res.data.response.children;
                   window.localStorage.setItem("router", JSON.stringify(routeArr));
                   routeArr = filterAsyncRouterMap(routeArr);
                   router.addRoutes(routeArr);
+
                   if (_this.$route.query.ReturnUrl) {
                     _this.$router.push(_this.$route.query.ReturnUrl);
                   }
@@ -145,6 +146,11 @@ created() {
                   {
                     _this.$router.push("/");
                   }
+
+              }
+              else
+              {
+                _this.$Notice.warning({ title: res.data.msg });
               }
           });
         }
