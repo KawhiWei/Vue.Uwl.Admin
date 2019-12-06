@@ -232,8 +232,12 @@ export default {
         if (res.data.success) {
           _this.loading = false;
           _this.list = res.data.response.data;
+          var linq = require('linq');
+          var result= linq.from(_this.list).where("x=>x.name=='删除'").toArray();
+          console.log(result);
           _this.$refs.PageArr.Total = res.data.response.totalCount;
-        } else {
+        }
+        else {
           this.$Message.error({ content: res.data.msg, duration: 3 });
           _this.loading = false;
         }
