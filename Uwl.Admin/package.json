@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@aspnet/signalr": "^1.1.4",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "echarts": "^4.2.1",
     "iview": "^3.4.0",
     "linq": "^3.2.1",
