@@ -4,14 +4,14 @@
       <template>
         <div>
           <Row>
-            <Col span="22" style="height:80px;">
-            <img src="../assets/Logos.png" alt="">
+            <Col span="22" style="height:80px;" class="TopClass">
+              <H2 style="color:white;line-height: 80px;padding-left: 30px;">Uwl.Core.Admin</H2>
             </Col>
-            <Col span="2">
+            <Col span="2" style="color:white;line-height:80px;">
               <Dropdown placement="bottom-start">
                 <span>
                   <div class="demo-avatar">
-                    <Avatar src="https://i.loli.net/2017/08/21/599a521472424.jpg" shape="circle"  />
+                    <Avatar src="https://i.loli.net/2017/08/21/599a521472424.jpg" size="large" />
                   </div>
                 </span>
                 <DropdownMenu slot="list">
@@ -20,6 +20,7 @@
                   <DropdownItem @click.native="logOut">登出</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
+              <span style="font-size:23px;padding-left: 13px;">{{info.name}}</span>
             </Col>
           </Row>
         </div>
@@ -30,21 +31,24 @@
         <Row>
           <div>
             <div style="float:left;width:auto;">
-            <Menu @on-select="OpenTags">
-              <!---------active-name     当前激活菜单的 name 值  ,:open-names="['2']"    当前打开的第几个菜单    -------------->
-              <SidebarMenu v-for="menus in routerMenu" :name="menus.id" :key="menus.id" :item="menus"/>
-            </Menu>
+            <!-- <Scroll> -->
+              <Menu :theme="themeStyle" @on-select="OpenTags">
+                <!---------active-name     当前激活菜单的 name 值  ,:open-names="['2']"    当前打开的第几个菜单    -------------->
+                <SidebarMenu v-for="menus in routerMenu" :name="menus.id" :key="menus.id" :item="menus"/>
+              </Menu>
+            <!-- </Scroll> -->
             </div>
+
             <!----右侧Tabs标签页------>
             <Col span="24" :class="collapsed?'content-collapsed':'content-expanded'">
-              <div style="margin:5px 5px;  background-color:#6089d4;">
+              <div style="margin:5px 5px;  background-color:#e7e7e9;">
                 <!-- -->
                 <Tag style="margin:5px;" type="dot" :color="item.path==$route.path?'primary':'default'" :key="item.id"  :name="item.path"
                 :closable="item.IsColse"  v-for=" item in TagsList" @on-close="handleCloseTags">
                   <router-link :to="item.path" style="color:#000" ><Icon type="md-home" />{{item.lable}}</router-link>
                   </Tag>
               </div>
-              <div style="margin:10px;">
+              <div style="margin:15px;">
                 <router-view></router-view>
               </div>
             </Col>
@@ -69,6 +73,7 @@ export default {
       collapsed: false,
       token:window.sessionStorage.getItem('Token')?window.sessionStorage.getItem('Token'):'',
       connection: "",
+      themeStyle:'dark'
     }
   },
   mounted()
@@ -213,10 +218,16 @@ export default {
 .Headers{
   /* border: 1px red solid;
   height: 80px; */
-  background:#6089d4;
+  background:#515a6e;
 }
 .content-expanded{
     max-width: calc(100% - 245px);
     max-height: calc(100% - 80px);
+}
+.ivu-menu-submenu-title{
+  color: white !important;
+}
+.ivu-menu-item{
+  color: white !important;
 }
 </style>

@@ -160,7 +160,7 @@ export default {
   },
   mounted: function() {
     this.GetMenu();
-    var h=window.innerHeight-280;
+    var h=window.innerHeight-290;
     this.Maxheight=h;
   },
   methods: {
