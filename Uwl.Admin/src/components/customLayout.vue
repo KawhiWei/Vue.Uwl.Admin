@@ -253,7 +253,7 @@ export default {
   white-space: nowrap;
   font-size: 13px;
   padding: 1px 10px 4px 10px;
-  border: 1px solid #e9eaec;
+  border: 1px solid #001;
   color: #000;
   vertical-align: middle;
   background: white;
