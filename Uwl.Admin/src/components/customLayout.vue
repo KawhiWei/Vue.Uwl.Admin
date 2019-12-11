@@ -41,12 +41,20 @@
 
             <!----右侧Tabs标签页------>
             <Col span="24" :class="collapsed?'content-collapsed':'content-expanded'">
-              <div style="margin:5px 5px;  background-color:#e7e7e9;">
+              <div class="Tags" style="background-color:#e7e7e9;overflow: hidden !important;">
                 <!-- -->
-                <Tag style="margin:5px;" type="dot" :color="item.path==$route.path?'primary':'default'" :key="item.id"  :name="item.path"
+                <ul>
+                  <li class="Tags-li" v-for=" item in TagsList"   :key="item.id" >
+                    <Icon class="Tags-li-icon" type="md-radio-button-on" style="color:#1c97f5;font-size:18px;" v-if="item.path==$route.path"/>
+                    <router-link style="color:#000" :to="item.path">
+                      <!-- <Icon type="md-home" /> -->
+                      {{item.lable}}</router-link>
+                  </li>
+                </ul>
+                <!-- <Tag style="margin:5px;" type="dot" :color="item.path==$route.path?'primary':'default'" :key="item.id"  :name="item.path"
                 :closable="item.IsColse"  v-for=" item in TagsList" @on-close="handleCloseTags">
                   <router-link :to="item.path" style="color:#000" ><Icon type="md-home" />{{item.lable}}</router-link>
-                  </Tag>
+                  </Tag> -->
               </div>
               <div style="margin:15px;">
                 <router-view></router-view>
@@ -229,5 +237,32 @@ export default {
 }
 .ivu-menu-item{
   color: white !important;
+}
+.Tags ul{
+  box-sizing: border-box;
+  width: 100%;height: 100%;
+  padding: 0;
+  margin: 0;
+}
+.Tags-li{
+  float: left;
+  height: 26px;
+  border-radius: 5px;
+  line-height: 26px;
+  margin: 5px;
+  white-space: nowrap;
+  font-size: 13px;
+  padding: 1px 10px 4px 10px;
+  border: 1px solid #e9eaec;
+  color: #000;
+  vertical-align: middle;
+  background: white;
+  overflow: hidden;
+  -webkit-transition: all .3s ease-in;
+  transition: all .3s ease-in;
+}
+.Tags-li-icon{
+  cursor: pointer;
+  margin-bottom: 5px !important;
 }
 </style>
