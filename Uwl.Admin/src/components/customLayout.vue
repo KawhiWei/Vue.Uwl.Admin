@@ -30,17 +30,16 @@
       <template>
         <Row>
           <div>
-            <div style="float:left;width:auto;">
+            <Col span="3" >
             <!-- <Scroll> -->
-              <Menu :theme="themeStyle" @on-select="OpenTags">
+              <Menu :theme="themeStyle" @on-select="OpenTags" :active-name="$route.path" width="auto">
                 <!---------active-name     当前激活菜单的 name 值  ,:open-names="['2']"    当前打开的第几个菜单    -------------->
                 <SidebarMenu v-for="menus in routerMenu" :name="menus.id" :key="menus.id" :item="menus"/>
               </Menu>
             <!-- </Scroll> -->
-            </div>
-
+            </Col>
             <!----右侧Tabs标签页------>
-            <Col span="24" :class="collapsed?'content-collapsed':'content-expanded'">
+            <Col span="21" :class="collapsed?'content-collapsed':'content-expanded'">
               <div class="Tags" style="background-color:#e7e7e9;overflow: hidden !important;">
                 <!-- -->
                 <ul>
@@ -49,6 +48,7 @@
                     <router-link style="color:#000" :to="item.path">
                       <!-- <Icon type="md-home" /> -->
                       {{item.lable}}</router-link>
+                      <Icon class="Tags-li-icon" @click="handleCloseTags(item.path)" style="font-size:15px;" type="md-close" v-if="item.IsColse"/>
                   </li>
                 </ul>
                 <!-- <Tag style="margin:5px;" type="dot" :color="item.path==$route.path?'primary':'default'" :key="item.id"  :name="item.path"
@@ -56,7 +56,7 @@
                   <router-link :to="item.path" style="color:#000" ><Icon type="md-home" />{{item.lable}}</router-link>
                   </Tag> -->
               </div>
-              <div style="margin:15px;">
+              <div style="margin:8px 10px 0px 10px;">
                 <router-view></router-view>
               </div>
             </Col>
@@ -189,7 +189,7 @@ export default {
         }
       },
       //关闭Tags标签
-      handleCloseTags(event,name)
+      handleCloseTags(name)
       {
         for (let i = 0; i < this.$store.state.TagList.length; i++) {
           if(name==this.$store.state.TagList[i].path)
@@ -229,14 +229,18 @@ export default {
   background:#515a6e;
 }
 .content-expanded{
-    max-width: calc(100% - 245px);
+     /* max-width: calc(100% - 240px); */
     max-height: calc(100% - 80px);
 }
+
 .ivu-menu-submenu-title{
   color: white !important;
 }
 .ivu-menu-item{
   color: white !important;
+}
+.Tags{
+  box-shadow:2px 2px 5px #c1c1c1;
 }
 .Tags ul{
   box-sizing: border-box;
@@ -247,13 +251,13 @@ export default {
 .Tags-li{
   float: left;
   height: 26px;
-  border-radius: 5px;
+  border-radius: 3px;
   line-height: 26px;
   margin: 5px;
   white-space: nowrap;
   font-size: 13px;
   padding: 1px 10px 4px 10px;
-  border: 1px solid #001;
+  border: 1px solid #bdbebf;
   color: #000;
   vertical-align: middle;
   background: white;
