@@ -30,7 +30,7 @@
       <template>
         <Row>
           <div>
-            <Col span="3" >
+            <Col span="3" class="left-menu" >
             <!-- <Scroll> -->
               <Menu :theme="themeStyle" @on-select="OpenTags" :active-name="$route.path" width="auto">
                 <!---------active-name     当前激活菜单的 name 值  ,:open-names="['2']"    当前打开的第几个菜单    -------------->
@@ -218,6 +218,9 @@ export default {
 </script>
 
 <style>
+.layout{
+  height: 100% !important;
+}
 .Font_size
 {
   font-size: 14px;
@@ -232,7 +235,18 @@ export default {
      /* max-width: calc(100% - 240px); */
     max-height: calc(100% - 80px);
 }
-
+.Content {
+  height: 100% !important;
+}
+.ivu-row{
+  height: 100%!important;
+}
+.left-menu{
+  height: 100% !important;
+}
+.ivu-menu{
+  height: 100% !important;
+}
 .ivu-menu-submenu-title{
   color: white !important;
 }
