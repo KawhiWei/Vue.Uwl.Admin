@@ -2,9 +2,9 @@
   <div class="layout Font_size">
     <!-- <div class="Headers"> -->
     <Row>
-      <Col span="4" class="left-col">
-        <H2 style="color:black;line-height: 80px;padding-left: 30px;height:80px;background: #515a6e;">Uwl.Core.Admin</H2>
-        <Menu :theme="themeStyle" @on-select="OpenTags" :active-name="$route.path" width="auto">
+      <Col span="4">
+        <H2 style="color:black;line-height: 80px;padding-left: 30px;height:80px;background: #515a6e;width:auto;">Uwl.Core.Admin</H2>
+        <Menu :theme="themeStyle" @on-select="OpenTags" :active-name="$route.path" width="auto" style="min-width:210px;max-width:240px;height:auto;">
           <!---------active-name     当前激活菜单的 name 值  ,:open-names="['2']"    当前打开的第几个菜单    -------------->
           <SidebarMenu v-for="menus in routerMenu" :name="menus.id" :key="menus.id" :item="menus" />
         </Menu>
@@ -26,7 +26,7 @@
             </Dropdown>
             <span style="font-size:23px;padding-left: 13px;">{{info.name}}</span>
           </Row>
-          <div>
+          <div class="router-content">
             <!----右侧Tabs标签页------>
             <!-- <Col span="21" :class="collapsed?'content-collapsed':'content-expanded'"> -->
             <div class="Tags" style="background-color:#e7e7e9;overflow: hidden !important;">
@@ -208,6 +208,16 @@ export default {
 </script>
 
 <style>
+body{
+  height: 100% !important;
+}
+#app{
+  height: 100% !important;
+}
+/* .ivu-col{
+  /* max-width: calc(100% - 240px);
+  max-width: calc(100% - 240px);
+} */
 .layout {
   height: 100% !important;
 }
@@ -224,20 +234,10 @@ export default {
   /* max-width: calc(100% - 240px); */
   max-height: calc(100% - 80px);
 }
-.left-col
-{
-  height: 100% !important;
-}
 .Content {
   height: 100% !important;
 }
 .ivu-row {
-  height: 100% !important;
-}
-.left-menu {
-  height: 100% !important;
-}
-.ivu-menu {
   height: 100% !important;
 }
 .ivu-menu-submenu-title {
