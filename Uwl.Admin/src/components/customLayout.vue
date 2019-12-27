@@ -2,17 +2,19 @@
   <div class="layout Font_size">
     <!-- <div class="Headers"> -->
     <Row>
-      <Col span="4">
-        <H2 style="color:black;line-height: 80px;padding-left: 30px;height:80px;background: #515a6e;width:auto;">Uwl.Core.Admin</H2>
-        <Menu :theme="themeStyle" @on-select="OpenTags" :active-name="$route.path" width="auto" style="min-width:210px;max-width:240px;height:auto;">
+      <Col span="4" style="min-width:210px;height:auto;">
+        <H2 style="color:black;line-height: 80px;padding-left: 30px;height:80px;background: #515a6e;width:auto;color:#fff;">Uwl.Core.Admin</H2>
+        <Menu :theme="themeStyle" @on-select="OpenTags" :active-name="$route.path" width="auto" >
           <!---------active-name     当前激活菜单的 name 值  ,:open-names="['2']"    当前打开的第几个菜单    -------------->
           <SidebarMenu v-for="menus in routerMenu" :name="menus.id" :key="menus.id" :item="menus" />
         </Menu>
       </Col>
-      <Col span="20">
+      <Col span="20" class="contents">
         <div class="Content">
-          <Row style="color:black;line-height: 80px;padding-left: 30px;height:80px;background: #515a6e;">
-            <Dropdown placement="bottom-start">
+          <Row class="Top">
+            <div class="Top-img-Drop">
+              <span style="font-size:16px;padding-right: 15px;"><span>欢迎你：</span>{{info.name}}</span>
+              <Dropdown placement="bottom-start">
               <span>
                 <div class="demo-avatar">
                   <Avatar src="https://i.loli.net/2017/08/21/599a521472424.jpg" size="large" />
@@ -23,8 +25,8 @@
                 <DropdownItem @click.native="goGithub">Github源码</DropdownItem>
                 <DropdownItem @click.native="logOut">登出</DropdownItem>
               </DropdownMenu>
-            </Dropdown>
-            <span style="font-size:23px;padding-left: 13px;">{{info.name}}</span>
+              </Dropdown>
+            </div>
           </Row>
           <div class="router-content">
             <!----右侧Tabs标签页------>
@@ -214,12 +216,11 @@ body{
 #app{
   height: 100% !important;
 }
-/* .ivu-col{
-  /* max-width: calc(100% - 240px);
-  max-width: calc(100% - 240px);
-} */
 .layout {
   height: 100% !important;
+}
+.contents{
+  max-width: calc(100% - 210px);
 }
 .Font_size {
   font-size: 14px;
@@ -276,5 +277,13 @@ body{
 .Tags-li-icon {
   cursor: pointer;
   margin-bottom: 5px !important;
+}
+.Top{
+  color:black;line-height: 80px;padding-left: 30px;height:80px;background: #515a6e;
+}
+.Top-img-Drop{
+  float: right;
+  margin-right:4%;
+  color: #fff;
 }
 </style>
