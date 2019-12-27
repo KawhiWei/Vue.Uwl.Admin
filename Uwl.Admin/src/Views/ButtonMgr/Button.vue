@@ -42,10 +42,11 @@
         :data="list"
       ></Table>
       </Scroll>
-    </div>
-    <div style="padding:5px;">
+      <div style="padding:5px;">
       <PageView v-on:pageref="Search" ref="PageArr" />
     </div>
+    </div>
+
     <div>
       <!-- 添加菜单弹出框 -->
       <Modal

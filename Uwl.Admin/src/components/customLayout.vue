@@ -28,7 +28,7 @@
               </Dropdown>
             </div>
           </Row>
-          <div class="router-content">
+          <div class="router">
             <!----右侧Tabs标签页------>
             <!-- <Col span="21" :class="collapsed?'content-collapsed':'content-expanded'"> -->
             <div class="Tags" style="background-color:#e7e7e9;overflow: hidden !important;">
@@ -59,7 +59,7 @@
                   <router-link :to="item.path" style="color:#000" ><Icon type="md-home" />{{item.lable}}</router-link>
               </Tag>-->
             </div>
-            <div style="margin:8px 10px 0px 10px;">
+            <div class="router-content">
               <router-view></router-view>
             </div>
             <!-- </Col> -->
@@ -285,5 +285,9 @@ body{
   float: right;
   margin-right:4%;
   color: #fff;
+}
+.router-content{
+  max-height: calc(100% - 122px) !important;
+  /* margin:8px 10px 0px 10px; */
 }
 </style>

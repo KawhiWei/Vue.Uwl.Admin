@@ -51,7 +51,6 @@
           <PageView v-on:pageref="Get" ref="PageArr" />
         </div>
     </div>
-
     <!-- 添加计划任务  -->
     <div>
       <Modal v-model="modaldate" :title="title" width="50%" height="80%" :mask-closable="false">
@@ -97,15 +96,12 @@
         </div>
       </Modal>
     </div>
-
   </div>
-
 </template>
 <script>
 import {RequestSchedulePage,ResponseStartJob,ResponseStopJob,ResponseReCoveryJob,
         ResponseScheduleJobByAdd
 } from '../../APIServer/Api.js';
-
 import PageView from "@/components/Page.vue";
 import Buttonbar from "@/components/ButtonBar/ButtonBar.vue";
 export default {
