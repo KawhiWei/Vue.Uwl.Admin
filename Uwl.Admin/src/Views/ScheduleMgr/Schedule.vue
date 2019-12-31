@@ -51,7 +51,6 @@
           <PageView v-on:pageref="Get" ref="PageArr" />
         </div>
     </div>
-
     <!-- 添加计划任务  -->
     <div>
       <Modal v-model="modaldate" :title="title" width="50%" height="80%" :mask-closable="false">
@@ -97,15 +96,12 @@
         </div>
       </Modal>
     </div>
-
   </div>
-
 </template>
 <script>
 import {RequestSchedulePage,ResponseStartJob,ResponseStopJob,ResponseReCoveryJob,
         ResponseScheduleJobByAdd
 } from '../../APIServer/Api.js';
-
 import PageView from "@/components/Page.vue";
 import Buttonbar from "@/components/ButtonBar/ButtonBar.vue";
 export default {
@@ -169,7 +165,41 @@ export default {
         { title: "执行Class", key: "className", minWidth: 120 },
         { title: "执行间隔(秒)", key: "intervalSecond", minWidth: 60 },
         { title: "执行次数", key: "runTimes", minWidth: 80 },
-        { title: "执行类型", key: "triggerType", minWidth: 60 }
+        { title: "", key: "triggerType", minWidth: 60 },
+        {
+          title: "运行类型",
+          key: "triggerType",
+          minWidth: 100,
+          align: "center",
+          render: (h, params) => {
+            var text = "";
+            if (params.row.triggerType == 0) {
+              text = "simple";
+              return h("Tag", { props: { color: "green" } }, text);
+            }
+            if (params.row.triggerType == 1) {
+              text = "cron";
+              return h("Tag", { props: { color: "orange" } }, text);
+            }
+          }
+        },
+        {
+          title: "运行状态",
+          key: "isStart",
+          minWidth: 100,
+          align: "center",
+          render: (h, params) => {
+            var text = "";
+            if (params.row.isStart) {
+              text = "已运行";
+              return h("Tag", { props: { color: "blue" } }, text);
+            }
+            if (!params.row.isStart) {
+              text = "未运行";
+              return h("Tag", { props: { color: "volcano" } }, text);
+            }
+          }
+        }
       ], //列表表头
       title:'添加任务',//Modal弹出框标题
       modaldate:false,//Modal弹出框是否显示

@@ -2,17 +2,19 @@
   <div class="layout Font_size">
     <!-- <div class="Headers"> -->
     <Row>
-      <Col span="4" class="left-col">
-        <H2 style="color:black;line-height: 80px;padding-left: 30px;height:80px;background: #515a6e;">Uwl.Core.Admin</H2>
-        <Menu :theme="themeStyle" @on-select="OpenTags" :active-name="$route.path" width="auto">
+      <Col span="4" style="min-width:210px;height:auto;">
+        <H2 style="color:black;line-height: 80px;padding-left: 30px;height:80px;background: #515a6e;width:auto;color:#fff;">Uwl.Core.Admin</H2>
+        <Menu :theme="themeStyle" @on-select="OpenTags" :active-name="$route.path" width="auto" >
           <!---------active-name     当前激活菜单的 name 值  ,:open-names="['2']"    当前打开的第几个菜单    -------------->
           <SidebarMenu v-for="menus in routerMenu" :name="menus.id" :key="menus.id" :item="menus" />
         </Menu>
       </Col>
-      <Col span="20">
+      <Col span="20" class="contents">
         <div class="Content">
-          <Row style="color:black;line-height: 80px;padding-left: 30px;height:80px;background: #515a6e;">
-            <Dropdown placement="bottom-start">
+          <Row class="Top">
+            <div class="Top-img-Drop">
+              <span style="font-size:16px;padding-right: 15px;"><span>欢迎你：</span>{{info.name}}</span>
+              <Dropdown placement="bottom-start">
               <span>
                 <div class="demo-avatar">
                   <Avatar src="https://i.loli.net/2017/08/21/599a521472424.jpg" size="large" />
@@ -23,10 +25,10 @@
                 <DropdownItem @click.native="goGithub">Github源码</DropdownItem>
                 <DropdownItem @click.native="logOut">登出</DropdownItem>
               </DropdownMenu>
-            </Dropdown>
-            <span style="font-size:23px;padding-left: 13px;">{{info.name}}</span>
+              </Dropdown>
+            </div>
           </Row>
-          <div>
+          <div class="router">
             <!----右侧Tabs标签页------>
             <!-- <Col span="21" :class="collapsed?'content-collapsed':'content-expanded'"> -->
             <div class="Tags" style="background-color:#e7e7e9;overflow: hidden !important;">
@@ -57,7 +59,7 @@
                   <router-link :to="item.path" style="color:#000" ><Icon type="md-home" />{{item.lable}}</router-link>
               </Tag>-->
             </div>
-            <div style="margin:8px 10px 0px 10px;">
+            <div class="router-content">
               <router-view></router-view>
             </div>
             <!-- </Col> -->
@@ -208,8 +210,17 @@ export default {
 </script>
 
 <style>
+body{
+  height: 100% !important;
+}
+#app{
+  height: 100% !important;
+}
 .layout {
   height: 100% !important;
+}
+.contents{
+  max-width: calc(100% - 210px);
 }
 .Font_size {
   font-size: 14px;
@@ -224,20 +235,10 @@ export default {
   /* max-width: calc(100% - 240px); */
   max-height: calc(100% - 80px);
 }
-.left-col
-{
-  height: 100% !important;
-}
 .Content {
   height: 100% !important;
 }
 .ivu-row {
-  height: 100% !important;
-}
-.left-menu {
-  height: 100% !important;
-}
-.ivu-menu {
   height: 100% !important;
 }
 .ivu-menu-submenu-title {
@@ -276,5 +277,17 @@ export default {
 .Tags-li-icon {
   cursor: pointer;
   margin-bottom: 5px !important;
+}
+.Top{
+  color:black;line-height: 80px;padding-left: 30px;height:80px;background: #515a6e;
+}
+.Top-img-Drop{
+  float: right;
+  margin-right:4%;
+  color: #fff;
+}
+.router-content{
+  max-height: calc(100% - 122px) !important;
+  /* margin:8px 10px 0px 10px; */
 }
 </style>
