@@ -32,7 +32,7 @@
             <!----右侧Tabs标签页------>
             <!-- <Col span="21" :class="collapsed?'content-collapsed':'content-expanded'"> -->
             <div class="Tags" style="background-color:#e7e7e9;overflow: hidden !important;">
-              <!-- -->
+              <!--  -->
               <ul>
                 <li class="Tags-li" v-for=" item in TagsList" :key="item.id">
                   <Icon
@@ -67,7 +67,6 @@
         </div>
       </Col>
       <!-- <Col span="2" style="color:white;line-height:80px;">
-
       </Col>-->
     </Row>
   </div>
