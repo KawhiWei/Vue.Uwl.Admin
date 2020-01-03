@@ -8,7 +8,7 @@ const ApiControllerUrl={
     //登录Url存放位置
     LoginUrl:{
         GetTokenByUserAndPass:'/api/Login/TokenThree',//'/api/Login/TokenThree',//根据用户名和密码获取Token
-        GetUserByToken:'',//根据Token获取用户个人信息
+        RefrenshToken:'/api/Login/Refrensh',
     },
     //菜单管理Url存放位置
     MenumanagerUrl:{
@@ -107,17 +107,44 @@ axios.interceptors.response.use(response=>{//没有错误数据原封返回
         {
           if(error.response.status===401)
           {
-            Message.error('很抱歉，登录超时!请重新登录');
+            // if(window.sessionStorage.getItem('Token')!="undefined")
+            // {
+            //   var param = {
+            //     token: window.sessionStorage.getItem('Token')
+            //   };
+            //   console.log(param);
+            //   debugger
+            //   return RefrenshToken(param).then(res=>{
+            //     debugger
+            //     if (res.data.success) {
+            //       console.log(res.data.token)
+            //       Message.success({ content: res.data.msg, duration: 3 });
+            //       store.commit("SaveToken",res.data.token);
+            //       window.sessionStorage.setItem('Token',res.data.token);
+            //       debugger
+            //       error.config.__isRetryRequest = true;
+            //       error.config.headers.Authorization = 'Bearer ' + res.token;
+            //       console.log(error.config)
+            //       return axios(error.config);
+            //     }
+            //     else
+            //     {
+            //       Message.error({ content: res.data.msg, duration: 3 });
+            //     }
+            //   })
+            // }
+            // Message.error('很抱歉，登录超时!请重新登录');
             // Message.info({
             //   message: '很抱歉，登录超时!请重新登录',
             //   type: 'error',duration:5
 
             // });
             ToLogin();
+            return error.response;
           }
           if(error.response.status===403)
           {
-            Message.error('失败！该操作无权限');
+            // Message.error('失败！该操作无权限');
             //console.log(Vue)
             // Vue.prototype.$Message({
             //   message: '失败！该操作无权限',
@@ -142,7 +169,10 @@ const ToLogin=params=>{
 export const RequestLogin=params=>{
     return axios.post(`${baseurl1}`+ApiControllerUrl.LoginUrl.GetTokenByUserAndPass,params);
 }
-
+//刷新Token和用户信息
+export const RefrenshToken=params=>{
+  return axios.get(`${baseurl1}`+ApiControllerUrl.LoginUrl.RefrenshToken,{params:params});
+}
 
 
 

@@ -239,7 +239,7 @@ export default {
           _this.$refs.PageArr.Total = res.data.response.totalCount;
         }
         else {
-          this.$Message.error({ content: res.data.msg, duration: 3 });
+          _this.$Message.error({ content: res.data.msg, duration: 3 });
           _this.loading = false;
         }
       });

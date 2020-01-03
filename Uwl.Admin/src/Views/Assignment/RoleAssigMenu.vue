@@ -51,31 +51,30 @@ export default {
        {
            var _this=this;
            RequestGetAllRole({}).then(res=>{
-              if(res.status!=200)
-              {
-                var err=JSON.parse(res.response.data)
-                this.$Message.error({content:err.Message,duration:3});
-                _this.loading=false;
-              }
-              else
-              {
-                _this.RoleList=res.data.response.data;
-              }
+              if (res.data.success) {
+                            _this.$Message.success(res.data.msg);
+                            _this.Get();
+                          } else {
+                            _this.$Message.error({
+                              content: res.data.msg,
+                              duration: 3
+                            });
+                          }
            })
        },
        //获取所有的菜单和按钮
        RoleAssig:function(index,item){
             var _this=this;
             RoleAssigGetAllRole({roleId:item.id}).then(res=>{
-              if(res.status!=200)
-              {
-                var err=JSON.parse(res.response.data)
-                this.$Message.error({content:err.Message,duration:3});
-              }
-              else
-              {
-                  _this.treeRecursion(res.data.response.children);
-              }
+              if (res.data.success) {
+                            _this.$Message.success(res.data.msg);
+                            _this.Get();
+                          } else {
+                            _this.$Message.error({
+                              content: res.data.msg,
+                              duration: 3
+                            });
+                          }
             })
            _this.roleRow=item
            _this.changebgcol = index;

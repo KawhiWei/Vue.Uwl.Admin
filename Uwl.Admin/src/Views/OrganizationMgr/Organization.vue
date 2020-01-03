@@ -134,6 +134,10 @@ export default {
           console.log(res.data.response)
           _that.treearr=res.data.response.children;
         }
+        else
+        {
+          _that.$Message.error({ content: res.data.msg, duration: 3 });
+        }
       });
     },
     getNodeCurrent(arr, current) {

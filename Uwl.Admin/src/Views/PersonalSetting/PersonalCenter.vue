@@ -228,7 +228,7 @@ export default {
                   _this.modalUpdatadata = false;
                 }
                 else {
-                  _this.$Notice.error({ title: "获取用户信息失败" });
+                  _this.$Message.error({ content: res.data.msg, duration: 3 });
                 }
               });
               //需要重新刷新一下个人信息数据
