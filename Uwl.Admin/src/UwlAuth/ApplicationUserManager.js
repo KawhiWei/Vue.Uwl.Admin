@@ -5,7 +5,7 @@ class ApplicationUserManager extends UserManager{
     super({
       authority:'http://localhost:5000',
       client_id:'uwladminjs',
-      redirect_uri:'http://127.0.0.1:2365/#/LoginedCallbackView',
+      redirect_uri:'http://127.0.0.1:2365/LoginedCallbackView',
       response_type:'id_token token',
       scope:'openid profile roles uwlcore.api',
       post_logout_redirect_uri: 'http://127.0.0.1:2365'

@@ -14,7 +14,7 @@ var getRouter
 //定义并 New 一个Vue路由对象
 const createRouters=()=>new Router(
   {
-    // mode:'history',
+    mode:'history',
     base:process.env.BASE_URL,
     routes:[
       //登录
@@ -42,7 +42,7 @@ const createRouters=()=>new Router(
             component: PlatformHome,
             meta:{
                 title:'HelloWorld',
-                requireAuth:true,//表示此页面打开是否需要登录
+                // requireAuth:true,//表示此页面打开是否需要登录
                 NoNeedHome:false,//添加此字段表示不需要Home模板
               },
           },
@@ -62,6 +62,8 @@ const createRouters=()=>new Router(
             component: LoginedCallbackView,
             meta:{
                 title:'HelloWorld',
+                NoNeedHome:false,//添加此字段表示不需要Home模板
+                NoTabPage: true,
               },
           },
         ]
@@ -71,6 +73,29 @@ const createRouters=()=>new Router(
 )
 const router = createRouters()
 router.beforeEach((to,from,next)=>{
+
+  console.log(to.fullPath)
+  debugger
+  if(to.meta.requireAuth)
+  {
+
+    if(store.state.token==null)
+    {
+      var token=window.sessionStorage.getItem("Token");
+      store.state.token=token;
+    }
+    if(store.state.token==null)
+    {
+      // next({path:'/login',query:{ReturnUrl:to.fullPath}})
+      applicationUserManager.login();//使用Id4授权认证，用Jwt，请删之，并把上面的跳转login 打开；
+    }
+    else{
+      next();
+    }
+  }
+  else{
+    next();
+  }
   if(window.localStorage.router)
   {
     var arr=JSON.parse(window.localStorage.router?window.localStorage.router:'');//获取缓存中的路由
@@ -95,21 +120,6 @@ router.beforeEach((to,from,next)=>{
       }
     }
   }
-  if(to.meta.requireAuth)
-  {
-    if(store.state.token==null)
-    {
-      var token=window.sessionStorage.getItem("Token");
-      store.state.token=token;
-    }
-    if(store.state.token==null)
-    {
-      // next({path:'/login',query:{ReturnUrl:to.fullPath}})
-      applicationUserManager.login();//使用Id4授权认证，用Jwt，请删之，并把上面的跳转login 打开；
-    }
-    else{   next();      }
-  }
-  else{      next();    }
 }
 
 )

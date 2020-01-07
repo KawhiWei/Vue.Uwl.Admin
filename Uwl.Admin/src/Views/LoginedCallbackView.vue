@@ -16,6 +16,7 @@ export default {
     return {};
   },
   async created() {
+    debugger
     try {
       await applicationUserManager.signinRedirectCallback();
       let _this=this;
