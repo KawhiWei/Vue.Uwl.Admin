@@ -3,6 +3,8 @@ import Vue from 'vue';
 import router from '../router/index'
 import { Message } from 'iview'
 import store from '../Vuex/store'
+import applicationUserManager from "../UwlAuth/ApplicationUserManager";
+
 var baseurl1='';//"http://139.199.219.154:8561";//
 const ApiControllerUrl={
     //登录Url存放位置
@@ -160,10 +162,11 @@ const ToLogin=params=>{
   store.commit("SaveToken","");
   window.sessionStorage.setItem('Token',"");
   window.localStorage.setItem('router',"");
-  router.replace({
-    path:'/login',
-    query:{ReturnUrl:router.currentRoute.fullPath}
-  });
+  // router.replace({
+  //   path:'/login',
+  //   query:{ReturnUrl:router.currentRoute.fullPath}
+  // });
+  applicationUserManager.login();
 }
 //登录获取Token和用户信息
 export const RequestLogin=params=>{

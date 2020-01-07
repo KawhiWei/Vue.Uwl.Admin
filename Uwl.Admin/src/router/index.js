@@ -2,10 +2,11 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import login from '@/Views/login.vue'
 import PlatformHome from '@/Views/PlatformHome.vue'
+import LoginedCallbackView from '@/Views/LoginedCallbackView.vue'
 import customLayout from '@/components/customLayout.vue'
 import store from '../Vuex/store'
 const _import =require('@/router/_import_'+process.env.NODE_ENV)//获取组件的方法
-
+import applicationUserManager from "../UwlAuth/ApplicationUserManager";
 
 Vue.use(Router)
 let addRouFlag = false
@@ -47,6 +48,24 @@ const createRouters=()=>new Router(
           },
         ]
       }
+      ,
+      {
+        //登录回掉视图
+        path: '/',
+        name: 'Layout',
+        component: customLayout,
+        redirect:'/LoginedCallbackView',
+        children:[
+          {
+            path: '/LoginedCallbackView',
+            name: 'LoginedCallbackView',
+            component: LoginedCallbackView,
+            meta:{
+                title:'HelloWorld',
+              },
+          },
+        ]
+      }
     ],
   }
 )
@@ -57,7 +76,8 @@ router.beforeEach((to,from,next)=>{
     var arr=JSON.parse(window.localStorage.router?window.localStorage.router:'');//获取缓存中的路由
     if(arr.length<=0)
     {
-      next({path:'/login',query:{ReturnUrl:to.fullPath}})
+      // next({path:'/login',query:{ReturnUrl:to.fullPath}})
+      applicationUserManager.login();//使用Id4授权认证，用Jwt，请删之，并把上面的跳转login 打开；
     }
     else
     {
@@ -84,7 +104,8 @@ router.beforeEach((to,from,next)=>{
     }
     if(store.state.token==null)
     {
-      next({path:'/login',query:{ReturnUrl:to.fullPath}})
+      // next({path:'/login',query:{ReturnUrl:to.fullPath}})
+      applicationUserManager.login();//使用Id4授权认证，用Jwt，请删之，并把上面的跳转login 打开；
     }
     else{   next();      }
   }
