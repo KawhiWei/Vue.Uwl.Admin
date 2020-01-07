@@ -70,11 +70,60 @@ export default {
         ]
       },
       connection: "",
+      sysUserInfo: [
+    {
+      "Id": "70883B70-F80A-4A4E-B08C-3BA197EC5A8C",
+      "CreatedDate": "2019-10-05T09:33:50.9806214",
+      "CreatedId": "AD73D0F6-33C9-40E3-8C56-F0EC8E35315F",
+      "CreatedName": "admin",
+      "UpdateName": "admin",
+      "UpdateId": "AD73D0F6-33C9-40E3-8C56-F0EC8E35315F",
+      "IsDrop": false,
+      "Name": "test",
+      "Sex": true,
+      "Email": "55375@qq.com",
+      "Mobile": "123456sdf1sdf5sd5",
+      "QQ": "",
+      "Account": "test",
+      "Password": "e10adc3949ba59abbe56e057f20f883e",
+      "WeChat": "1sd5f1s515sf15sdf",
+      "EmpliyeeType": 0,
+      "JobName": "",
+      "AccountState": 0,
+      "DepartmentId": "00000000-0000-0000-0000-000000000000",
+      "OrganizeId": "00000000-0000-0000-0000-000000000000"
+    },
+    {
+      "Id": "AD73D0F6-33C9-40E3-8C56-F0EC8E35315F",
+      "CreatedDate": "2019-07-30T15:07:56.6593956",
+      "CreatedId": "AD73D0F6-33C9-40E3-8C56-F0EC8E35315F",
+      "CreatedName": "admin",
+      "UpdateName": "admin",
+      "UpdateId": "AD73D0F6-33C9-40E3-8C56-F0EC8E35315F",
+      "IsDrop": false,
+      "Name": "admin",
+      "Sex": false,
+      "Email": "1585955375@qq.com",
+      "Mobile": "123456",
+      "Account": "uwl",
+      "Password": "073db52d92edd947436a774664f2de2f",
+      "WeChat": "123456",
+      "EmpliyeeType": 2,
+      "JobName": "",
+      "AccountState": 0,
+      "DepartmentId": "00000000-0000-0000-0000-000000000000",
+      "OrganizeId": "00000000-0000-0000-0000-000000000000"
+    }
+  ],
+
+
     };
   },
 
   mounted() {
+    var str=JSON.stringify(this.sysUserInfo)
 
+    console.log(typeof str)
   },
 created() {
     var _that = this;
