@@ -11,7 +11,6 @@ const userAuth = {
   methods: {
     async refreshUserInfo() {
       const user = await applicationUserManager.getUser();
-      debugger
       if (user) {
         this.user.name = user.profile.name;
         this.user.isAuthenticated = true;

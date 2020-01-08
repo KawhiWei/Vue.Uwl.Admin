@@ -7,6 +7,7 @@ import customLayout from '@/components/customLayout.vue'
 import store from '../Vuex/store'
 const _import =require('@/router/_import_'+process.env.NODE_ENV)//获取组件的方法
 import applicationUserManager from "../UwlAuth/ApplicationUserManager";
+import { RequestMenuTree } from "../APIServer/Api.js";
 
 Vue.use(Router)
 let addRouFlag = false
@@ -42,7 +43,7 @@ const createRouters=()=>new Router(
             component: PlatformHome,
             meta:{
                 title:'HelloWorld',
-                // requireAuth:true,//表示此页面打开是否需要登录
+                requireAuth:true,//表示此页面打开是否需要登录
                 NoNeedHome:false,//添加此字段表示不需要Home模板
               },
           },
@@ -73,15 +74,12 @@ const createRouters=()=>new Router(
 )
 const router = createRouters()
 router.beforeEach((to,from,next)=>{
-
-  console.log(to.fullPath)
-  debugger
   if(to.meta.requireAuth)
   {
 
     if(store.state.token==null)
     {
-      var token=window.sessionStorage.getItem("Token");
+      var token=window.localStorage.getItem("Token");
       store.state.token=token;
     }
     if(store.state.token==null)
@@ -98,11 +96,31 @@ router.beforeEach((to,from,next)=>{
   }
   if(window.localStorage.router)
   {
-    var arr=JSON.parse(window.localStorage.router?window.localStorage.router:'');//获取缓存中的路由
+    var arr=[];
+    if(window.localStorage.router!="")
+    {
+      if(JSON.parse(window.localStorage.router).length>0)
+      {
+        arr=JSON.parse(window.localStorage.router);
+      }
+    }
     if(arr.length<=0)
     {
+      var user=JSON.parse(window.localStorage.getItem("userInfo"));
+      RequestMenuTree({ userid: user.sub }).then(res => {
+        console.log(res.data.response)
+              if(res.data.success)
+              {
+                  var routeArr = res.data.response.children;
+                  window.localStorage.setItem("router", JSON.stringify(routeArr));
+                  console.log(window.localStorage.getItem("router"))
+                  routeArr = filterAsyncRouterMap(routeArr);
+                  router.addRoutes(routeArr);
+                  next({ ...to, replace: true })
+              }
+          });
       // next({path:'/login',query:{ReturnUrl:to.fullPath}})
-      applicationUserManager.login();//使用Id4授权认证，用Jwt，请删之，并把上面的跳转login 打开；
+      // applicationUserManager.login();//使用Id4授权认证，用Jwt，请删之，并把上面的跳转login 打开；
     }
     else
     {

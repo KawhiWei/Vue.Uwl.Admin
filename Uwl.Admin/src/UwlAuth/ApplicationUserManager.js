@@ -1,5 +1,6 @@
 import {UserManager} from 'oidc-client'
 import store from '../Vuex/store'
+
 class ApplicationUserManager extends UserManager{
   constructor(){
     super({
@@ -15,10 +16,9 @@ class ApplicationUserManager extends UserManager{
   {
     await this.signinRedirect()
     var user=await this.getUser();
-    console.log(user);
-    store.commit("SaveToken","");
-    window.sessionStorage.setItem('Token',"");
-    window.localStorage.setItem('router',"");
+     store.commit("SaveToken",user.access_token);
+     window.localStorage.setItem("userInfo",JSON.stringify(user.profile));
+     window.localStorage.setItem('Token',user.access_token);
     return user
   }
   async logout () {

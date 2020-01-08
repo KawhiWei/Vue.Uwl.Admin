@@ -164,7 +164,7 @@ export default {
   data() {
     return {
       Maxheight:500,
-      info: JSON.parse(window.sessionStorage.userInfo),
+      info: JSON.parse(window.localStorage.userInfo),
       loading: true,
       searCh: {
         name: "",
@@ -173,7 +173,7 @@ export default {
         mobile: ""
       },
       Tokens: {
-        Authorization: "Bearer " + window.sessionStorage.getItem("Token")
+        Authorization: "Bearer " + window.localStorage.getItem("Token")
       },
       IsEdit: false,
       sexflag: "",

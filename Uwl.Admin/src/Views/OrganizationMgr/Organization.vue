@@ -48,10 +48,10 @@ export default {
   components: {},
   data() {
     return {
-      info: JSON.parse(window.sessionStorage.userInfo),
+      info: JSON.parse(window.localStorage.userInfo),
       treearr: [],
       Tokens: {
-        Authorization: "Bearer " + window.sessionStorage.getItem("Token")
+        Authorization: "Bearer " + window.localStorage.getItem("Token")
       },
       formValidate: {
         name: '',

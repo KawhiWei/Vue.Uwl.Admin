@@ -171,7 +171,7 @@ created() {
       RequestUserInfo({ token: tokens }).then(res => {
         if (res.data.success) {
           _this.$Notice.success({ title: "获取用户信息成功" });
-          window.sessionStorage.setItem(
+          window.localStorage.setItem(
             "userInfo",
             JSON.stringify(res.data.response)
           );
@@ -181,13 +181,11 @@ created() {
           RequestMenuTree({ userid: res.data.response.id }).then(res => {
               if(res.data.success)
               {
-                  _this.CreateSignalRConnection(tokens);//创建SignalR连接
                   _this.$Notice.success({ title: "获取用户菜单成功，自动跳转至首页" });
                   var routeArr = res.data.response.children;
                   window.localStorage.setItem("router", JSON.stringify(routeArr));
                   routeArr = filterAsyncRouterMap(routeArr);
                   router.addRoutes(routeArr);
-
                   if (_this.$route.query.ReturnUrl) {
                     _this.$router.push(_this.$route.query.ReturnUrl);
                   }
@@ -195,11 +193,10 @@ created() {
                   {
                     _this.$router.push("/");
                   }
-
               }
               else
               {
-                _this.$Notice.warning({ title: res.data.msg });
+                _this.$Notice.warning({ title: "跳转至登录中心"});
               }
           });
         }

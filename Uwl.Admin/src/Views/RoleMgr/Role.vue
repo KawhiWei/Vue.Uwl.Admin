@@ -88,7 +88,7 @@ export default {
   data() {
     return {
       Maxheight:500,
-      info: JSON.parse(window.sessionStorage.userInfo),
+      info: JSON.parse(window.localStorage.userInfo),
       loading: true,
       searCh: {
         name: "",

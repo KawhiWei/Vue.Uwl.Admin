@@ -104,7 +104,7 @@ export default {
   data() {
     return {
       Maxheight:500,
-      info: JSON.parse(window.sessionStorage.userInfo),
+      info: JSON.parse(window.localStorage.userInfo),
       FormVisible: false, //Modal弹出框
       title: "添加菜单",
       loading: true,

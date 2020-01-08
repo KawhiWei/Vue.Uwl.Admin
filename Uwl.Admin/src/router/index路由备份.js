@@ -61,7 +61,7 @@ const routes=
         },
       }
     ]
-    
+
   },
   {
     path: '/users',
@@ -79,7 +79,7 @@ const routes=
         },
       }
     ]
-    
+
   },
   {
     path: '/test2',
@@ -98,8 +98,8 @@ const routes=
         },
       }
     ]
-    
-    
+
+
   },
   {
     path: '/roles',
@@ -117,7 +117,7 @@ const routes=
         },
       }
     ]
-    
+
   },
   {
     path: '/roleAssig',
@@ -176,7 +176,7 @@ router.beforeEach((to,from,next)=>{
     //     else{
     //       next({path:'/login',query:{ReturnUrl:to.fullPath}})
     //     }
-        
+
     //   }
     //   else
     //   {
@@ -186,7 +186,7 @@ router.beforeEach((to,from,next)=>{
     {
       if(store.state.token==null)
       {
-        var token=window.sessionStorage.getItem("Token");
+        var token=window.localStorage.getItem("Token");
         store.state.token=token;
       }
       if(store.state.token==null)

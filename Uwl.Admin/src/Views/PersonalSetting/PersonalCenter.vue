@@ -160,13 +160,13 @@ export default {
       }
     };
     return {
-      user: JSON.parse(window.sessionStorage.userInfo),
+      user: JSON.parse(window.localStorage.userInfo),
       file: [], //上传的图片
       modalUpdataHeadImg: false, //更换头像弹出框
       modalUpdatapwd: false, //修改密码弹出框
       modalUpdatadata: false, //修改其他资料弹出框
       Tokens: {
-        Authorization: "Bearer " + window.sessionStorage.getItem("Token")
+        Authorization: "Bearer " + window.localStorage.getItem("Token")
       },
       formCustom: {
         oldPassWord: "",
@@ -217,14 +217,14 @@ export default {
           let params = Object.assign({}, this.formCustomdata);
           ResponseChangeData(params).then(res => {
             if (res.data.success) {
-              RequestUserInfo({ token: window.sessionStorage.getItem("Token") }).then(res => {
+              RequestUserInfo({ token: window.localStorage.getItem("Token") }).then(res => {
                 if (res.data.success) {
                   _this.$Notice.success({ title: "用户信息刷新成功" });
-                  window.sessionStorage.setItem("userInfo",JSON.stringify(res.data.response));
+                  window.localStorage.setItem("userInfo",JSON.stringify(res.data.response));
                   //将用户信息写入到Vuex缓存中
                   _this.$store.commit("SaveUser", res.data.response);
                   _this.$Message.success(res.data.msg);
-                  _this.user=JSON.parse(window.sessionStorage.userInfo);
+                  _this.user=JSON.parse(window.localStorage.userInfo);
                   _this.modalUpdatadata = false;
                 }
                 else {

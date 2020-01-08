@@ -111,7 +111,7 @@ export default {
   data() {
     return {
       Maxheight:500,
-      info: JSON.parse(window.sessionStorage.userInfo),
+      info: JSON.parse(window.localStorage.userInfo),
       //添加字段
       FormVisible: false,
       loading: true,

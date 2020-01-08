@@ -70,7 +70,7 @@ const createRouters=()=>new Router(
             },
           }
         ]
-        
+
       },
       {
         path: '/users',
@@ -88,7 +88,7 @@ const createRouters=()=>new Router(
             },
           }
         ]
-        
+
       },
       {
         path: '/test2',
@@ -107,8 +107,8 @@ const createRouters=()=>new Router(
             },
           }
         ]
-        
-        
+
+
       },
       {
         path: '/roles',
@@ -126,7 +126,7 @@ const createRouters=()=>new Router(
             },
           }
         ]
-        
+
       },
       {
         path: '/roleAssig',
@@ -209,7 +209,7 @@ router.beforeEach((to,from,next)=>{
     {
       if(store.state.token==null)
       {
-        var token=window.sessionStorage.getItem("Token");
+        var token=window.localStorage.getItem("Token");
         store.state.token=token;
       }
       if(store.state.token==null)

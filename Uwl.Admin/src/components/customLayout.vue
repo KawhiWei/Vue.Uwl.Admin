@@ -75,17 +75,20 @@
 <script>
 import { RequestMenuTree } from "../APIServer/Api.js";
 import SidebarMenu from "@/components/SidebarMenu.vue";
+import UwlUserAuth  from "../UwlAuth/ApplicationUserManager";
+import applicationUserManager from "../UwlAuth/ApplicationUserManager";
 export default {
+  mixins:[UwlUserAuth],
   components: { SidebarMenu },
   name: "customLayout",
   data() {
     return {
       Maxheight: 500,
-      info: JSON.parse(window.sessionStorage.userInfo),
+      info:JSON.parse(window.localStorage.userInfo),
       routerMenu: [],
       collapsed: false,
-      token: window.sessionStorage.getItem("Token")
-        ? window.sessionStorage.getItem("Token")
+      token: window.localStorage.getItem("Token")
+        ? window.localStorage.getItem("Token")
         : "",
       connection: "",
       themeStyle: "dark"
@@ -125,14 +128,16 @@ export default {
       if (arr.length >= 0) {
         this.routerMenu = arr;
       }
-    } else {
-      this.turnToRoute("/login");
+    }
+    else {
+      // debugger
+      // this.turnToRoute("/login");
     }
   },
   methods: {
     logOut() {
       this.$store.commit("SaveToken", "");
-      window.sessionStorage.setItem("Token", "");
+      window.localStorage.setItem("Token", "");
       window.localStorage.setItem("router", "");
       this.$store.commit("SaveTags", "");
       this.$router.push("/login");
@@ -203,6 +208,33 @@ export default {
   computed: {
     TagsList() {
       return this.$store.state.TagList;
+    },
+    routerMenus()
+    {
+      debugger
+      var user=JSON.parse(window.localStorage.getItem("userInfo"));
+      var arr=[];
+      if(window.localStorage.getItem("router")!=null)
+      {
+        if(window.localStorage.getItem("router")!="")
+        {
+          arr=JSON.parse(window.localStorage.getItem("router"));
+        }
+      }
+      if(arr.length<=0)
+      {
+        if(user!=null)
+        {
+          RequestMenuTree({ userid: user.sub }).then(res => {
+              if(res.data.success)
+              {
+                  var routeArr = res.data.response.children;
+                  window.localStorage.setItem("router", JSON.stringify(routeArr));
+              }
+          });
+        }
+      }
+      return JSON.parse(window.localStorage.getItem("router")?window.localStorage.getItem("router"):'[]');
     }
   }
 };

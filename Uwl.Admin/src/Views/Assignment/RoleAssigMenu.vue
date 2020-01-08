@@ -37,7 +37,7 @@ export default {
             changebgcol: null,
             roleRow:{},
             selectlist: [],
-            info: JSON.parse(window.sessionStorage.userInfo),
+            info: JSON.parse(window.localStorage.userInfo),
         }
     },
     mounted:function()

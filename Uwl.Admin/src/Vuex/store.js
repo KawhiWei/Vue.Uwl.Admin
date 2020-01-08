@@ -24,14 +24,14 @@ const mutations={
         //将传入的Token放到浏览器本地缓存中，
         //window.sessionStorage浏览器或者标签页关闭自动清空，
         //localStorage默认数据永久存在，不会自动清空
-        window.sessionStorage.setItem('Token',data);
+        window.localStorage.setItem('Token',data);
     },
     //用户退出登录，清除Token
     DeleteToken(state)
     {
         state.token=null,
         //清空本地浏览器缓存中的Token
-        window.sessionStorage.setItem('Token','')
+        window.localStorage.setItem('Token','')
     },
     SaveTags(state,data)
     {

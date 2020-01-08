@@ -118,7 +118,7 @@ export default {
         isStart:'',
         triggerType:-1,
       },
-      info: JSON.parse(window.sessionStorage.userInfo),
+      info: JSON.parse(window.localStorage.userInfo),
       triggerTypeList: [
         { value: -1, label: "全部" },
         { value: 0, label: "simple" },

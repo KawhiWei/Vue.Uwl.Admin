@@ -81,8 +81,8 @@ const ApiControllerUrl={
 axios.interceptors.request.use(
     config=>{
         //判断本地缓存是否存在Token,如果存在获取Token
-        if(window.sessionStorage.getItem('Token')){//获取缓存中的Token
-            config.headers.Authorization="Bearer "+window.sessionStorage.getItem('Token');
+        if(window.localStorage.getItem('Token')){//获取缓存中的Token
+            config.headers.Authorization="Bearer "+window.localStorage.getItem('Token');
         }
         return config;
     },
@@ -109,10 +109,10 @@ axios.interceptors.response.use(response=>{//没有错误数据原封返回
         {
           if(error.response.status===401)
           {
-            // if(window.sessionStorage.getItem('Token')!="undefined")
+            // if(window.localStorage.getItem('Token')!="undefined")
             // {
             //   var param = {
-            //     token: window.sessionStorage.getItem('Token')
+            //     token: window.localStorage.getItem('Token')
             //   };
             //   console.log(param);
             //   debugger
@@ -122,7 +122,7 @@ axios.interceptors.response.use(response=>{//没有错误数据原封返回
             //       console.log(res.data.token)
             //       Message.success({ content: res.data.msg, duration: 3 });
             //       store.commit("SaveToken",res.data.token);
-            //       window.sessionStorage.setItem('Token',res.data.token);
+            //       window.localStorage.setItem('Token',res.data.token);
             //       debugger
             //       error.config.__isRetryRequest = true;
             //       error.config.headers.Authorization = 'Bearer ' + res.token;
@@ -160,7 +160,7 @@ axios.interceptors.response.use(response=>{//没有错误数据原封返回
 )
 const ToLogin=params=>{
   store.commit("SaveToken","");
-  window.sessionStorage.setItem('Token',"");
+  window.localStorage.setItem('Token',"");
   window.localStorage.setItem('router',"");
   // router.replace({
   //   path:'/login',
