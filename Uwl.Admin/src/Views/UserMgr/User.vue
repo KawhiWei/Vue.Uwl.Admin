@@ -371,7 +371,6 @@ export default {
       }),
       this.roleArr = [];
       this.roleArrIds = [];
-      this.GetAllRole();
       this.FormVisible = true;
     },
     edit() {
