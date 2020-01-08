@@ -84,7 +84,7 @@ export default {
   data() {
     return {
       Maxheight: 500,
-      info:JSON.parse(window.localStorage.userInfo),
+      info:{},
       routerMenu: [],
       collapsed: false,
       token: window.localStorage.getItem("Token")
@@ -129,9 +129,10 @@ export default {
         this.routerMenu = arr;
       }
     }
-    else {
-      // debugger
-      // this.turnToRoute("/login");
+    if (window.localStorage.router) {
+      var userInfo = JSON.parse(window.localStorage.userInfo)
+      if(userInfo!=null)
+        this.info=userInfo
     }
   },
   methods: {

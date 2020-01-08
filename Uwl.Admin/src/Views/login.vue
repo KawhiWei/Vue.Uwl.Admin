@@ -121,9 +121,6 @@ export default {
   },
 
   mounted() {
-    var str=JSON.stringify(this.sysUserInfo)
-
-    console.log(typeof str)
   },
 created() {
     var _that = this;
@@ -151,23 +148,24 @@ created() {
         user: _this.formInline.user,
         password: _this.formInline.password
       };
-      _this.$Notice.success({ title: "正在获取通行证" });
+      // _this.$Notice.success({ title: "正在获取通行证" });
       _this.loading = true;
-      RequestLogin(param).then(res => {
-        if (res.data.success) {
-          _this.$Notice.success({ title: "获取通行证成功" });
-          _this.$store.commit("SaveToken", res.data.response.token);
-          _this.GetUserInfo(res.data.response.token);
-        } else {
-          _this.loading = false;
-          _this.$Notice.error({ title: res.data.msg});
-        }
-      });
+      _this.GetUserInfo('');
+      // RequestLogin(param).then(res => {
+      //   if (res.data.success) {
+      //     // _this.$Notice.success({ title: "获取通行证成功" });
+      //     // _this.$store.commit("SaveToken", res.data.response.token);
+      //     _this.GetUserInfo(res.data.response.token);
+      //   } else {
+      //     _this.loading = false;
+      //     _this.$Notice.error({ title: res.data.msg});
+      //   }
+      // });
     },
     //根据Token获取用户信息
     GetUserInfo(tokens) {
       var _this = this;
-      _this.LoadingTitle = "正在获取用户信息";
+      // _this.LoadingTitle = "正在获取用户信息";
       RequestUserInfo({ token: tokens }).then(res => {
         if (res.data.success) {
           _this.$Notice.success({ title: "获取用户信息成功" });
@@ -201,7 +199,7 @@ created() {
           });
         }
         else{
-            _this.$Notice.error({ title: "获取用户信息失败" });
+            _this.$Notice.warning({ title: "即将跳转至登录中心"});
         }
         //_this.$router.push('/')
       });

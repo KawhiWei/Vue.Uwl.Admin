@@ -23,8 +23,6 @@ export default {
       let _this=this;
       await applicationUserManager.signinRedirectCallback();
       let user = await applicationUserManager.getUser();
-      console.log(user)
-      debugger
       _this.$store.commit("SaveToken", user.access_token);
       _this.$store.commit("SaveUser", user.profile);
       window.localStorage.setItem("userInfo",JSON.stringify(user.profile));
