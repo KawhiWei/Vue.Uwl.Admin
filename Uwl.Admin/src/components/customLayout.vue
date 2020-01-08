@@ -2,7 +2,7 @@
   <div class="layout Font_size">
     <!-- <div class="Headers"> -->
     <Row>
-      <Col span="4" style="min-width:210px;height:auto;">
+      <Col span="4" style="min-width:210px;height:100%;background: #515a6e;">
         <H2 style="color:black;line-height: 80px;padding-left: 30px;height:80px;background: #515a6e;width:auto;color:#fff;">Uwl.Core.Admin</H2>
         <Menu :theme="themeStyle" @on-select="OpenTags" :active-name="$route.path" width="auto" >
           <!---------active-name     当前激活菜单的 name 值  ,:open-names="['2']"    当前打开的第几个菜单    -------------->
@@ -213,7 +213,7 @@ body{
   height: 100% !important;
 }
 #app{
-  height: 100% !important;
+  height: 100vh;
 }
 .layout {
   height: 100% !important;

@@ -11,9 +11,9 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-         target: 'http://localhost:5001',//本地开发环境接口地址
+        // target: 'http://localhost:5001',//本地开发环境接口地址
         // target: 'http://192.168.199.158:5000',//生产接口地址
-		// target: 'http://uwlapi.uwladmin.club',//生产接口地址        ws:true,
+	    	target: 'http://uwlapi.uwladmin.club',//生产接口地址        ws:true,
         changeOrigin: true,//是否允许跨越
         pathRewrite: {
             '^/apb': '',//重写,

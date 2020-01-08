@@ -26,7 +26,9 @@
     </div>
 </template>
 <style scoped>
-
+.ivu-row-flex-space-between{
+    margin: 0 !important;
+}
 </style>
 <script>
 export default {
