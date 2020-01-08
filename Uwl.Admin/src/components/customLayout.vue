@@ -287,6 +287,7 @@ body{
 }
 .router-content{
   max-height: calc(100% - 122px) !important;
+  padding: 10px;
   /* margin:8px 10px 0px 10px; */
 }
 </style>

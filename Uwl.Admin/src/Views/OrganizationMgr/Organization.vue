@@ -1,7 +1,7 @@
 <!--用户管理组件-->
 <template>
   <div>
-    <Row :gutter="16">
+    <Row >
       <Col span="4">
         <Tree :data="treearr" @on-select-change="getNodeCurrent"></Tree>
       </Col>
