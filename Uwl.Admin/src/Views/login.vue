@@ -132,7 +132,7 @@ created() {
           RequestMenuTree({ userid: res.data.response.id }).then(res => {
               if(res.data.success)
               {
-                  _this.CreateSignalRConnection(tokens);//创建SignalR连接
+                  //_this.CreateSignalRConnection(tokens);//创建SignalR连接
                   _this.$Notice.success({ title: "获取用户菜单成功，自动跳转至首页" });
                   var routeArr = res.data.response.children;
                   window.localStorage.setItem("router", JSON.stringify(routeArr));

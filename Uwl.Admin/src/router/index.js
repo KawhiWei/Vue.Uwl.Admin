@@ -13,7 +13,7 @@ var getRouter
 //定义并 New 一个Vue路由对象
 const createRouters=()=>new Router(
   {
-    // mode:'history',
+    mode:'history',
     base:process.env.BASE_URL,
     routes:[
       //登录

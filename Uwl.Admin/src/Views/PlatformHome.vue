@@ -165,12 +165,12 @@ export default {
         var quyu = this.echarts.init(dom)
         quyu.setOption(option);
         var _this  =this;
-    _this.connection=this.$store.state.SignalRconnection;
+    //_this.connection=this.$store.state.SignalRconnection;
         // //接收别人发过来的消息
-    _this.connection.on("ReceiveMessage", function(user, message) {
-        // _this.$Notice.info({ content: , duration: 1 });
-        _this.$Notice.success({ title: message + user});
-        });
+    // _this.connection.on("ReceiveMessage", function(user, message) {
+    //     // _this.$Notice.info({ content: , duration: 1 });
+    //     _this.$Notice.success({ title: message + user});
+    //     });
     },
     methods:{
         SenMsg() {
